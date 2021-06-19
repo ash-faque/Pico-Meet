@@ -63,10 +63,13 @@ const setDetailForm = document.getElementById('setDetailForm');
 var room_id;
 var getUserMedia = navigator.mediaDevices.getUserMedia;
 const mediaConstrains = {
-                        audio: true,
+                        audio: {
+                            echoCancellation: true
+                        },
                         video: {
-                            width: { ideal: 360},
-                            height: { ideal: 640}
+                            width: { ideal: 640},
+                            height: { ideal: 360},
+                            facingMode: { exact: "user" }
                         }
                     }
 var local_stream, incoming_call;
