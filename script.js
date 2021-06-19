@@ -132,7 +132,7 @@ function createRoom(){
     }
 };
                 // calling to create room with ls pid
-                //createRoom();
+                createRoom();
 
 // answering call
 const answer = (didAnswer, modal) => {
