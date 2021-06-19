@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pico Meet</title>
+        <link rel="stylesheet" type="text/css" href="/styles.css">
+    </head>
+    <body>
+        <div id="toast"></div>
+
+        <div class="setup">
+            <header>
+                <h1>Pico Meet</h1>
+            </header>
+
+            <div class="wrap">
+
+                <!-- create or join -->
+                <div class="m" id="entry-modal">
+                    <h2>Create/Join Meeting</h2>
+                    <div class="m_wrap">
+                        <label for="room-input">Enter Peer Id</label>
+                        <input id="room-input" class="room-input" placeholder="Enter Room ID">
+                        <button onclick="joinRoom()">Join Room</button>
+                    </div>
+                </div>
+
+                <!-- peer explorer -->
+                <div class="m">
+                    <h2>Explorer Peers</h2>
+                    <ul class="m_wrap" id="explore">
+                        <li id="kooi">
+                            
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- details collector -->
+                <div class="m" id="collect_detail">
+                    <h2>Setup Details</h2>
+                    <div class="m_wrap">
+                        <form onsubmit="setDetails(event, this)" id="setDetailForm">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" id="name" required placeholder="Your nice name goes here">
+                            <label for="peer">Preferred Peer Id</label>
+                            <input type="text" name="peer" id="peer" required placeholder="Type any alpha numeric value">
+                            <label for="bio">Bio</label>
+                            <input type="text" name="bio" id="bio" required placeholder="Your priffered languages fits well">
+                            <input type="submit" value="Set Details">
+                        </form>
+                    </div> 
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="facetime">
+            <!-- Remote Video Element-->
+            <video id="remote-video"></video>
+
+            <!-- Local Video Element-->
+            <div class="local_vid_contain">
+                <video id="local-video"></video>
+                <p onclick="toggleVid()" class="vid_toggler">✨</p>
+            </div>
+        
+            <!-- chat implementation -->
+            <div id="chatbox">
+                <ul class="messages">
+                    <li class="recieved">This is the setup for chat</li>
+                    <li class="sended">But not yet implimented</li>
+                </ul>
+                <form class="type_msg" onsubmit="message(event, this)">
+                    <input type="" name="msg" id="msg" required>
+                    <button type="submit">send</button>
+                </form>
+            </div>
+        </div>
+
+    </body>
+
+    <script src="/peer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script src="script.js"></script>
+
+</html>
