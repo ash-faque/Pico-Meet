@@ -21,6 +21,8 @@ const toast = {
 
 
 // set details
+const setDetailForm = document.getElementById('setDetailForm');
+// my info obj
 const pInfo = {};
 const setDetails = (e, setDetailForm) => {
     let stored_pid = '',
@@ -45,176 +47,183 @@ const setDetails = (e, setDetailForm) => {
     // push data to base or update on pid change state
     if (pid_changed){
         // re launch new peer
+        connectToPeer();
     }
 
     //console.log();
 
 };
 
-// update setDetailForm on loading
-var my_pid;
-const setDetailForm = document.getElementById('setDetailForm');
-        setDetailForm.name.value = localStorage.p_name || '';
-        setDetailForm.peer.value = localStorage.p_pid || '';
-        //.value = localStorage.p_pid || '';
-        setDetailForm.bio.value = localStorage.p_bio || '';
-
-// room creation vars
-var room_id;
-var getUserMedia = navigator.mediaDevices.getUserMedia;
-const mediaConstrains = {
-                        audio: {
-                            echoCancellation: true
-                        },
-                        video: {
-                            width: { ideal: 640},
-                            height: { ideal: 360},
-                            facingMode: { exact: "user" }
-                        }
-                    }
-var local_stream, incoming_call;
-
+// peer establishmet global vars
 // main model refs
-const setupModal = document.querySelector('.setup')
-const facetimeModal = document.querySelector('.facetime')
+const setupModal = document.querySelector('.setup');
+const facetimeModal = document.querySelector('.facetime');
 
-// room creation on load
-function createRoom(){
-    if (localStorage.p_pid && (localStorage.p_pid != (undefined || ''))){
-        toast.log("Creating Room...");
-        my_pid = localStorage.p_pid;
-
-        let peer = new Peer('PICOMEET-' + my_pid);
-
-        peer.on('open', (id)=>{
-            // upload detail to base
-
-
-            toast.log("Peer ID: " + id)
-            getUserMedia(mediaConstrains).then((stream) => {
-                                                        local_stream = stream;
-                                                        setLocalStream(local_stream)
-                                                    })
-                                                    .catch(err => {
-                                                        console.error(err)
-                                                        toast.error(err)
-                                                    });
-            toast.log("Waiting for peer to join.")
+// stream request
+const getStream = (audio = true, video = true) => {
+    let mediaConstrains = {
+            audio: audio,
+            video: video
+        };
+    navigator.mediaDevices.getUserMedia(mediaConstrains)
+        .then((stream) => {
+            //console.log(stream)
+            return stream;
         })
-
-        peer.on('error', err => {
+        .catch(err => {
             console.error(err)
             toast.error(err)
         });
-
-        peer.on('call',(call) => {
-            // show incoming call
-            let browser = call.options._payload.browser,
-                incoming_peer =  call.peer,
-                div = document.createElement('div');
-            div.setAttribute('id', 'incoming');
-            div.innerHTML = `<div class="call_info">
-                                <p>INCOMING CALL FROM PEER</p>
-                                <h2>${incoming_peer}</h2>
-                                <p>incoming from ${browser} browser</p>
-                            </div>
-                            <div class="call_btns">
-                                <button onclick="answer(false, this)">reject</button>
-                                <button onclick="answer(true, this)">answer</button>
-                            </div>`;
-                            facetimeModal.style.display = 'block';
-                            setupModal.style.display = 'none';
-            incoming_call = call;
-            facetimeModal.appendChild(div)
-        });
-    } else {
-        setDetailForm.scrollIntoView()
-    }
 };
-                // calling to create room with ls pid
-                createRoom();
-
-// answering call
-const answer = (didAnswer, modal) => {
-    if (didAnswer){
-        toast.log('accepting all')
-        incoming_call.answer(local_stream);
-        incoming_call.on('stream',(stream)=>{
-            facetimeModal.style.display = 'block';
-            setupModal.style.display = 'none';
-            setRemoteStream(stream)
-        });
-        modal.parentElement.parentElement.remove()
-    } else if (!didAnswer){
-        toast.log('call rejected');
-        modal.parentElement.parentElement.remove()
-
-    }
-}
-
-// joing a room
-function joinRoom(){
-    toast.log("Joining Room...")
-
-    let room = document.getElementById("room-input").value;
-
-    if(room == " " || room == "")   {
-        alert("Please enter room number")
-        return;
-    }
-
-    room_id = 'PICOMEET-' + room;
-
-    let peer = new Peer();
-
-    peer.on('open', (id) => {
-        toast.log("Peer ID: " + id)
-        getUserMedia(mediaConstrains).then((stream) => {
-                                                    local_stream = stream;
-                                                    setLocalStream(local_stream);
-                                                    toast.log("Joining peer");
-
-                                                let call = peer.call(room_id, stream);
-
-                                                    call.on('stream', (stream)=>{
-                                                        facetimeModal.style.display = 'block';
-                                                        setupModal.style.display = 'none';
-                                                        setRemoteStream(stream);
-                                                    })
-                                                }).catch(err => {
-                                                    toast.error(err);
-                                                    console.error(err);
-                                                });
-    });
-
-    peer.on('error', err => {
-         // check error for deleting peer
-
-
-            
-        toast.error(err);
-        console.error(err)
-    });
-
-}
-
-
 // setting streams to dom
 function setLocalStream(stream){
     let video = document.getElementById("local-video");
     video.srcObject = stream;
     video.muted = true;
+    video.volume = 0;
     video.play();
-}
+};
 function setRemoteStream(stream){
     let video = document.getElementById("remote-video");
     video.srcObject = stream;
     video.play();
+};
+
+// local streams managing
+var incoming_call, outgoing_call;
+// my_pid is the id without prefix
+var my_pid;
+// peer is the actual peer connection
+var peer;
+
+// connect to peer server
+function connectToPeer(){
+    if (localStorage.p_pid && (localStorage.p_pid != (undefined || ''))){
+        toast.log("Connecting To Peer Server...");
+        my_pid = localStorage.p_pid;
+        peer = new Peer('PICOMEET-' + my_pid);
+        peer.on('open', (id) => {
+            toast.log("Connected to peer server with peer id: " + id);
+            // upload detail to supabase
+
+
+            toast.log("Waiting for peer to join.")
+        });
+        peer.on('error', err => {
+            console.error(err)
+            toast.error(err)
+        });
+        peer.on('call',(call) => {
+            toast.log('incoming....');
+            console.log(call);
+            console.log(call.metadata);
+            let incoming_peers_name = '',
+                bio = '';
+            // show incoming call
+            let div = document.createElement('div');
+            div.setAttribute('id', 'incoming');
+            div.innerHTML = `<div class="call_info">
+                                <span>INCOMING CALL FROM:</span>
+                                <h3>${incoming_peers_name}</h3>
+                                <p>${bio}</p>
+                            </div>
+                            <div class="call_btns">
+                                <button onclick="answer(false, this)">reject</button>
+                                <button onclick="answer(true, this)">answer</button>
+                            </div>`;
+                    facetimeModal.style.display = 'block';
+                    setupModal.style.display = 'none';
+            incoming_call = call;
+            facetimeModal.appendChild(div)
+        });
+    } else {
+        toast.log('First you have to set details')
+        setDetailForm.scrollIntoView()
+    };
+};
+
+// answering call
+const answer = (didAnswer, modal) => {
+    if (didAnswer){
+        let mediaConstrains = { audio: true,  video: true };
+        navigator.mediaDevices.getUserMedia(mediaConstrains)
+                .then((stream) => {
+                    toast.log('Accepting Call');
+                    let local_stream = stream;
+                    setLocalStream(local_stream);
+                    incoming_call.answer(local_stream);
+                    incoming_call.on('stream', (incoming_stream) => {
+                        setRemoteStream(incoming_stream);
+                        switchTab();
+                    });
+                    // remove the answering blk
+                    modal.parentElement.parentElement.remove();
+                })
+                .catch(err => {
+                    console.error(err)
+                    toast.error(err)
+                });
+    } else if (!didAnswer){
+        // cut the incoming req
+
+
+        toast.log('call rejected');
+        modal.parentElement.parentElement.remove();
+    };
+};
+
+// joing a peer / call someone
+function joinPeer(){
+    let remotePeersId = document.getElementById("room-input").value;
+    if(remotePeersId == " " || remotePeersId == ""){
+        toast.log("Please enter peer id");
+        return;
+    };
+    remote_peers_id = 'PICOMEET-' + remotePeersId;
+    toast.log("Triying the entered peer id " + remotePeersId);
+
+    let peer = new Peer();
+
+    peer.on('open', (id) => {
+        let mediaConstrains = { audio: true, video: true };
+        navigator.mediaDevices.getUserMedia(mediaConstrains)
+                                .then((stream) => {
+                                    toast.log("Joining peer");
+                                    local_stream = stream;
+                                    setLocalStream(local_stream);
+                                    let call = peer.call(remote_peers_id, stream);
+                                    call.on('stream', (stream)=>{
+                                        setRemoteStream(stream);
+                                        switchTab();
+                                    });
+                                }).catch(err => {
+                                    toast.error(err);
+                                    console.error(err);
+                                });
+                            });
+
+    peer.on('error', err => {
+         // check error for deleting peer
+
+        toast.error(err);
+        console.error(err)
+    });
+};
+
+
+// end call
+const endCall = () => {
+    // end the call
+
+
+    toast.log("Disconnecting call.")
 }
 
 
+
+
 /* chat */
-const msgBlk = document.querySelector('.messages')
+/* const msgBlk = document.querySelector('.messages')
 const message = (e, form) => {
     e.preventDefault()
     let msg  = form[0].value,
@@ -226,17 +235,47 @@ const message = (e, form) => {
     // send to other peer
 
 }
+ */
 
+// ui shits
+// tabs switcher
+const switchTab = () => {
+    let facetime_d_state = getComputedStyle(facetimeModal).display,
+        setup_d_state = getComputedStyle(setupModal).display;
+    console.log(facetime_d_state, setup_d_state)
+    if (facetime_d_state == 'none' && setup_d_state == 'block'){
+        facetimeModal.style.display = 'block';
+        setupModal.style.display = 'none';
+    } else if (facetime_d_state == 'block' && setup_d_state == 'none'){
+        facetimeModal.style.display = 'none';
+        setupModal.style.display = 'block';
+    };
+};
 /* local video toggler */
 const toggleVid = () => {
-    let vid = document.getElementById('local-video'),
-        displayState = getComputedStyle(vid).display;
-    if (displayState == 'block'){
-        vid.style.display = "none";
-    } else if (displayState == 'none'){
-        vid.style.display = 'block'
+    let vidContainer = document.querySelector('.local_vid_contain'),
+        containerWidth = getComputedStyle(vidContainer).width;
+    if (containerWidth != '40px'){
+        vidContainer.style.width = "40px";
+        vidContainer.style.height = "40px";
+        vidContainer.firstElementChild.style.display = 'none';
+    } else if (containerWidth == '40px'){
+        vidContainer.style.width = "25%";
+        vidContainer.style.height = "";
+        vidContainer.firstElementChild.style.display = 'block';
     }
-}
+};
+
+// request fullscreen
+const toggleFullScreen = () => {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+    } else {
+        if (document.exitFullscreen) {
+        document.exitFullscreen();
+        };
+    };
+};
 
 /* model toggler */
 const models = Array.from(document.querySelectorAll('.m'))
@@ -308,5 +347,15 @@ const displayActivePeers = (peers) => {
    });
 };
 
-// call to get onload
-//getAllPeers()
+// on loading
+window.onload = () => {
+    // retrieve infos frm ls
+    setDetailForm.name.value = localStorage.p_name || '';
+    setDetailForm.peer.value = localStorage.p_pid || '';
+    setDetailForm.bio.value = localStorage.p_bio || '';
+    // connect to peer server
+    connectToPeer();
+    // populate explorer tab
+    //getAllPeers()
+    
+};

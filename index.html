@@ -19,11 +19,11 @@
 
                 <!-- create or join -->
                 <div class="m" id="entry-modal">
-                    <h2>Create/Join Meeting</h2>
+                    <h2>Call Peer</h2>
                     <div class="m_wrap">
                         <label for="room-input">Enter Peer Id</label>
                         <input id="room-input" class="room-input" placeholder="Enter Room ID">
-                        <button onclick="joinRoom()">Join Room</button>
+                        <input type="button" value="Call Peer" onclick="joinPeer()">
                     </div>
                 </div>
 
@@ -64,11 +64,16 @@
             <!-- Local Video Element-->
             <div class="local_vid_contain">
                 <video id="local-video"></video>
-                <p onclick="toggleVid()" class="vid_toggler">✨</p>
+                <p onclick="toggleVid()" class="vid_toggler">📌</p>
             </div>
-        
+            
+            <div class="call_controls">
+                <button class="endCall" onclick="endCall()">📞</button>
+                <button class="fScreen" onclick="toggleFullScreen()">♊</button>
+            </div>
+
             <!-- chat implementation -->
-            <div id="chatbox">
+            <!-- <div id="chatbox">
                 <ul class="messages">
                     <li class="recieved">This is the setup for chat</li>
                     <li class="sended">But not yet implimented</li>
@@ -77,7 +82,8 @@
                     <input type="" name="msg" id="msg" required>
                     <button type="submit">send</button>
                 </form>
-            </div>
+            </div> -->
+
         </div>
 
     </body>

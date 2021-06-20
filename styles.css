@@ -12,21 +12,18 @@ body{
                                         display: block;
                                         top: 0;
                                         width: 100%;
-                                        z-index: 100;
+                                        z-index: 1000;
                                     }
                                     #toast p{
                                         transition: 500ms;
-                                        width: calc(100% - 10px);
-                                        margin: 0 5px;
+                                        width: 100%;
                                         margin-bottom: 5px;
                                         padding: 5px;
                                         text-align: center;
                                         font-family: monospace;
-                                        font-weight: 900;
+                                        font-weight: 700;
                                         font-size: large;
-                                        background-color: #000000b4;
-                                        border-radius: 5px;
-                                        box-shadow: 0 0 2px #fff;
+                                        background-color: #000000;
                                     }
                                     #toast .log{
                                         color: #00ff00;
@@ -69,12 +66,13 @@ body{
                     /* toggle setup */
                             .setup{
                                 display: block;
+                                width: 100%;
                             }
-                                .wrap{
-                                    background-color: #6d6d6d;
-                                    min-height: 100vh;
-                                    padding: 5px;
-                                }
+                                                .wrap{
+                                                    background-color: #6d6d6d;
+                                                    min-height: 100vh;
+                                                    padding: 5px;
+                                                }
 
                     /* video tags styles */
                             .facetime{
@@ -85,29 +83,27 @@ body{
                                                 #incoming{
                                                     display: block;
                                                     position: absolute;
-                                                    width: 80%;
-                                                    height: 80vh;
-                                                    margin: 10vh 10%;
+                                                    bottom: 0;
+                                                    width: 100%;
                                                     padding: 10px;
-                                                    border-radius: 20px;
-                                                    background-color: #252525;
-                                                    box-shadow: 10px 10px 50px #000000;
+                                                    background-color: #131313;
                                                     text-align: center;
-                                                    z-index: 100;
                                                 }
-                                               /*      .call_info{
-
-                                                    }
-                                                        .call_info h2{
-                                                            
+                                                    .call_info{
+                                                        padding: 10px;
+                                                    }   
+                                                        .call_info span{
+                                                            color: #ffffff;
+                                                        }
+                                                        .call_info h3{
+                                                            color: #ffee00;
+                                                            text-transform: uppercase;
                                                         }
                                                         .call_info p{
-
-                                                        } */
+                                                            padding-top: 10px;
+                                                            color: #00ffbf;
+                                                        }
                                                     .call_btns{
-                                                        position: absolute;
-                                                        bottom: 0;
-                                                        left: 0;
                                                         padding: 10px;
                                                         width: 100%;
                                                     }
@@ -126,16 +122,14 @@ body{
                                                         #incoming button:first-child{
                                                             background-color: #ff1100;
                                                             color: #ffffff;
-                                                            border-radius: 0 0 0 15px;
                                                         }
                                                         #incoming button:last-child{
                                                             background-color: #2bff00;
                                                             color: #000000;
-                                                            border-radius: 0 0 15px 0;
                                                         }
                                 #remote-video{
                                     position: absolute;
-                                    background-color: #000000;
+                                    background-color: #353535;
                                     width: 100%;
                                     height: 100%;
                                     top: 0;
@@ -143,17 +137,19 @@ body{
                                 }
                                 .local_vid_contain{
                                     position: absolute;
-                                    background-color: #141414;
+                                    background-color: #292929;
                                     width: 25%;
                                     top: 0;
                                     right: 0;
                                     z-index: 100;
                                 }
-                                    .vivid_toggler{
+                                    .vid_toggler{
+                                        position: absolute;
+                                        bottom: 0px;
                                         display: block;
-                                        width: 100%;
-                                        height: 20px;
-                                        background-color: #ffffff;
+                                        width: 40px;
+                                        height: 40px;
+                                        background-color: #350000;
                                         cursor: pointer;
                                         text-align: center;
                                     }
@@ -162,7 +158,32 @@ body{
                                         width: 100%;
                                         height: 25vh;
                                     }
-                                #chatbox{
+
+                            /* call_controls */
+                            .call_controls{
+                                display: block;
+                                width: 100%;
+                                position: absolute;
+                                bottom: 0;
+                                text-align: center;
+                            }
+                                .call_controls button{
+                                    width: 50px;
+                                    height: 50px;
+                                    border-radius: 50%;
+                                    font-size: large;
+                                    font-family: monospace;
+                                    margin: 0 10px;
+                                    padding: 10px 0;
+                                    border: 3px solid #000;
+                                }
+                                .endCall{
+                                    background-color: red;
+                                }
+
+
+                                /* chat boxes */
+                                /* #chatbox{
                                     position: absolute;
                                     width: 100%;
                                     bottom: 0;
@@ -214,18 +235,18 @@ body{
                                             font-weight: 900;
                                             text-transform: uppercase;
                                             cursor: pointer;
-                                        }
+                                        } */
 
-    /* universal style modules */
+    /* universal setup modules */
     .m{
         display: block;
         width: 98%;
         margin: 0 auto;
         margin-bottom: 10px;
-        padding: 5px;
+        padding: 10px;
         background-color: #302d2d;
         color: #ffffff;
-        box-shadow: -2px 2px 2px #b9b9b9;
+        box-shadow: -5px 5px #000000;
         overflow: hidden;
     }
         .m h2{
@@ -266,8 +287,8 @@ body{
         }
         .m input{
             width: 100%;
-            height: 30px;
             margin-bottom: 5px;
+            padding: 10px 20px;
         }
         .m button{
             width: 100%;
