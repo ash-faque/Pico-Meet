@@ -55,7 +55,7 @@ body{
         }
             header h1{
                 text-align: center;
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
                 margin: 0 auto;
                 padding: 10px 0 5px 0;
                 text-shadow: -1px 1px #bd0d00,
@@ -64,178 +64,143 @@ body{
             }
 
                     /* toggle setup */
-                            .setup{
-                                display: block;
-                                width: 100%;
-                            }
-                                                .wrap{
-                                                    background-color: #6d6d6d;
-                                                    min-height: 100vh;
-                                                    padding: 5px;
-                                                }
+                    .setup{
+                        display: block;
+                        width: 100%;
+                    }
+                        .wrap{
+                            background-color: #6d6d6d;
+                            min-height: 100vh;
+                            padding: 5px;
+                        }
 
                     /* video tags styles */
-                            .facetime{
-                                display: none;
-                                width: 100%;
-                                height: 100vh;
-                            }
-                                                #incoming{
-                                                    display: block;
-                                                    position: absolute;
-                                                    bottom: 0;
-                                                    width: 100%;
-                                                    padding: 10px;
-                                                    background-color: #131313;
-                                                    text-align: center;
-                                                }
-                                                    .call_info{
-                                                        padding: 10px;
-                                                    }   
-                                                        .call_info span{
-                                                            color: #ffffff;
-                                                        }
-                                                        .call_info h3{
-                                                            color: #ffee00;
-                                                            text-transform: uppercase;
-                                                        }
-                                                        .call_info p{
-                                                            padding-top: 10px;
-                                                            color: #00ffbf;
-                                                        }
-                                                    .call_btns{
-                                                        padding: 10px;
-                                                        width: 100%;
-                                                    }
-                                                        #incoming button{
-                                                            display: inline-block;
-                                                            width: 49%;
-                                                            height: 40px;
-                                                            border: 0;
-                                                            font-size: larger;
-                                                            font-family: monospace;
-                                                            text-transform: uppercase;
-                                                            letter-spacing: 2px;
-                                                            font-weight: 900;
-                                                            cursor: pointer;
-                                                        }
-                                                        #incoming button:first-child{
-                                                            background-color: #ff1100;
-                                                            color: #ffffff;
-                                                        }
-                                                        #incoming button:last-child{
-                                                            background-color: #2bff00;
-                                                            color: #000000;
-                                                        }
-                                #remote-video{
-                                    position: absolute;
-                                    background-color: #353535;
-                                    width: 100%;
-                                    height: 100%;
-                                    top: 0;
-                                    left: 0;
-                                }
-                                .local_vid_contain{
-                                    position: absolute;
-                                    background-color: #292929;
-                                    width: 25%;
-                                    top: 0;
-                                    right: 0;
-                                    z-index: 100;
-                                }
-                                    .vid_toggler{
+                    .facetime{
+                        display: none;
+                        width: 100%;
+                        height: 100vh;
+                    }
+                                    #incoming{
+                                        display: block;
                                         position: absolute;
-                                        bottom: 0px;
-                                        display: block;
-                                        width: 40px;
-                                        height: 40px;
-                                        background-color: #350000;
-                                        cursor: pointer;
+                                        bottom: 0;
+                                        width: 100%;
+                                        padding: 10px;
+                                        background-color: #131313;
                                         text-align: center;
+                                        z-index: 99;
                                     }
-                                    #local-video{
-                                        display: block;
-                                        width: 100%;
-                                        height: 25vh;
-                                    }
+                                        .call_info{
+                                            padding: 10px;
+                                        }   
+                                            .call_info span{
+                                                color: #ffffff;
+                                            }
+                                            .call_info h3{
+                                                color: #ffee00;
+                                                text-transform: uppercase;
+                                            }
+                                            .call_info p{
+                                                padding-top: 10px;
+                                                color: #00ffbf;
+                                            }
+                                        .call_btns{
+                                            padding: 10px;
+                                            width: 100%;
+                                        }
+                                            #incoming button{
+                                                display: inline-block;
+                                                width: 49%;
+                                                height: 40px;
+                                                border: 0;
+                                                font-size: larger;
+                                                font-family: monospace;
+                                                text-transform: uppercase;
+                                                letter-spacing: 2px;
+                                                font-weight: 900;
+                                                cursor: pointer;
+                                            }
+                                            #incoming button:first-child{
+                                                background-color: #ff1100;
+                                                color: #ffffff;
+                                            }
+                                            #incoming button:last-child{
+                                                background-color: #2bff00;
+                                                color: #000000;
+                                            }
+                    #remote-video{
+                        position: absolute;
+                        background-color: #353535;
+                        width: 100%;
+                        height: 100%;
+                        top: 0;
+                        left: 0;
+                        z-index: 90;
+                    }
+                    .local_vid_contain{
+                        position: absolute;
+                        background-color: #292929;
+                        width: 25%;
+                        bottom: 0;
+                        right: 0;
+                        z-index: 90;
+                    }
+                        .vid_toggler{
+                            position: absolute;
+                            top: 0px;
+                            display: block;
+                            width: 40px;
+                            height: 40px;
+                            padding: 8px;
+                            background-color: #750000;
+                            cursor: pointer;
+                            text-align: center;
+                        }
+                        .vid_toggler:hover{
+                            transform: scale(.8);
+                            background-color: #752b00;
+                        }
+                        #local-video{
+                            display: block;
+                            width: 100%;
+                            height: 25vh;
+                        }
 
-                            /* call_controls */
-                            .call_controls{
-                                display: block;
-                                width: 100%;
-                                position: absolute;
-                                bottom: 0;
-                                text-align: center;
-                            }
-                                .call_controls button{
-                                    width: 50px;
-                                    height: 50px;
-                                    border-radius: 50%;
-                                    font-size: large;
-                                    font-family: monospace;
-                                    margin: 0 10px;
-                                    padding: 10px 0;
-                                    border: 3px solid #000;
-                                }
-                                .endCall{
-                                    background-color: red;
-                                }
-
-
-                                /* chat boxes */
-                                /* #chatbox{
-                                    position: absolute;
-                                    width: 100%;
-                                    bottom: 0;
-                                    z-index: 100;
-                                }
-                                    .messages{
-                                        padding: 0 5px;
-                                        max-height: 35vh;
-                                        overflow-y: scroll;
-                                    }
-                                        .messages li{
-                                            display: block;
-                                            min-width: 60%;
-                                            max-width: 90%;
-                                            margin-bottom: 5px;
-                                            font-family: cursive;
-                                            overflow: hidden;
-                                        }
-                                        .recieved{
-                                            background-color: #312d2d;
-                                            color: #ffffff;
-                                            padding: 5px;
-                                            padding-left: 15px;
-                                            border-radius: 10px 10px 10px 0;
-                                        }
-                                        .sended{
-                                            background-color: #afafaf;
-                                            color: #000;
-                                            padding: 5px;
-                                            padding-right: 15px;
-                                            float: right;
-                                            text-justify: kashida;
-                                            border-radius: 10px 10px 0 10px;
-                                        }
-                                    .type_msg{
-                                        width: 100%;
-                                    }
-                                        .type_msg input{
-                                            width: calc(100% - 50px);
-                                            min-height: 40px;
-                                            border: 0;
-                                        }
-                                        .type_msg button{
-                                            width: 45px;
-                                            height: 40px;
-                                            border: 0;
-                                            font-size: larger;
-                                            font-family: monospace;
-                                            font-weight: 900;
-                                            text-transform: uppercase;
-                                            cursor: pointer;
-                                        } */
+                /* call_controls */
+                .call_controls{
+                    display: block;
+                    width: 75%;
+                    position: absolute;
+                    bottom: 0;
+                    padding: 10px;
+                    z-index: 91;
+                }
+                    .call_controls button{
+                        cursor: pointer;
+                        width: 50px;
+                        height: 50px;
+                        border-radius: 50%;
+                        font-size: large;
+                        font-family: monospace;
+                        margin: 10px;
+                        padding: 10px 0;
+                        border: 1px solid #fcfcfc;
+                        box-shadow: -2px 2px #000,
+                                    inset 2px 2px 5px #000,
+                                    inset -2px -2px 5px #ffffff63;
+                        filter: grayscale(1);
+                        transition: 500ms;
+                    }
+                    .call_controls button:hover{
+                        transform: scale(.9);
+                        filter: grayscale(0);
+                    }
+                    .endCall{
+                        background-color: #ff2e2e;
+                    }
+                    .fScreen{
+                        background-color: #4646ff;
+                    }
 
     /* universal setup modules */
     .m{

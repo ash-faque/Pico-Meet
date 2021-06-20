@@ -90,7 +90,7 @@ function setRemoteStream(stream){
 };
 
 // local streams managing
-var incoming_call, outgoing_call;
+var incoming_call, outgoing_call, ongoing_call;
 // my_pid is the id without prefix
 var my_pid;
 // peer is the actual peer connection
@@ -115,11 +115,14 @@ function connectToPeer(){
         });
         peer.on('call',(call) => {
             toast.log('incoming....');
+            incoming_call = call;
+
             console.log(call);
             console.log(call.metadata);
             let incoming_peers_name = '',
                 bio = '';
-            // show incoming call
+
+            // show incoming call popup
             let div = document.createElement('div');
             div.setAttribute('id', 'incoming');
             div.innerHTML = `<div class="call_info">
@@ -133,7 +136,6 @@ function connectToPeer(){
                             </div>`;
                     facetimeModal.style.display = 'block';
                     setupModal.style.display = 'none';
-            incoming_call = call;
             facetimeModal.appendChild(div)
         });
     } else {
@@ -153,8 +155,15 @@ const answer = (didAnswer, modal) => {
                     setLocalStream(local_stream);
                     incoming_call.answer(local_stream);
                     incoming_call.on('stream', (incoming_stream) => {
+                        ongoing_call = incoming_call;
                         setRemoteStream(incoming_stream);
-                        switchTab();
+                        switchMod(true);
+                    });
+                    incoming_call.on('close', () => {
+                        console.log('closed');
+                    });
+                    incoming_call.on('error', (e) => {
+                        console.log('error' + e);
                     });
                     // remove the answering blk
                     modal.parentElement.parentElement.remove();
@@ -165,10 +174,13 @@ const answer = (didAnswer, modal) => {
                 });
     } else if (!didAnswer){
         // cut the incoming req
+        //console.log(incoming_call)
+        incoming_call.close();
 
-
-        toast.log('call rejected');
+        // remove the answering blk
         modal.parentElement.parentElement.remove();
+        toast.log('call rejected');
+        switchMod(false);
     };
 };
 
@@ -185,25 +197,35 @@ function joinPeer(){
     let peer = new Peer();
 
     peer.on('open', (id) => {
+        // upload detail to supabase
+
+        console.log(id);
         let mediaConstrains = { audio: true, video: true };
         navigator.mediaDevices.getUserMedia(mediaConstrains)
-                                .then((stream) => {
-                                    toast.log("Joining peer");
-                                    local_stream = stream;
-                                    setLocalStream(local_stream);
-                                    let call = peer.call(remote_peers_id, stream);
-                                    call.on('stream', (stream)=>{
-                                        setRemoteStream(stream);
-                                        switchTab();
-                                    });
-                                }).catch(err => {
-                                    toast.error(err);
-                                    console.error(err);
-                                });
-                            });
+            .then((stream) => {
+                toast.log("Joining peer");
+                local_stream = stream;
+                setLocalStream(local_stream);
+                outgoing_call = peer.call(remote_peers_id, stream);
+                outgoing_call.on('stream', (stream)=>{
+                    ongoing_call = outgoing_call;
+                    setRemoteStream(stream);
+                    switchMod(true);
+                });
+                outgoing_call.on('close', () => {
+                    console.log('closed');
+                });
+                outgoing_call.on('error', (e) => {
+                    console.log('error' + e);
+                });
+            }).catch(err => {
+                toast.error(err);
+                console.error(err);
+            });
+    });
 
     peer.on('error', err => {
-         // check error for deleting peer
+        // check error for deleting peer
 
         toast.error(err);
         console.error(err)
@@ -214,41 +236,24 @@ function joinPeer(){
 // end call
 const endCall = () => {
     // end the call
+    ongoing_call.close();
+    toast.log("Disconnecting call.");
+    switchMod(false);
+};
 
 
-    toast.log("Disconnecting call.")
-}
 
-
-
-
-/* chat */
-/* const msgBlk = document.querySelector('.messages')
-const message = (e, form) => {
-    e.preventDefault()
-    let msg  = form[0].value,
-        li = document.createElement('li');
-        li.classList.add('sended');
-        li.innerText = msg;
-    msgBlk.appendChild(li)
-
-    // send to other peer
-
-}
- */
 
 // ui shits
 // tabs switcher
-const switchTab = () => {
-    let facetime_d_state = getComputedStyle(facetimeModal).display,
-        setup_d_state = getComputedStyle(setupModal).display;
-    console.log(facetime_d_state, setup_d_state)
-    if (facetime_d_state == 'none' && setup_d_state == 'block'){
+const switchMod = (switchToCams = true) => {
+    if (switchToCams){
         facetimeModal.style.display = 'block';
         setupModal.style.display = 'none';
-    } else if (facetime_d_state == 'block' && setup_d_state == 'none'){
+    } else if (!switchToCams) {
         facetimeModal.style.display = 'none';
         setupModal.style.display = 'block';
+        console.log('setuptime...')
     };
 };
 /* local video toggler */
@@ -258,11 +263,11 @@ const toggleVid = () => {
     if (containerWidth != '40px'){
         vidContainer.style.width = "40px";
         vidContainer.style.height = "40px";
-        vidContainer.firstElementChild.style.display = 'none';
+        vidContainer.lastElementChild.style.display = 'none';
     } else if (containerWidth == '40px'){
         vidContainer.style.width = "25%";
         vidContainer.style.height = "";
-        vidContainer.firstElementChild.style.display = 'block';
+        vidContainer.lastElementChild.style.display = 'block';
     }
 };
 
