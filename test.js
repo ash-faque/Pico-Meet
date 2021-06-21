@@ -1,22 +1,32 @@
 // TOASTER OBJ
+var toastBlck = document.getElementById("toast");
 const toast = {
     log: (msg) => {
-            let toastBlck = document.getElementById("toast"),
-                p = document.createElement('p');
-                p.classList.add('log');
-                p.innerHTML = msg;
-                toastBlck.appendChild(p);
+            let p = document.createElement('p');
+            p.classList.add('log');
+            p.innerHTML = msg;
+            toastBlck.prepend(p);
             setTimeout(()=>{
                 p.remove();
             }, 3000)
         },
     error: (msg) => {
-            let toastBlck = document.getElementById("toast"),
-                p = document.createElement('p');
-                p.classList.add('error');
-                p.innerHTML = `<span>${msg}</span><span onclick="this.parentElement.remove()">x</span>`;
-                toastBlck.appendChild(p);
+            let p = document.createElement('p');
+            p.classList.add('error');
+            p.innerHTML = `<span>${msg}</span><span onclick="this.parentElement.remove()">x</span>`;
+            toastBlck.prepend(p);
+            let current_errs_count = Array.from(toastBlck.querySelectorAll('.error')).length;
+            if (current_errs_count > 5){
+                toastBlck.querySelector('.cleaner').style.display = 'block';
+            };
         },
+    clearAllErrors: (cleaner) => {
+        let errors = Array.from(toastBlck.querySelectorAll('.error'));
+        errors.forEach(error => {
+            error.remove();
+        });
+        cleaner.style.display = 'none';
+    },
 };
 
 // SWITCH ACTIVE TABS
@@ -65,7 +75,7 @@ const toggleFullScreen = () => {
         document.exitFullscreen();
         };
     };
-    fab()
+    fab();
 };
 // MODEL H2 CKICK EVNT
 const models = Array.from(document.querySelectorAll('.m'))

@@ -46,7 +46,12 @@ body{
                                             width: 40px;
                                             cursor: pointer;
                                         }
-
+                                    #toast .cleaner{
+                                        display: none;
+                                        padding: 5px 0;
+                                        background-color: #464646;
+                                        color: #ffae00;
+                                    }
 /* splash screen styles */
 .splash{
     position: fixed;
