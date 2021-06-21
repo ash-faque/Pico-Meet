@@ -59,22 +59,7 @@ const setDetails = (e, setDetailForm) => {
 const setupModal = document.querySelector('.setup');
 const facetimeModal = document.querySelector('.facetime');
 
-// stream request
-const getStream = (audio = true, video = true) => {
-    let mediaConstrains = {
-            audio: audio,
-            video: video
-        };
-    navigator.mediaDevices.getUserMedia(mediaConstrains)
-        .then((stream) => {
-            //console.log(stream)
-            return stream;
-        })
-        .catch(err => {
-            console.error(err)
-            toast.error(err)
-        });
-};
+
 // setting streams to dom
 function setLocalStream(stream){
     let video = document.getElementById("local-video");
@@ -122,21 +107,21 @@ function connectToPeer(){
             let incoming_peers_name = '',
                 bio = '';
 
-            // show incoming call popup
-            let div = document.createElement('div');
-            div.setAttribute('id', 'incoming');
-            div.innerHTML = `<div class="call_info">
-                                <span>INCOMING CALL FROM:</span>
-                                <h3>${incoming_peers_name}</h3>
-                                <p>${bio}</p>
-                            </div>
-                            <div class="call_btns">
-                                <button onclick="answer(false, this)">reject</button>
-                                <button onclick="answer(true, this)">answer</button>
-                            </div>`;
-                    facetimeModal.style.display = 'block';
-                    setupModal.style.display = 'none';
-            facetimeModal.appendChild(div)
+                                    // show incoming call popup
+                                    let div = document.createElement('div');
+                                    div.setAttribute('id', 'incoming');
+                                    div.innerHTML = `<div class="call_info">
+                                                        <span>INCOMING CALL FROM:</span>
+                                                        <h3>${incoming_peers_name}</h3>
+                                                        <p>${bio}</p>
+                                                    </div>
+                                                    <div class="call_btns">
+                                                        <button onclick="answer(false, this)">reject</button>
+                                                        <button onclick="answer(true, this)">answer</button>
+                                                    </div>`;
+                                            facetimeModal.style.display = 'block';
+                                            setupModal.style.display = 'none';
+                                    facetimeModal.appendChild(div)
         });
     } else {
         toast.log('First you have to set details')

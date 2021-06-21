@@ -12,6 +12,14 @@
         <!-- toast block -->
         <div id="toast"></div>
 
+        <!-- spash screen -->
+        <div class="splash">
+            <div class="splash-container">
+                <h2>Pico Meet</h2>
+                <a href="http://ash-faque.github.io" target="_blank" rel="noopener noreferrer">BY: ASHFAQUE BLATHUR</a>
+            </div>
+        </div>
+
         <!-- setup block -->
         <div class="setup">
 
@@ -24,17 +32,19 @@
 
                 <!-- create or join -->
                 <div class="m" id="entry-modal">
-                    <h2>Call Peer</h2>
+                    <h2>Call A Peer</h2>
                     <div class="m_wrap">
-                        <label for="room-input">Enter Peer Id</label>
-                        <input id="room-input" class="room-input" placeholder="Enter Room ID">
-                        <input type="button" value="Call Peer" onclick="joinPeer()">
+                        <form onsubmit="joinPeer(event)">
+                            <label for="room-input">Enter Peer Id</label>
+                            <input id="room-input" class="room-input" placeholder="Enter Room ID" required>
+                            <input type="submit" value="Call Peer">
+                        </form>
                     </div>
                 </div>
 
                 <!-- peer explorer -->
                 <div class="m">
-                    <h2>Explorer Peers</h2>
+                    <h2>Explore Peers</h2>
                     <ul class="m_wrap" id="explore">
                         <li id="kooi">
                             
@@ -58,6 +68,27 @@
                     </div> 
                 </div>
 
+                <!-- feedback details -->
+                <div class="m">
+                    <h2>Send Feedback</h2>
+                    <div class="m_wrap">
+                        <form onsubmit="sendFeedback(event, this)" id="setDetailForm">
+                            <label for="name">Your Name</label>
+                            <input type="text" name="name" id="name" required placeholder="Your nice name goes here">
+                            <label for="bio">Your Feedback</label>
+                            <input type="text" name="bio" id="bio" required placeholder="I wolud like to....">
+                            <input type="submit" value="WhatsApp It">
+                        </form>
+                    </div> 
+                </div>
+
+                <!-- dev details -->
+                <div class="m">
+                    <h2>Dev. Contact</h2>
+                    <div class="m_wrap">
+                        <a href="http://ash-faque.github.io" target="_blank" rel="noopener noreferrer">BY: ASHFAQUE BLATHUR</a>
+                    </div> 
+                </div>
             </div>
 
         </div>
@@ -87,6 +118,6 @@
     <script src="/peer.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-    <script src="script.js"></script>
+    <script src="test.js"></script>
 
 </html>

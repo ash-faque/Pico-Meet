@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 body{
     width: 100%;
@@ -26,12 +27,15 @@ body{
                                         background-color: #000000;
                                     }
                                     #toast .log{
-                                        color: #00ff00;
+                                        color: #00ffea;
+                                        border-bottom: 2px solid #00ffea;
                                     }
                                     #toast .error{
                                         color: #ff0000;
+                                        border-bottom: 2px solid #ff0000;
                                     }
                                         #toast .error span:first-child{
+                                            font-family: monospace;
                                             display: inline-block;
                                             width: calc(100% - 45px);
                                         }
@@ -43,91 +47,130 @@ body{
                                             cursor: pointer;
                                         }
 
-        /* heading styles */
-        header{
-            position: sticky;
-            top: 0;
-            left: 0;
-            background: linear-gradient(45deg,  #970606, #334d44);
-            border-bottom: 4px solid #141414;
-            color: #e60f00;
-            z-index: 99;
+/* splash screen styles */
+.splash{
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(45deg,  #970606, #334d44);
+    z-index: 100;
+}
+    .splash-container{
+        display: block;
+        width: 100%;
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+        .splash-container h2{
+            font-size: 3em;
+            color: #00ff95;
+            text-shadow: -2px 2px #000;
         }
-            header h1{
-                text-align: center;
-                font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
-                margin: 0 auto;
-                padding: 10px 0 5px 0;
-                text-shadow: -1px 1px #bd0d00,
-                            -2px 2px #790800,
-                            -4px 4px 10px #000;
-            }
+        .splash-container a:any-link{
+            font-size: larger;
+            font-weight: 900;
+            font-family: monospace;
+            color: #000000;
+            text-decoration: none;
+        }
 
-                    /* toggle setup */
-                    .setup{
-                        display: block;
-                        width: 100%;
-                    }
-                        .wrap{
-                            background-color: #6d6d6d;
-                            min-height: 100vh;
-                            padding: 5px;
+
+                        /* heading styles */
+                        header{
+                            position: sticky;
+                            top: 0;
+                            left: 0;
+                            background: linear-gradient(45deg,  #970606, #334d44);
+                            border-bottom: 4px solid #141414;
+                            color: #e60f00;
                         }
+                            header h1{
+                                text-align: center;
+                                margin: 0 auto;
+                                padding: 10px 0 5px 0;
+                                text-shadow: -1px 1px #bd0d00,
+                                            -2px 2px #790800,
+                                            -4px 4px 10px #000;
+                            }
 
-                    /* video tags styles */
-                    .facetime{
-                        display: none;
-                        width: 100%;
-                        height: 100vh;
-                    }
-                                    #incoming{
+                                    /* toggle setup */
+                                    .setup{
                                         display: block;
-                                        position: absolute;
-                                        bottom: 0;
                                         width: 100%;
-                                        padding: 10px;
-                                        background-color: #131313;
-                                        text-align: center;
-                                        z-index: 99;
+                                        height: 100vh;
+                                        overflow-y: scroll;
                                     }
-                                        .call_info{
-                                            padding: 10px;
-                                        }   
-                                            .call_info span{
-                                                color: #ffffff;
-                                            }
-                                            .call_info h3{
-                                                color: #ffee00;
-                                                text-transform: uppercase;
-                                            }
-                                            .call_info p{
-                                                padding-top: 10px;
-                                                color: #00ffbf;
-                                            }
-                                        .call_btns{
-                                            padding: 10px;
-                                            width: 100%;
+                                        .wrap{
+                                            background-color: #6d6d6d;
+                                            padding: 5px;
+                                            min-height: 100vh;
                                         }
-                                            #incoming button{
-                                                display: inline-block;
-                                                width: 49%;
-                                                height: 40px;
-                                                border: 0;
-                                                font-size: larger;
-                                                font-family: monospace;
-                                                text-transform: uppercase;
-                                                letter-spacing: 2px;
-                                                font-weight: 900;
-                                                cursor: pointer;
-                                            }
-                                            #incoming button:first-child{
-                                                background-color: #ff1100;
-                                                color: #ffffff;
-                                            }
-                                            #incoming button:last-child{
-                                                background-color: #2bff00;
-                                                color: #000000;
-                                            }
+
+                                    /* video tags styles */
+                                    .facetime{
+                                        display: none;
+                                        width: 100%;
+                                        height: 100vh;
+                                    }
+                                                    #incoming{
+                                                        display: block;
+                                                        position: absolute;
+                                                        bottom: 0;
+                                                        width: 100%;
+                                                        background-color: #131313;
+                                                        z-index: 80;
+                                                    }
+                                                        .call_info{
+                                                            padding: 10px;
+                                                        }   
+                                                            .call_info span{
+                                                                display: block;
+                                                                font-family: monospace;
+                                                                font-size: x-small;
+                                                                color: #ffffff;
+                                                                margin-bottom: 20px;
+                                                            }
+                                                            .call_info h3{
+                                                                color: #ffee00;
+                                                                text-transform: uppercase;
+                                                                text-align: center;
+                                                            }
+                                                            .call_info p{
+                                                                color: #00ffff;
+                                                                text-align: center;
+                                                            }
+                                                        .call_btns{
+                                                            padding: 10px;
+                                                            width: 100%;
+                                                        }
+                                                            #incoming button{
+                                                                display: inline-block;
+                                                                width: 49%;
+                                                                height: 40px;
+                                                                border: 0;
+                                                                font-size: larger;
+                                                                font-family: monospace;
+                                                                text-transform: uppercase;
+                                                                letter-spacing: 2px;
+                                                                font-weight: 900;
+                                                                cursor: pointer;
+                                                            }
+                                                            #incoming button:first-child{
+                                                                background-color: #ff1100;
+                                                                color: #ffffff;
+                                                            }
+                                                            #incoming button:last-child{
+                                                                background-color: #2bff00;
+                                                                color: #000000;
+                                                            }
                     #remote-video{
                         position: absolute;
                         background-color: #353535;
@@ -135,7 +178,7 @@ body{
                         height: 100%;
                         top: 0;
                         left: 0;
-                        z-index: 90;
+                        z-index: 70;
                     }
                     .local_vid_contain{
                         position: absolute;
@@ -143,7 +186,7 @@ body{
                         width: 25%;
                         bottom: 0;
                         right: 0;
-                        z-index: 90;
+                        z-index: 70;
                     }
                         .vid_toggler{
                             position: absolute;
@@ -155,10 +198,10 @@ body{
                             background-color: #750000;
                             cursor: pointer;
                             text-align: center;
+                            z-index: 80;
                         }
                         .vid_toggler:hover{
-                            transform: scale(.8);
-                            background-color: #752b00;
+                            background-color: #d44e00;
                         }
                         #local-video{
                             display: block;
@@ -173,7 +216,7 @@ body{
                     position: absolute;
                     bottom: 0;
                     padding: 10px;
-                    z-index: 91;
+                    z-index: 75;
                 }
                     .call_controls button{
                         cursor: pointer;
@@ -189,10 +232,9 @@ body{
                                     inset 2px 2px 5px #000,
                                     inset -2px -2px 5px #ffffff63;
                         filter: grayscale(1);
-                        transition: 500ms;
                     }
                     .call_controls button:hover{
-                        transform: scale(.9);
+                        transform: scale(.975);
                         filter: grayscale(0);
                     }
                     .endCall{
@@ -224,39 +266,47 @@ body{
         .m_wrap{
             margin-top: 5px;
         }
-            .m li{
-                display: block;
-                list-style: none;
-                background-color: #000413;
-                margin-bottom: 5px;
-                padding: 0 5px;
-                cursor: pointer;
-            }
-                .m li h3{
-                    color: #ffae00;
-                    font-family: monospace;
-                    font-size: large;
-                    text-transform: uppercase;
-                    padding-top: 5px;
-                }
-                .m li p{
-                    color: #15ff00;
-                    font-family: cursive;
-                    font-size: small;
-                    padding-left: 15px;
-                    padding-bottom: 5px;
-                }
-        .m label{
-            font-size: small;
-            font-family: cursive;
-        }
-        .m input{
-            width: 100%;
-            margin-bottom: 5px;
-            padding: 10px 20px;
-        }
-        .m button{
-            width: 100%;
-            height: 30px;
-            margin-bottom: 5px;
-        }
+                        .m li{
+                            display: block;
+                            list-style: none;
+                            background-color: #000413;
+                            margin-bottom: 5px;
+                            padding: 0 5px;
+                            cursor: pointer;
+                        }
+                            .m li h3{
+                                color: #ffae00;
+                                font-family: monospace;
+                                font-size: large;
+                                text-transform: uppercase;
+                                padding-top: 5px;
+                            }
+                            .m li p{
+                                color: #15ff00;
+                                font-size: small;
+                                padding-left: 15px;
+                                padding-bottom: 5px;
+                            }
+                    .m p{
+                        padding: 5px 10px;
+                    }
+                    .m a:any-link{
+                        font-size: larger;
+                        font-weight: 900;
+                        font-family: monospace;
+                        color: #000000;
+                        text-decoration: none;
+                    }
+                    .m label{
+                        font-size: small;
+                    }
+                    .m input{
+                        width: 100%;
+                        margin-bottom: 5px;
+                        padding: 10px 20px;
+                    }
+                    .m button{
+                        width: 100%;
+                        height: 30px;
+                        margin-bottom: 5px;
+                    }
