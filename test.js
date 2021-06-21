@@ -131,6 +131,7 @@ var PeerConnection;
     PeerConnection = new Peer();
     PeerConnection.on('open', (id) => {
         console.log(id);
+        toast.log('connected with id: ' + id);
         // HIDE SPLASH SCREEN
         hideSplashScreen();
     });
