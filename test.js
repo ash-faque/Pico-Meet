@@ -47,7 +47,15 @@ const toggleVid = () => {
         vidContainer.lastElementChild.style.display = 'block';
     }
 };
-
+// FAB BUTTON
+const fab = () => {
+    let fab_open_state = getComputedStyle(document.querySelector('.fab_elms')).display;
+    if (fab_open_state == 'block'){
+        document.querySelector('.fab_elms').style.display = 'none';
+    } else if (fab_open_state == 'none'){
+        document.querySelector('.fab_elms').style.display = 'block';
+    };
+};
 // FULL SCREEN TOGGLER
 const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
@@ -57,6 +65,7 @@ const toggleFullScreen = () => {
         document.exitFullscreen();
         };
     };
+    fab()
 };
 // MODEL H2 CKICK EVNT
 const models = Array.from(document.querySelectorAll('.m'))
@@ -81,32 +90,34 @@ const hideSplashScreen = () => {
 const setDetailForm = document.getElementById('setDetailForm');
 const pInfo = {};
 const setDetails = (e, setDetailForm) => {
-        e.preventDefault();
-        let stored_pid = '',
-            pid_changed = false;
-        if (localStorage.p_pid != undefined){
-            stored_pid = localStorage.p_pid;
-        };
-        let pInfo = {
-                        p_name: setDetailForm.name.value,
-                        p_pid: setDetailForm.peer.value,
-                        p_bio: setDetailForm.bio.value
-                    };
-        (stored_pid == setDetailForm.peer.value) ? (pid_changed = false) : (pid_changed = true);
-        // UPDATE LS
-        localStorage.p_name = pInfo.p_name;
-        localStorage.p_pid = pInfo.p_pid;
-        localStorage.p_bio = pInfo.p_bio;
-        if (pid_changed){
-            // UPADTE PID ON BASE
-            console.log('pid changed the effect needs a manual reload of loaction')
-        };
+    e.preventDefault();
+    let stored_pid = '',
+        pid_changed = false;
+    if (localStorage.p_pid != undefined){
+        stored_pid = localStorage.p_pid;
     };
+    let pInfo = {
+                    p_name: setDetailForm.name.value,
+                    p_pid: setDetailForm.peer.value,
+                    p_bio: setDetailForm.bio.value
+                };
+    (stored_pid == setDetailForm.peer.value) ? (pid_changed = false) : (pid_changed = true);
+    // UPDATE LS
+    localStorage.p_name = pInfo.p_name;
+    localStorage.p_pid = pInfo.p_pid;
+    localStorage.p_bio = pInfo.p_bio;
+    if (pid_changed){
+        // Show reload btn
+
+
+    };
+    toast.log('Details changed!');
+};
     // RETRIEVE INFO OBJ FRM LS
     setDetailForm.name.value = localStorage.p_name || '';
     setDetailForm.peer.value = localStorage.p_pid || '';
     setDetailForm.bio.value = localStorage.p_bio || '';
-
+    document.getElementById('room-input').value = location.hash.slice(1);
 
 // STREAM ON DOM SETTER FNS /////////////////////////////////////////////////////////////// STREAM ON DOM SETTER FNS //
 
@@ -128,14 +139,18 @@ function setRemoteStream(stream){
 var ongoing_call;   // VAR TO USE FOR ENDING CALL
 var PeerConnection;
     // PUT PREF ID INTO PEER CREATOR < ON FINELIZATION >
-    PeerConnection = new Peer();
+    var storedPidFrmLs = '';
+    if (localStorage.p_pid && (localStorage.p_pid != '')){
+        storedPidFrmLs = localStorage.p_pid;
+    };
+    PeerConnection = new Peer(storedPidFrmLs);
     PeerConnection.on('open', (id) => {
         console.log(id);
         toast.log('connected with id: ' + id);
         document.getElementById('pidD').innerHTML = `<span>connected with peer id:</span><br>
                                                     <input type="text" id="copyId" value="${id}"></input>
-                                                    <button onclick="copy()">Copy Code</button>
-                                                    <button onclick="invite()">Invite Someone</button>`;
+                                                    <button onclick="copy()" style="background-color: #8ad400;">Copy Code</button>
+                                                    <button onclick="invite()" style="background-color: #00a36d;">Invite Someone</button>`;
         // HIDE SPLASH SCREEN
         hideSplashScreen();
     });
@@ -228,12 +243,12 @@ const copy = () => {
     
 // JOINING A PEER /////////////////////////////////////////////////////////////// JOINING A PEER //
 var og_call;
-function joinPeer(evt, id){
+function joinPeer(evt){
     evt.preventDefault();
     let callOptions = {
                         metadata: `${localStorage.p_name}***${localStorage.p_bio}`,
                     };
-    let remotePeersId = document.getElementById("room-input").value || id;
+    let remotePeersId = document.getElementById("room-input").value;
     console.log("Triying: " + remotePeersId);
     toast.log("Triying: " + remotePeersId);
     navigator.mediaDevices.getUserMedia({ audio: true, video: true })
@@ -265,8 +280,6 @@ const listenForStream = () => {
         console.log(e);
     });
 };
-
-
 // END ONGOING CALL
 const endCall = () => {
     // end the call

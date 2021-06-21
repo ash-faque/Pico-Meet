@@ -58,7 +58,7 @@ body{
     width: 100%;
     padding: 10px;
     background: linear-gradient(45deg,  #970606, #334d44);
-    z-index: 100;
+    z-index: 900;
 }
     .splash-container{
         display: block;
@@ -83,6 +83,40 @@ body{
         }
 
 
+/* fab */
+.fab{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    display: block;
+    width: 50%;
+    padding: 20px;
+    z-index: 200;
+    text-align: right;
+}
+    .fab_switcher{
+        float: right;
+        width: 50px;
+        height: 50px;
+        padding: 10px 0;
+        background-color: #4791ff;
+        border: 0;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: -5px 5px #000;
+    }
+    .fab_elms{
+        display: none;
+        width: 100%;
+        transition: 1s;
+    }
+        .fab_elm{
+            cursor: pointer;
+            width: 100%;
+            padding: 10px 0;
+            margin: 10px 0;
+            box-shadow: -5px 5px #000;
+        }
                         /* heading styles */
                         header{
                             position: sticky;
@@ -184,13 +218,14 @@ body{
                         position: absolute;
                         background-color: #292929;
                         width: 25%;
-                        bottom: 0;
+                        top: 0;
                         right: 0;
+                        box-shadow: -5px 5px #000;
                         z-index: 70;
                     }
                         .vid_toggler{
                             position: absolute;
-                            top: 0px;
+                            bottom: 0px;
                             display: block;
                             width: 40px;
                             height: 40px;
@@ -200,48 +235,34 @@ body{
                             text-align: center;
                             z-index: 80;
                         }
-                        .vid_toggler:hover{
-                            background-color: #d44e00;
-                        }
                         #local-video{
                             display: block;
                             width: 100%;
                             height: 25vh;
                         }
-
+/* seperate the f screen btn to fab */
                 /* call_controls */
                 .call_controls{
                     display: block;
-                    width: 75%;
+                    width: 50%;
                     position: absolute;
                     bottom: 0;
-                    padding: 10px;
+                    padding: 20px;
                     z-index: 75;
                 }
                     .call_controls button{
-                        cursor: pointer;
-                        width: 50px;
-                        height: 50px;
-                        border-radius: 50%;
-                        font-size: large;
-                        font-family: monospace;
-                        margin: 10px;
-                        padding: 10px 0;
-                        border: 1px solid #fcfcfc;
-                        box-shadow: -2px 2px #000,
-                                    inset 2px 2px 5px #000,
-                                    inset -2px -2px 5px #ffffff63;
-                        filter: grayscale(1);
-                    }
-                    .call_controls button:hover{
-                        transform: scale(.975);
-                        filter: grayscale(0);
+                        width: 100%;
+                        padding: 10px;
+                        border: 0;
+                        box-shadow: -5px 5px #000;
                     }
                     .endCall{
+                        font-weight: 900;
+                        cursor: pointer;
                         background-color: #ff2e2e;
-                    }
-                    .fScreen{
-                        background-color: #4646ff;
+                        color: #fff;
+                        font-size: large;
+                        font-family: monospace;
                     }
 
     /* universal setup modules */
