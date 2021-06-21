@@ -34,6 +34,9 @@
                 <div class="m" id="entry-modal">
                     <h2>Call A Peer</h2>
                     <div class="m_wrap">
+                        <div>
+                            <p id="pidD"></p>
+                        </div>
                         <form onsubmit="joinPeer(event)">
                             <label for="room-input">Enter Peer Id</label>
                             <input id="room-input" class="room-input" placeholder="Enter Room ID" required>
@@ -74,9 +77,9 @@
                     <div class="m_wrap">
                         <form onsubmit="sendFeedback(event, this)" id="setDetailForm">
                             <label for="name">Your Name</label>
-                            <input type="text" name="name" id="name" required placeholder="Your nice name goes here">
+                            <input type="text" name="name" required placeholder="Your nice name goes here">
                             <label for="bio">Your Feedback</label>
-                            <input type="text" name="bio" id="bio" required placeholder="I wolud like to....">
+                            <input type="text" name="bio" required placeholder="I wolud like to....">
                             <input type="submit" value="WhatsApp It">
                         </form>
                     </div> 

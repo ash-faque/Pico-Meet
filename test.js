@@ -132,6 +132,10 @@ var PeerConnection;
     PeerConnection.on('open', (id) => {
         console.log(id);
         toast.log('connected with id: ' + id);
+        document.getElementById('pidD').innerHTML = `<span>connected with peer id:</span><br>
+                                                    <input type="text" id="copyId" value="${id}"></input>
+                                                    <button onclick="copy()">Copy Code</button>
+                                                    <button onclick="invite()">Invite Someone</button>`;
         // HIDE SPLASH SCREEN
         hideSplashScreen();
     });
@@ -193,6 +197,35 @@ const answer = (didAnswer, modal) => {
         switchMod(false);
     };
 };
+
+// INVITE BTN
+const invite = () => {
+    if (PeerConnection.open){
+        let shareData = {
+                title: 'Invitation to Pico Meet.',
+                text: `${localStorage.p_name ? localStorage.p_name : "I've"} invited you to joing a p2p call.`,
+                url: `https://pico-meet.netlify.app#${PeerConnection.id}`,
+            };
+        if (navigator.share){
+            navigator.share(shareData)
+                        .then(() => toast.log('Invitation was successful.'))
+                        .catch((error) => toast.log('Invitation failed', error));
+        } else {
+            toast.log('The native share feature is not implemented');
+        };
+    };
+};
+// COPEY CODE
+const copy = () => {
+    if (PeerConnection.open){
+        let copyText = document.getElementById("copyId");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+        toast.log("Copied to clipboard");
+    };
+};
+    
 // JOINING A PEER /////////////////////////////////////////////////////////////// JOINING A PEER //
 var og_call;
 function joinPeer(evt, id){

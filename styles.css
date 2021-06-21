@@ -300,13 +300,15 @@ body{
                     .m label{
                         font-size: small;
                     }
-                    .m input{
-                        width: 100%;
-                        margin-bottom: 5px;
-                        padding: 10px 20px;
-                    }
+                    .m input,
                     .m button{
                         width: 100%;
-                        height: 30px;
                         margin-bottom: 5px;
+                        padding: 10px;
                     }
+            .m #pidD{
+                padding: 10px 0;
+            }
+            .m #pidD span{
+                font-family: monospace;
+            }
