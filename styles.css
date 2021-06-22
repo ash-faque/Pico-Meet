@@ -46,12 +46,7 @@ body{
                                             width: 40px;
                                             cursor: pointer;
                                         }
-                                    #toast .cleaner{
-                                        display: none;
-                                        padding: 5px 0;
-                                        background-color: #464646;
-                                        color: #ffae00;
-                                    }
+                                   
 /* splash screen styles */
 .splash{
     position: fixed;
@@ -63,7 +58,7 @@ body{
     width: 100%;
     padding: 10px;
     background: linear-gradient(45deg,  #970606, #334d44);
-    z-index: 900;
+    z-index: 200;
 }
     .splash-container{
         display: block;
@@ -101,14 +96,13 @@ body{
 }
     .fab_switcher{
         float: right;
-        width: 50px;
-        height: 50px;
-        padding: 10px 0;
+        width: 70px;
+        height: 70px;
         background-color: #4791ff;
         border: 0;
         border-radius: 50%;
         cursor: pointer;
-        box-shadow: -5px 5px #000;
+        box-shadow: -3px 3px #000;
     }
     .fab_elms{
         display: none;
@@ -134,7 +128,7 @@ body{
                             header h1{
                                 text-align: center;
                                 margin: 0 auto;
-                                padding: 10px 0 5px 0;
+                                padding: 20px 0 10px 0;
                                 text-shadow: -1px 1px #bd0d00,
                                             -2px 2px #790800,
                                             -4px 4px 10px #000;
@@ -165,17 +159,22 @@ body{
                                                         bottom: 0;
                                                         width: 100%;
                                                         background-color: #131313;
-                                                        z-index: 80;
+                                                        z-index: 210;
                                                     }
                                                         .call_info{
                                                             padding: 10px;
                                                         }   
                                                             .call_info span{
-                                                                display: block;
                                                                 font-family: monospace;
                                                                 font-size: x-small;
                                                                 color: #ffffff;
                                                                 margin-bottom: 20px;
+                                                            }
+                                                            .call_info #eta_auto_ans{
+                                                                font-size: larger;
+                                                                color: red;
+                                                                background-color: white; 
+                                                                padding: 0 5px;
                                                             }
                                                             .call_info h3{
                                                                 color: #ffee00;
@@ -225,7 +224,7 @@ body{
                         width: 25%;
                         top: 0;
                         right: 0;
-                        box-shadow: -5px 5px #000;
+                        box-shadow: -2px 2px #000;
                         z-index: 70;
                     }
                         .vid_toggler{

@@ -16,8 +16,8 @@ const toast = {
             p.innerHTML = `<span>${msg}</span><span onclick="this.parentElement.remove()">x</span>`;
             toastBlck.prepend(p);
             let current_errs_count = Array.from(toastBlck.querySelectorAll('.error')).length;
-            if (current_errs_count > 5){
-                toastBlck.querySelector('.cleaner').style.display = 'block';
+            if ((current_errs_count > 5) && (getComputedStyle(document.querySelector('.cleaner')).display == 'none')){
+                document.querySelector('.cleaner').style.display = 'block';
             };
         },
     clearAllErrors: (cleaner) => {
@@ -26,6 +26,7 @@ const toast = {
             error.remove();
         });
         cleaner.style.display = 'none';
+        fab();
     },
 };
 
@@ -55,7 +56,7 @@ const toggleVid = () => {
         vidContainer.style.width = "25%";
         vidContainer.style.height = "";
         vidContainer.lastElementChild.style.display = 'block';
-    }
+    };
 };
 // FAB BUTTON
 const fab = () => {
@@ -95,7 +96,7 @@ models.forEach(model => {
 const splashScreen = document.querySelector('.splash')
 const hideSplashScreen = () => {
     splashScreen.style.display = 'none'
-}
+};
 // SET INFO MNGR //////////////////////////////////////////////////////////////////////////////////// SET INFO MNGR //
 const setDetailForm = document.getElementById('setDetailForm');
 const pInfo = {};
@@ -117,18 +118,19 @@ const setDetails = (e, setDetailForm) => {
     localStorage.p_pid = pInfo.p_pid;
     localStorage.p_bio = pInfo.p_bio;
     if (pid_changed){
-        // Show reload btn
-
-
+        toast.error('Preffered Peer ID seems to be changed. Concider reloading the page.');
     };
     toast.log('Details changed!');
 };
-    // RETRIEVE INFO OBJ FRM LS
-    setDetailForm.name.value = localStorage.p_name || '';
-    setDetailForm.peer.value = localStorage.p_pid || '';
-    setDetailForm.bio.value = localStorage.p_bio || '';
-    document.getElementById('room-input').value = location.hash.slice(1);
-
+window.onload = () => {
+    try {
+        // RETRIEVE INFO OBJ FRM LS && LOCATION HASH
+        setDetailForm.name.value = localStorage.p_name || '';
+        setDetailForm.peer.value = localStorage.p_pid || '';
+        setDetailForm.bio.value = localStorage.p_bio || '';
+        document.getElementById('room-input').value = location.hash.slice(1);
+    } catch {(err) => toast.error(err)};
+};
 // STREAM ON DOM SETTER FNS /////////////////////////////////////////////////////////////// STREAM ON DOM SETTER FNS //
 
 function setLocalStream(stream){
@@ -144,83 +146,15 @@ function setRemoteStream(stream){
     video.play();
 };
 
+/////////////////////////////////////////////////////////////
 
-// PEER CONNECTING TO SERVER /////////////////////////////////////////////////////////////// PEER CONNECTING TO SERVER //
-var ongoing_call;   // VAR TO USE FOR ENDING CALL
-var PeerConnection;
-    // PUT PREF ID INTO PEER CREATOR < ON FINELIZATION >
-    var storedPidFrmLs = '';
-    if (localStorage.p_pid && (localStorage.p_pid != '')){
-        storedPidFrmLs = localStorage.p_pid;
-    };
-    PeerConnection = new Peer(storedPidFrmLs);
-    PeerConnection.on('open', (id) => {
-        console.log(id);
-        toast.log('connected with id: ' + id);
-        document.getElementById('pidD').innerHTML = `<span>connected with peer id:</span><br>
-                                                    <input type="text" id="copyId" value="${id}"></input>
-                                                    <button onclick="copy()" style="background-color: #8ad400;">Copy Code</button>
-                                                    <button onclick="invite()" style="background-color: #00a36d;">Invite Someone</button>`;
-        // HIDE SPLASH SCREEN
-        hideSplashScreen();
-    });
-    PeerConnection.on('error', err => {
-        console.error(err);
-        toast.error(err)
-        // HIDE SPLASH SCREEN
-        hideSplashScreen();
-    });
-
-var in_call;
-    PeerConnection.on('call', (call) => {
-        toast.log('incoming....');
-        in_call = call;
-
-        let incoming_peers_info = in_call.metadata.split('***');
-        // show incoming call popup
-        let div = document.createElement('div');
-        div.setAttribute('id', 'incoming');
-        div.innerHTML = `<div class="call_info">
-                            <span>INCOMING CALL FROM:</span>
-                            <h3>${incoming_peers_info[0]}</h3>
-                            <p>${incoming_peers_info[1]}</p>
-                        </div>
-                        <div class="call_btns">
-                            <button onclick="answer(false, this)">reject</button>
-                            <button onclick="answer(true, this)">answer</button>
-                        </div>`;
-        setupModal.appendChild(div);
-    });
-
-// ASWERING CALL BLK
-const answer = (didAnswer, modal) => {
-    modal.parentElement.parentElement.remove();
-    if (didAnswer){
-        navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-        .then((l_stream) => {
-            in_call.answer(l_stream);
-                setLocalStream(l_stream);
-                switchMod(true);
-                ongoing_call = in_call;
-            in_call.on('stream', (incoming_stream) => {
-                //console.log('getting stream from other end')
-                setRemoteStream(incoming_stream);
-            });
-            in_call.on('close', () => {
-                console.log('closed');
-            });
-            in_call.on('error', (e) => {
-                console.log(e);
-            });
-        }).catch(err => {
-            console.error(err)
-            console.error(err)
-        });
-    } else if (!didAnswer){
-        incoming_call.close();
-        toast.log('call rejected');
-        switchMod(false);
-    };
+// SEND FEEDBACK
+const sendFeedback = (evt, form) => {
+    evt.preventDefault();
+    let name = form[0].value,
+        feedback = form[1].value,
+        url = `https://wa.me/916282177960?text=Hi I'm ${name}. I've visited the Pico Meet site.${feedback}`;
+    window.open(url);
 };
 
 // INVITE BTN
@@ -250,8 +184,103 @@ const copy = () => {
         toast.log("Copied to clipboard");
     };
 };
+// PEER CONNECTING TO SERVER /////////////////////////////////////////////////////////////// PEER CONNECTING TO SERVER //
+
+var ongoing_call;   // VAR TO USE FOR ENDING CALL
+var PeerConnection;
+    // PUT PREF ID INTO PEER CREATOR < ON FINELIZATION > Done
+var storedPidFrmLs = '';
+    if (localStorage.p_pid && (localStorage.p_pid != '')){
+        storedPidFrmLs = localStorage.p_pid;
+    };
+    PeerConnection = new Peer(storedPidFrmLs);
+    PeerConnection.on('open', (id) => {
+        console.log(id);
+        toast.log('connected with id: ' + id);
+        document.getElementById('pidD').innerHTML = `<span>connected with peer id:</span><br>
+                                                    <input type="text" id="copyId" value="${id}"></input>
+                                                    <button onclick="copy()" style="background-color: #8ad400;">Copy Code</button>
+                                                    <button onclick="invite()" style="background-color: #00a36d;">Invite Someone</button>`;
+        // HIDE SPLASH SCREEN
+        hideSplashScreen();
+    });
+    PeerConnection.on('error', err => {
+        console.error(err);
+        toast.error(err);
+        toast.log('Try changing the Preffered Pid value in Setup Details form. Then try again.');
+        setDetailForm.scrollIntoView();
+        // HIDE SPLASH SCREEN
+        hideSplashScreen();
+    });
+
+var in_call;
+
+    PeerConnection.on('call', (call) => {
+        toast.log('incoming....');
+        in_call = call;
+
+        let incoming_peers_info = in_call.metadata.split('***');
+        // show incoming call popup
+        let div = document.createElement('div');
+        div.setAttribute('id', 'incoming');
+        div.innerHTML = `<div class="call_info">
+                            <p>AUTO ANSWERING IN: <span id="eta_auto_ans"></span> SECONDS</p>
+                            <span>INCOMING CALL FROM:</span>
+                            <h3>${incoming_peers_info[0]}</h3>
+                            <p>${incoming_peers_info[1]}</p>
+                        </div>
+                        <div class="call_btns">
+                            <button onclick="answer(false, this)">reject</button>
+                            <button id="auto_ans" onclick="answer(true, this)">answer</button>
+                        </div>`;
+        setupModal.appendChild(div);
+        let waiting_time = 10; // Seconds to wait for auto answering
+        let eta_display = document.getElementById('eta_auto_ans');
+        eta_display.innerText = waiting_time;
+        let eta_to_ans = setInterval(() => {
+            waiting_time = waiting_time - 1;
+            eta_display.innerText = waiting_time;
+        }, 1000);
+        setTimeout(() => {
+            document.getElementById('auto_ans').click();
+            clearInterval(eta_to_ans);
+        }, 1000 * waiting_time)
+    });
+
+// ASWERING CALL BLK
+const answer = (didAnswer, modal) => {
+    if (didAnswer){
+        navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+        .then((l_stream) => {
+            in_call.answer(l_stream);
+                setLocalStream(l_stream);
+                switchMod(true);
+                ongoing_call = in_call;
+            in_call.on('stream', (incoming_stream) => {
+                //console.log('getting stream from other end')
+                setRemoteStream(incoming_stream);
+            });
+            in_call.on('close', () => {
+                console.log('closed');
+            });
+            in_call.on('error', (e) => {
+                console.log(e);
+            });
+        }).catch(err => {
+            console.error(err)
+            console.error(err)
+        });
+    } else if (!didAnswer){
+        in_call.close();
+        toast.log('call rejected');
+        switchMod(false);
+    };
+    modal.parentElement.parentElement.remove();
+};
+
     
 // JOINING A PEER /////////////////////////////////////////////////////////////// JOINING A PEER //
+
 var og_call;
 function joinPeer(evt){
     evt.preventDefault();
@@ -261,6 +290,7 @@ function joinPeer(evt){
     let remotePeersId = document.getElementById("room-input").value;
     console.log("Triying: " + remotePeersId);
     toast.log("Triying: " + remotePeersId);
+    toast.log("Atleast wait a 15 sec.")
     navigator.mediaDevices.getUserMedia({ audio: true, video: true })
         .then((l_stream) => {
             og_call = PeerConnection.call(remotePeersId, l_stream, callOptions);
@@ -295,24 +325,6 @@ const endCall = () => {
     // end the call
     ongoing_call.close();
     switchMod(false);
-};
-
-/////////////////////////////////////////////////////////////
-
-// ON LOAD
-window.onload = () => {
-
-};
-
-/////////////////////////////////////////////////////////////
-
-// SEND FEEDBACK
-const sendFeedback = (evt, form) => {
-    evt.preventDefault();
-    let name = form[0].value,
-        feedback = form[1].value,
-        url = `https://wa.me/916282177960?text=Hi I'm ${name}. I've visited the Pico Meet site.${feedback}`;
-    window.open(url);
 };
 
 // SUPABASE CLIENT MNGT ////////////////////////////////////////////////////////////// SUPABASE CLIENT MNGT //
