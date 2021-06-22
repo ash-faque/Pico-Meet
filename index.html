@@ -45,7 +45,7 @@
                     <div class="m_wrap">
                         <form onsubmit="joinPeer(event)">
                             <label for="room-input">Enter Peer Id</label>
-                            <input id="room-input" class="room-input" placeholder="Enter Peer ID" required>
+                            <input id="room-input" class="room-input" placeholder="Enter Peer ID" required autocomplete="off">
                             <input type="submit" value="Call Peer" style="background-color: rgb(0, 143, 0);">
                         </form>
                     </div>
@@ -74,13 +74,13 @@
                     <h2>Setup Details</h2>
                     <div class="m_wrap">
                         <form onsubmit="setDetails(event, this)" id="setDetailForm">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" id="name" required placeholder="Your nice name goes here">
-                            <label for="peer">Preferred Peer Id</label>
-                            <input type="text" name="peer" id="peer" pattern="^[a-zA-Z0-9_-]+$" title="Blank space not allowed" required placeholder="Alpha numeric value except spaces.">
                             <p style="font-size: x-small; padding: 0;">The ID must start and end with an alphanumeric character (lower or upper case character or a digit). <mark>In the middle</mark> dashes (-) and underscores (_) are allowed.</p>
+                            <label for="peer">Preferred Peer Id</label>
+                            <input type="text" name="peer" id="peer" pattern="^[a-zA-Z0-9_-]+$" title="Blank space not allowed" required placeholder="Alpha numeric value except spaces."  autocomplete="off">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" id="name" required placeholder="Your nice name goes here" autocomplete="off">
                             <label for="bio">Bio</label>
-                            <input type="text" name="bio" id="bio" required placeholder="Your priffered languages fits well">
+                            <input type="text" name="bio" id="bio" required placeholder="Your priffered languages fits well" autocomplete="off">
                             <input type="submit" value="Set Details" style="background-color: rgb(196, 166, 0);">
                         </form>
                     </div> 
@@ -92,10 +92,10 @@
                     <div class="m_wrap">
                         <form onsubmit="sendFeedback(event, this)">
                             <label for="w_name">Your Name</label>
-                            <input type="text" id="w_name" required placeholder="Your nice name goes here">
+                            <input type="text" id="w_name" required placeholder="Your nice name goes here"  autocomplete="off">
                             <label for="feedback">Your Feedback</label>
-                            <input type="text" id="feedback" required placeholder="I wolud like to....">
-                            <input type="submit" value="WhatsApp It" style="background-color: rgb(67, 184, 67);">
+                            <input type="text" id="feedback" required placeholder="I wolud like to...." autocomplete="off">
+                            <input type="submit" value="WhatsApp It" style="background-color: rgb(67, 184, 67);" >
                         </form>
                     </div> 
                 </div>

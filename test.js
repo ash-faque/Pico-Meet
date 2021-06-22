@@ -106,6 +106,9 @@ const setDetails = (e, setDetailForm) => {
         pid_changed = false;
     if (localStorage.p_pid != undefined){
         stored_pid = localStorage.p_pid;
+    } else {
+        setDetailForm.scrollIntoView();
+        toast.error('')
     };
     let pInfo = {
                     p_name: setDetailForm.name.value,
@@ -207,7 +210,7 @@ var storedPidFrmLs = '';
     PeerConnection.on('error', err => {
         console.error(err);
         toast.error(err);
-        toast.log('Try changing the Preffered Pid value in Setup Details form. Then try again.');
+        toast.log('Try changing the Preffered Pid value in Setup Details form if the error just shown was about your peer id.');
         setDetailForm.scrollIntoView();
         // HIDE SPLASH SCREEN
         hideSplashScreen();
@@ -242,7 +245,8 @@ var in_call;
             eta_display.innerText = waiting_time;
         }, 1000);
         setTimeout(() => {
-            document.getElementById('auto_ans').click();
+            let ans_btn = document.getElementById('auto_ans');
+            ans_btn ? ans_btn.click() :
             clearInterval(eta_to_ans);
         }, 1000 * waiting_time)
     });
@@ -257,11 +261,10 @@ const answer = (didAnswer, modal) => {
                 switchMod(true);
                 ongoing_call = in_call;
             in_call.on('stream', (incoming_stream) => {
-                //console.log('getting stream from other end')
                 setRemoteStream(incoming_stream);
             });
             in_call.on('close', () => {
-                console.log('closed');
+                toast.log('Call rejected');
             });
             in_call.on('error', (e) => {
                 console.log(e);
@@ -272,7 +275,6 @@ const answer = (didAnswer, modal) => {
         });
     } else if (!didAnswer){
         in_call.close();
-        toast.log('call rejected');
         switchMod(false);
     };
     modal.parentElement.parentElement.remove();
@@ -288,7 +290,6 @@ function joinPeer(evt){
                         metadata: `${localStorage.p_name}***${localStorage.p_bio}`,
                     };
     let remotePeersId = document.getElementById("room-input").value;
-    console.log("Triying: " + remotePeersId);
     toast.log("Triying: " + remotePeersId);
     toast.log("Atleast wait a 15 sec.")
     navigator.mediaDevices.getUserMedia({ audio: true, video: true })
