@@ -2,11 +2,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }
 body{
     width: 100%;
 }
+
                                     /* toaster styles */
                                     #toast{
                                         position: fixed;
@@ -23,7 +24,7 @@ body{
                                         text-align: center;
                                         font-family: monospace;
                                         font-weight: 700;
-                                        font-size: large;
+                                        font-size: x-large;
                                         background-color: #000000;
                                     }
                                     #toast .log{
@@ -58,7 +59,7 @@ body{
     width: 100%;
     padding: 10px;
     background: linear-gradient(45deg,  #970606, #334d44);
-    z-index: 200;
+    z-index: 210;
 }
     .splash-container{
         display: block;
@@ -89,50 +90,58 @@ body{
     bottom: 0;
     right: 0;
     display: block;
-    width: 50%;
-    padding: 20px;
     z-index: 200;
     text-align: right;
 }
     .fab_switcher{
         float: right;
-        width: 70px;
-        height: 70px;
+        width: 60px;
+        height: 60px;
+        margin: 0 40px 30px 0;
         background-color: #4791ff;
-        border: 0;
+        border: 5px rgb(0, 0, 0) solid;
         border-radius: 50%;
         cursor: pointer;
-        box-shadow: -3px 3px #000;
-        font-size: 2em;
+        font-size: 1.8em;
+        text-shadow: -1px 1px rgb(255, 255, 255);
     }
     .fab_elms{
+        padding-right: 50px;
         display: none;
-        width: 100%;
-        transition: 1s;
     }
         .fab_elm{
-            cursor: pointer;
+            display: block;
             width: 100%;
-            padding: 10px 0;
+            cursor: pointer;
+            padding: 10px;
             margin: 10px 0;
-            box-shadow: -5px 5px #000;
+            box-shadow: -5px 5px rgb(20, 20, 20);
+            color: rgb(0, 0, 0);
+            font-weight: 900;
+            border-radius: 10px 10px 0 10px;
         }
                         /* heading styles */
                         header{
+                            height: 100px;
                             position: sticky;
                             top: 0;
                             left: 0;
                             background: linear-gradient(45deg,  #970606, #334d44);
                             border-bottom: 4px solid #141414;
                             color: #e60f00;
+                            text-align: center;
+                            padding: 30px 0;
                         }
                             header h1{
-                                text-align: center;
                                 margin: 0 auto;
-                                padding: 20px 0 10px 0;
                                 text-shadow: -1px 1px #bd0d00,
                                             -2px 2px #790800,
                                             -4px 4px 10px #000;
+                            }
+                            header h2{
+                                font-family: monospace;
+                                text-transform: uppercase;
+                                color: #000;
                             }
 
                                     /* toggle setup */
@@ -145,7 +154,7 @@ body{
                                         .wrap{
                                             background-color: #6d6d6d;
                                             padding: 5px;
-                                            min-height: 100vh;
+                                            min-height: calc(100vh - 200px);
                                         }
 
                                     /* video tags styles */
@@ -154,6 +163,8 @@ body{
                                         width: 100%;
                                         height: 100vh;
                                     }
+
+                                                    /* incoming block */
                                                     #incoming{
                                                         display: block;
                                                         position: absolute;
@@ -210,6 +221,8 @@ body{
                                                                 background-color: #2bff00;
                                                                 color: #000000;
                                                             }
+
+                    /* videos */
                     #remote-video{
                         position: absolute;
                         background-color: #353535;
@@ -219,58 +232,76 @@ body{
                         left: 0;
                         z-index: 70;
                     }
-                    .local_vid_contain{
+                    #local-video{
                         position: absolute;
-                        background-color: #292929;
-                        width: 25%;
                         top: 0;
-                        right: 0;
-                        box-shadow: -2px 2px #000;
+                        left: 0;
                         z-index: 70;
-                    }
-                        .vid_toggler{
-                            position: absolute;
-                            bottom: 0px;
-                            display: block;
-                            width: 40px;
-                            height: 40px;
-                            padding: 8px;
-                            background-color: #750000;
-                            cursor: pointer;
-                            text-align: center;
-                            z-index: 80;
-                        }
-                        #local-video{
-                            display: block;
-                            width: 100%;
-                            height: 25vh;
-                        }
-/* seperate the f screen btn to fab */
-                /* call_controls */
-                .call_controls{
-                    display: block;
-                    width: 50%;
-                    position: absolute;
-                    bottom: 0;
-                    padding: 20px;
-                    z-index: 75;
-                }
-                    .call_controls button{
-                        width: 100%;
-                        padding: 10px;
-                        border: 0;
+                        display: block;
+                        width: 25%;
+                        height: 25vh;
+                        background-color: #292929;
                         box-shadow: -5px 5px #000;
+                        transition: 1s;
                     }
-                    .endCall{
-                        font-weight: 900;
-                        cursor: pointer;
-                        background-color: #ff2e2e;
-                        color: #fff;
-                        font-size: large;
-                        font-family: monospace;
+                    
+                                                        /* call_controls */
+                                                        .call_controls{
+                                                            display: block;
+                                                            position: absolute;
+                                                            z-index: 75;
+                                                            bottom: 0;
+                                                            right: 0;
+                                                            width: 100%;
+                                                            padding: 20px;
+                                                            font-weight: 900;
+                                                            cursor: pointer;
+                                                            font-family: monospace;
+                                                            font-size: large;
+                                                        }
+                                                            .v_control_wrap{
+                                                                display: none;
+                                                                float: right;
+                                                                width: 60%;
+                                                                margin-bottom: 50px;
+                                                            }
+                                                                .v_control_wrap button{
+                                                                    width: 100%;
+                                                                    padding: 10px;
+                                                                    margin: 10px 0;
+                                                                    border: 0;
+                                                                    box-shadow: -5px 5px #000;
+                                                                }
+                                                            .controll_toggler{
+                                                                position: absolute;
+                                                                bottom: 0;
+                                                                right: 20px;
+                                                                width: 35%;
+                                                                min-height: 50px;
+                                                                padding: 10px;
+                                                                border: 0;
+                                                                box-shadow: -5px 5px #000;
+                                                                background-color: #ff2e2e;
+                                                                color: #fff;
+                                                            }
+                    /* foot */
+                    footer{
+                        display: block;
+                        width: 100%;
+                        height: 100px;
+                        background-color: rgb(41, 41, 41);
+                        padding: 20px 0;
+                        text-align: center;
                     }
+                            footer a:any-link{
+                                font-size: larger;
+                                font-weight: 900;
+                                font-family: monospace;
+                                color: #000000;
+                                text-decoration: none;
+                            }
 
-    /* universal setup modules */
+    /* root models */
     .m{
         display: block;
         width: 98%;
@@ -292,49 +323,75 @@ body{
         .m_wrap{
             margin-top: 5px;
         }
-                        .m li{
-                            display: block;
-                            list-style: none;
-                            background-color: #000413;
-                            margin-bottom: 5px;
-                            padding: 0 5px;
-                            cursor: pointer;
-                        }
-                            .m li h3{
-                                color: #ffae00;
-                                font-family: monospace;
-                                font-size: large;
-                                text-transform: uppercase;
-                                padding-top: 5px;
-                            }
-                            .m li p{
-                                color: #15ff00;
-                                font-size: small;
-                                padding-left: 15px;
-                                padding-bottom: 5px;
-                            }
-                    .m p{
-                        padding: 5px 10px;
-                    }
-                    .m a:any-link{
-                        font-size: larger;
-                        font-weight: 900;
+                .m li{
+                    display: block;
+                    list-style: none;
+                    background-color: #000413;
+                    margin-bottom: 5px;
+                    padding: 0 5px;
+                    cursor: pointer;
+                }
+                    .m li h3{
+                        color: #ffae00;
                         font-family: monospace;
-                        color: #000000;
-                        text-decoration: none;
+                        font-size: large;
+                        text-transform: uppercase;
+                        padding-top: 5px;
                     }
-                    .m label{
+                    .m li p{
+                        color: #15ff00;
                         font-size: small;
+                        padding-left: 15px;
+                        padding-bottom: 5px;
                     }
-                    .m input,
-                    .m button{
-                        width: 100%;
-                        margin-bottom: 5px;
-                        padding: 10px;
-                    }
-            .m #pidD{
-                padding: 10px 0;
-            }
-            .m #pidD span{
-                font-family: monospace;
-            }
+                                .m p{
+                                    padding: 5px 10px;
+                                }
+                                .m label{
+                                    font-size: small;
+                                }
+                                .m input{
+                                    width: 100%;
+                                    margin-bottom: 5px;
+                                    padding: 10px;
+                                }
+                                .m button{
+                                    width: 50%;
+                                    float: right;
+                                    padding: 5px;
+                                }
+
+/* custom tabs */
+.ct{
+    display: none;
+    position: absolute;
+    top: 100px;
+    left: 0;
+    bottom: 100px;
+    right: 0;
+    z-index: 190;
+    padding: 50px 20px;
+    background-color: #2c2424;
+    color: rgb(0, 183, 255);
+}
+    .ct h2{
+        font-size: x-large;
+    }
+    .ct p, .ct label{
+        padding: 10px 0;
+    }
+    .ct input, .ct button{
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+    .ct button{
+        width: 55%;
+        float: right;
+        border: 0;
+        margin-top: 20px;
+        background-color: rgb(0, 183, 255);
+        color: #fff;
+        font-weight: 900;
+        text-transform: uppercase;
+    }

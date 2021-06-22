@@ -16,8 +16,8 @@ const toast = {
             p.innerHTML = `<span>${msg}</span><span onclick="this.parentElement.remove()">x</span>`;
             toastBlck.prepend(p);
             let current_errs_count = Array.from(toastBlck.querySelectorAll('.error')).length;
-            if ((current_errs_count > 5) && (getComputedStyle(document.querySelector('.cleaner')).display == 'none')){
-                document.querySelector('.cleaner').style.display = 'block';
+            if (current_errs_count > 5){
+                document.getElementById('cleaner').style.display = 'block';
             };
         },
     clearAllErrors: (cleaner) => {
@@ -44,18 +44,30 @@ const switchMod = (switchToCams = true) => {
         //console.log('setuptime...')
     };
 };
+// CUSTOM TAB OPENERS
+const openTab = (tabId) => {
+    let tab = document.getElementById(tabId);
+    let tab_d_state = getComputedStyle(tab).display;
+    if (tab_d_state == 'block'){
+        tab.style.display = 'none';
+    } else if (tab_d_state == 'none'){
+        tab.style.display = 'block';
+    };
+    fab();
+};
+// BACK ON CUSTOME TABS
+const toRoot = () => {
+    let custom_tabs = Array.from(document.querySelectorAll('.ct'));
+    custom_tabs.forEach(ct => ct.style.display = 'none');
+};
 // L VID TOGGLER
 const toggleVid = () => {
-    let vidContainer = document.querySelector('.local_vid_contain'),
-        containerWidth = getComputedStyle(vidContainer).width;
-    if (containerWidth != '40px'){
-        vidContainer.style.width = "40px";
-        vidContainer.style.height = "40px";
-        vidContainer.lastElementChild.style.display = 'none';
-    } else if (containerWidth == '40px'){
-        vidContainer.style.width = "25%";
-        vidContainer.style.height = "";
-        vidContainer.lastElementChild.style.display = 'block';
+    let vid = document.getElementById('local-video'),
+        vid_d_state = getComputedStyle(vid).display;
+    if (vid_d_state == 'block'){
+        vid.style.display = 'none';
+    } else if (vid_d_state == 'none'){
+        vid.style.display = 'block';
     };
 };
 // FAB BUTTON
@@ -67,6 +79,16 @@ const fab = () => {
         document.querySelector('.fab_elms').style.display = 'block';
     };
 };
+// VID CONTROL
+const vidControl = (controllerBtn) => {
+    let v_control_wrap = document.querySelector('.v_control_wrap');
+    let controls_d_state = getComputedStyle(v_control_wrap).display;
+    if (controls_d_state == 'block'){
+        v_control_wrap.style.display = 'none';
+    } else if (controls_d_state == 'none'){
+        v_control_wrap.style.display = 'block';
+    };
+};
 // FULL SCREEN TOGGLER
 const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
@@ -76,7 +98,6 @@ const toggleFullScreen = () => {
         document.exitFullscreen();
         };
     };
-    fab();
 };
 // MODEL H2 CKICK EVNT
 const models = Array.from(document.querySelectorAll('.m'))
@@ -121,7 +142,7 @@ const setDetails = (e, setDetailForm) => {
     localStorage.p_pid = pInfo.p_pid;
     localStorage.p_bio = pInfo.p_bio;
     if (pid_changed){
-        toast.error('Preffered Peer ID seems to be changed. Concider reloading the page.');
+        connectToPeerServer();
     };
     toast.log('Details changed!');
 };
@@ -162,6 +183,7 @@ const sendFeedback = (evt, form) => {
 
 // INVITE BTN
 const invite = () => {
+    toast.log("Invitation process started.");
     if (PeerConnection.open){
         let shareData = {
                 title: 'Invitation to Pico Meet.',
@@ -170,12 +192,16 @@ const invite = () => {
             };
         if (navigator.share){
             navigator.share(shareData)
-                        .then(() => toast.log('Invitation was successful.'))
-                        .catch((error) => toast.log('Invitation failed', error));
+                    .then(() => toast.log('Invitation was successful.'))
+                    .catch((error) => toast.log('Invitation failed', error));
         } else {
             toast.log('The native share feature is not implemented');
         };
+    } else {
+        toast.log('Connecting to peer server is a necessity to invite someone.')
+        connectToPeerServer();
     };
+    fab();
 };
 // COPEY CODE
 const copy = () => {
@@ -187,37 +213,48 @@ const copy = () => {
         toast.log("Copied to clipboard");
     };
 };
+
 // PEER CONNECTING TO SERVER /////////////////////////////////////////////////////////////// PEER CONNECTING TO SERVER //
 
+var in_call;
 var ongoing_call;   // VAR TO USE FOR ENDING CALL
+
 var PeerConnection;
-    // PUT PREF ID INTO PEER CREATOR < ON FINELIZATION > Done
-var storedPidFrmLs = '';
-    if (localStorage.p_pid && (localStorage.p_pid != '')){
-        storedPidFrmLs = localStorage.p_pid;
-    };
+const connectToPeerServer = () => {
+    let storedPidFrmLs = '';
+    (localStorage.p_pid && (localStorage.p_pid != '')) ? storedPidFrmLs = localStorage.p_pid : '';
+    toast.log('Triying to connect with id: ' + storedPidFrmLs);
     PeerConnection = new Peer(storedPidFrmLs);
-    PeerConnection.on('open', (id) => {
-        console.log(id);
-        toast.log('connected with id: ' + id);
-        document.getElementById('pidD').innerHTML = `<span>connected with peer id:</span><br>
-                                                    <input type="text" id="copyId" value="${id}"></input>
-                                                    <button onclick="copy()" style="background-color: #8ad400;">Copy Code</button>
-                                                    <button onclick="invite()" style="background-color: #00a36d;">Invite Someone</button>`;
-        // HIDE SPLASH SCREEN
-        hideSplashScreen();
-    });
     PeerConnection.on('error', err => {
         console.error(err);
         toast.error(err);
         toast.log('Try changing the Preffered Pid value in Setup Details form if the error just shown was about your peer id.');
         setDetailForm.scrollIntoView();
+        // LISTEN FOR STATE UPDATION OF PEER
+
+
         // HIDE SPLASH SCREEN
         hideSplashScreen();
     });
+    let peer_est_watcher = setInterval(() => {
+        if (PeerConnection != undefined){
+            listenForPeerEvents();
+            clearInterval(peer_est_watcher);
+        };
+    }, 1000);
+};
+connectToPeerServer();
+const listenForPeerEvents = () => {
+    PeerConnection.on('open', (id) => {
+        console.log(id);
+        toast.log('connected with id: ' + id);
+        // LISTEN FOR STATE UPDATION OF PEER
 
-var in_call;
 
+        // HIDE SPLASH SCREEN
+        hideSplashScreen();
+        listenForPeerEvents();
+    });
     PeerConnection.on('call', (call) => {
         toast.log('incoming....');
         in_call = call;
@@ -241,15 +278,16 @@ var in_call;
         let eta_display = document.getElementById('eta_auto_ans');
         eta_display.innerText = waiting_time;
         let eta_to_ans = setInterval(() => {
-            waiting_time = waiting_time - 1;
-            eta_display.innerText = waiting_time;
-        }, 1000);
-        setTimeout(() => {
-            let ans_btn = document.getElementById('auto_ans');
-            ans_btn ? ans_btn.click() :
-            clearInterval(eta_to_ans);
-        }, 1000 * waiting_time)
+                waiting_time = waiting_time - 1;
+                eta_display.innerText = waiting_time;
+            }, 1000);
+            setTimeout(() => {
+                let ans_btn = document.getElementById('auto_ans');
+                ans_btn ? ans_btn.click() :
+                clearInterval(eta_to_ans);
+            }, 1000 * waiting_time);
     });
+};
 
 // ASWERING CALL BLK
 const answer = (didAnswer, modal) => {

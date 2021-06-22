@@ -1,140 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Pico Meet</title>
-        <link rel="stylesheet" type="text/css" href="/styles.css">
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pico Meet</title>
+    <link rel="stylesheet" type="text/css" href="/styles.css">
+</head>
+<body>
 
-        <!-- toast block -->
-        <div id="toast"></div>
+    <!-- toast block -->
+    <div id="toast"></div>
 
-        <!-- fab -->
+    <!-- spash screen -->
+    <div class="splash">
+        <div class="splash-container">
+            <h2>Pico Meet</h2>
+            <a href="http://ash-faque.github.io" target="_blank" rel="noopener noreferrer">BY: ASHFAQUE BLATHUR</a>
+        </div>
+    </div>
+
+    <!-- setup block -->
+    <div class="setup">
+
+        <!-- header -->
+        <header>
+            <h1>Pico Meet</h1>
+            <h2>Meet New People</h2>
+        </header>
+
+        <!-- fab btn -->
         <div class="fab">
             <div class="fab_elms">
-                <button class="fab_elm cleaner" onclick="toast.clearAllErrors(this)" style="display: none;">CLEAR ALL ERRORS</button>
+                <button class="fab_elm" onclick="openTab('collect_detail')">SETUP YOUR DETAILS</button>
+                <button class="fab_elm" onclick="openTab('feedback_tab')">WRITE A FEEDBACK</button>
+                <button class="fab_elm" onclick="invite()">INVITE SOMEONE</button>
+                <button class="fab_elm" onclick="toast.clearAllErrors(this)" style="display: none;" id="cleaner">CLEAR ALL ERRORS</button>
                 <button class="fab_elm" onclick="toggleFullScreen()">TOGGLE FULLSCREEN</button>
             </div>
             <button class="fab_switcher" onclick="fab()">💥</button>
         </div>
 
-        <!-- spash screen -->
-        <div class="splash">
-            <div class="splash-container">
-                <h2>Pico Meet</h2>
-                <a href="http://ash-faque.github.io" target="_blank" rel="noopener noreferrer">BY: ASHFAQUE BLATHUR</a>
+        <!-- root wrapper -->
+        <div class="wrap">
+            <!-- connection info -->
+            <div class="m" id="entry-modal">
+                <h2>Peer Info</h2>
+                <div class="m_wrap">
+                    <p id="pidD">
+                        <span>connected with peer id:</span><br>
+                        <input type="text" id="copyId" value=""></input>
+                        <button onclick="copy()">Copy Code</button>
+                    </p>
+                </div>
+            </div>
+            <!-- create or join -->
+            <div class="m" id="entry-modal">
+                <h2>Call A Peer</h2>
+                <div class="m_wrap">
+                    <form onsubmit="joinPeer(event)">
+                        <label for="room-input">Enter Peer Id</label>
+                        <input id="room-input" class="room-input" placeholder="Enter Peer ID" required autocomplete="off">
+                        <button type="submit">Call Peer</button>
+                    </form>
+                </div>
+            </div>
+            <!-- peer explorer -->
+            <div class="m">
+                <h2>Explore Peers</h2>
+                <ul class="m_wrap" id="explore"></ul>
             </div>
         </div>
 
-        <!-- setup block -->
-        <div class="setup">
+            <!-- custome tabs / fab tabs -->
+            <!-- details collector -->
+            <div class="ct" id="collect_detail">
+                <h2>Setup Details</h2>
+                <div class="ct_wrap">
+                    <form onsubmit="setDetails(event, this)" id="setDetailForm">
+                        <p>All the data you enter below will be available on public database for a reasone.</p>
+                        <p>
+                            The ID must start and end with an alphanumeric character
+                            (lower or upper case character or a digit).
+                            In the middle dashes (-) and underscores (_) are allowed.
+                        </p>
+                        <label for="peer">Preferred Peer Id</label>
+                        <input type="text" name="peer" id="peer" pattern="^[a-zA-Z0-9_-]+$" title="Blank space not allowed" required placeholder="Alpha numeric value except spaces."  autocomplete="off">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name" required placeholder="Your nice name goes here" autocomplete="off">
+                        <label for="bio">Bio</label>
+                        <input type="text" name="bio" id="bio" required placeholder="Your priffered languages fits well" autocomplete="off">
+                        <button type="submit">Set Details</button>
+                        <button onclick="toRoot()">Back</button>
+                    </form>
+                </div> 
+            </div>
+            <!-- feedback details -->
+            <div class="ct" id="feedback_tab">
+                <h2>Send Feedback</h2>
+                <div class="ct_wrap">
+                    <form onsubmit="sendFeedback(event, this)">
+                        <label for="w_name">Your Name</label>
+                        <input type="text" id="w_name" required placeholder="Your nice name goes here"  autocomplete="off">
+                        <label for="feedback">Your Feedback</label>
+                        <input type="text" id="feedback" required placeholder="I wolud like to...." autocomplete="off">
+                        <button type="submit">WhatsApp It</button>
+                        <button onclick="toRoot()">Back</button>
+                    </form>
+                </div> 
+            </div>
 
-            <!-- header -->
-            <header>
-                <h1>Pico Meet</h1>
-            </header>
+        <!-- foot -->
+        <footer>
+            <a href="http://ash-faque.github.io" target="_blank" rel="noopener noreferrer">BY: ASHFAQUE BLATHUR</a>
+        </footer>
 
-            <div class="wrap">
+    </div>
 
-                <!-- create or join -->
-                <div class="m" id="entry-modal">
-                    <h2>Call A Peer</h2>
-                    <div class="m_wrap">
-                        <form onsubmit="joinPeer(event)">
-                            <label for="room-input">Enter Peer Id</label>
-                            <input id="room-input" class="room-input" placeholder="Enter Peer ID" required autocomplete="off">
-                            <input type="submit" value="Call Peer" style="background-color: rgb(0, 143, 0);">
-                        </form>
+                <!-- facetime block -->
+                <div class="facetime">
+
+                    <!-- Remote Video Element-->
+                    <video id="remote-video"></video>
+                    <!-- Local Video Element-->
+                    <video id="local-video"></video>
+                    
+                    <!-- call controls -->
+                    <div class="call_controls">
+                        <div class="v_control_wrap">
+                            <button onclick="toggleVid()" class="vid_toggler">📌 SELF VIDEO</button>
+                            <button onclick="toggleFullScreen()">💢 FULLSCREEN</button>
+                            <button onclick="endCall()">📞 END CALL</button>
+                        </div>
+                        <button class="controll_toggler" onclick="vidControl(this)">⚙ CONTROLS</button>
                     </div>
+
                 </div>
 
-                <!-- connection info -->
-                <div class="m" id="entry-modal">
-                    <h2>Peer Info</h2>
-                    <div class="m_wrap">
-                        <p id="pidD"></p>
-                    </div>
-                </div>
+</body>
 
-                <!-- peer explorer -->
-                <div class="m">
-                    <h2>Explore Peers</h2>
-                    <ul class="m_wrap" id="explore">
-                        <li id="kooi">
-                            
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- details collector -->
-                <div class="m" id="collect_detail">
-                    <h2>Setup Details</h2>
-                    <div class="m_wrap">
-                        <form onsubmit="setDetails(event, this)" id="setDetailForm">
-                            <p style="font-size: x-small; padding: 0;">The ID must start and end with an alphanumeric character (lower or upper case character or a digit). <mark>In the middle</mark> dashes (-) and underscores (_) are allowed.</p>
-                            <label for="peer">Preferred Peer Id</label>
-                            <input type="text" name="peer" id="peer" pattern="^[a-zA-Z0-9_-]+$" title="Blank space not allowed" required placeholder="Alpha numeric value except spaces."  autocomplete="off">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" id="name" required placeholder="Your nice name goes here" autocomplete="off">
-                            <label for="bio">Bio</label>
-                            <input type="text" name="bio" id="bio" required placeholder="Your priffered languages fits well" autocomplete="off">
-                            <input type="submit" value="Set Details" style="background-color: rgb(196, 166, 0);">
-                        </form>
-                    </div> 
-                </div>
-
-                <!-- feedback details -->
-                <div class="m">
-                    <h2>Send Feedback</h2>
-                    <div class="m_wrap">
-                        <form onsubmit="sendFeedback(event, this)">
-                            <label for="w_name">Your Name</label>
-                            <input type="text" id="w_name" required placeholder="Your nice name goes here"  autocomplete="off">
-                            <label for="feedback">Your Feedback</label>
-                            <input type="text" id="feedback" required placeholder="I wolud like to...." autocomplete="off">
-                            <input type="submit" value="WhatsApp It" style="background-color: rgb(67, 184, 67);" >
-                        </form>
-                    </div> 
-                </div>
-
-                <!-- dev details -->
-                <div class="m">
-                    <h2>Dev. Contact</h2>
-                    <div class="m_wrap">
-                        <a href="http://ash-faque.github.io" target="_blank" rel="noopener noreferrer">BY: ASHFAQUE BLATHUR</a>
-                    </div> 
-                </div>
-            </div>
-
-        </div>
-
-        <!-- facetime block -->
-        <div class="facetime">
-
-            <!-- Remote Video Element-->
-            <video id="remote-video"></video>
-
-            <!-- Local Video Element-->
-            <div class="local_vid_contain">
-                <p onclick="toggleVid()" class="vid_toggler">📌</p>
-                <video id="local-video"></video>
-            </div>
-            
-            <!-- call controls -->
-            <div class="call_controls">
-                <button class="endCall" onclick="endCall()">📞 END CALL</button>
-            </div>
-
-        </div>
-
-    </body>
-
-    <script src="/peer.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-    <script src="test.js"></script>
+<script src="/peer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script src="test.js"></script>
 
 </html>
