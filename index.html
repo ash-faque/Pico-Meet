@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A one-to-one free to use ad-free web app to meet people around the world over p2p technology.">
+    <meta name="google-site-verification" content="vO1OkG1HXZbDIOMUHe7mq72wSzhtR3OdWam2PCfna10" />
     <title>Pico Meet</title>
     <link rel="stylesheet" type="text/css" href="/styles.css">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="shortcut icon" href="ass.ico" type="image/x-icon">
 </head>
 <body>
 
@@ -26,7 +30,7 @@
         <!-- header -->
         <header>
             <h1>Pico Meet</h1>
-            <h2>Meet New People</h2>
+            <h2>meet over p2p.</h2>
         </header>
 
         <!-- fab btn -->
@@ -34,41 +38,35 @@
             <div class="fab_elms">
                 <button class="fab_elm" onclick="openTab('collect_detail')">SETUP YOUR DETAILS</button>
                 <button class="fab_elm" onclick="openTab('feedback_tab')">WRITE A FEEDBACK</button>
+                <button class="fab_elm" onclick="toRoot()">HOME SCREEN</button>
                 <button class="fab_elm" onclick="invite()">INVITE SOMEONE</button>
                 <button class="fab_elm" onclick="toast.clearAllErrors(this)" style="display: none;" id="cleaner">CLEAR ALL ERRORS</button>
                 <button class="fab_elm" onclick="toggleFullScreen()">TOGGLE FULLSCREEN</button>
             </div>
-            <button class="fab_switcher" onclick="fab()">💥</button>
+            <button class="fab_switcher" onclick="fab()">💣</button>
         </div>
 
         <!-- root wrapper -->
         <div class="wrap">
             <!-- connection info -->
-            <div class="m" id="entry-modal">
-                <h2>Peer Info</h2>
-                <div class="m_wrap">
-                    <p id="pidD">
-                        <span>connected with peer id:</span><br>
-                        <input type="text" id="copyId" value=""></input>
-                        <button onclick="copy()">Copy Code</button>
-                    </p>
-                </div>
+            <div class="model peer_info">
+                <h2>Your Peer Connection</h2>
+                <p>Connection Status: <span class="connected"></span></p>
+                <p>Connection ID: <span class="with_id"></span></p>
             </div>
             <!-- create or join -->
-            <div class="m" id="entry-modal">
-                <h2>Call A Peer</h2>
-                <div class="m_wrap">
-                    <form onsubmit="joinPeer(event)">
-                        <label for="room-input">Enter Peer Id</label>
-                        <input id="room-input" class="room-input" placeholder="Enter Peer ID" required autocomplete="off">
-                        <button type="submit">Call Peer</button>
-                    </form>
-                </div>
+            <div class="model peer_caller" id="entry-modal">
+                <h2>Call Someone</h2>
+                <form onsubmit="joinPeer(event)" class="peer_caller_wrap">
+                    <label for="room-input">Enter Peer Id</label>
+                    <input id="room-input" class="room-input" placeholder="Enter Peer ID" required autocomplete="off">
+                    <button type="submit">CALL</button>
+                </form>
             </div>
             <!-- peer explorer -->
-            <div class="m">
+            <div class="model peer_explorer">
                 <h2>Explore Peers</h2>
-                <ul class="m_wrap" id="explore"></ul>
+                <ul class="peer_explorer_wrap" id="explore"></ul>
             </div>
         </div>
 
@@ -91,7 +89,6 @@
                         <label for="bio">Bio</label>
                         <input type="text" name="bio" id="bio" required placeholder="Your priffered languages fits well" autocomplete="off">
                         <button type="submit">Set Details</button>
-                        <button onclick="toRoot()">Back</button>
                     </form>
                 </div> 
             </div>
@@ -105,7 +102,6 @@
                         <label for="feedback">Your Feedback</label>
                         <input type="text" id="feedback" required placeholder="I wolud like to...." autocomplete="off">
                         <button type="submit">WhatsApp It</button>
-                        <button onclick="toRoot()">Back</button>
                     </form>
                 </div> 
             </div>
@@ -140,7 +136,6 @@
 </body>
 
 <script src="/peer.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 <script src="test.js"></script>
 
