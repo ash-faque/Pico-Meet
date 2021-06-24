@@ -46,6 +46,7 @@ const switchMod = (switchToCams = true) => {
 };
 // CUSTOM TAB OPENERS
 const openTab = (tabId) => {
+    toRoot();
     let tab = document.getElementById(tabId);
     let tab_d_state = getComputedStyle(tab).display;
     if (tab_d_state == 'block'){
@@ -75,8 +76,10 @@ const fab = () => {
     let fab_open_state = getComputedStyle(document.querySelector('.fab_elms')).display;
     if (fab_open_state == 'block'){
         document.querySelector('.fab_elms').style.display = 'none';
+        document.querySelector('.fab_switcher').innerText = '💣';
     } else if (fab_open_state == 'none'){
         document.querySelector('.fab_elms').style.display = 'block';
+        document.querySelector('.fab_switcher').innerText = '💥';
     };
 };
 // VID CONTROL
@@ -99,20 +102,6 @@ const toggleFullScreen = () => {
         };
     };
 };
-// MODEL H2 CKICK EVNT
-const models = Array.from(document.querySelectorAll('.m'))
-models.forEach(model => {
-    let h2 = model.firstElementChild,
-        m_wrap = model.lastElementChild;
-    h2.onclick = () => {
-        let d_state = getComputedStyle(m_wrap).display
-        if (d_state == 'block'){
-            m_wrap.style.display = 'none'
-        } else if (d_state == 'none'){
-            m_wrap.style.display = 'block'
-        }
-    }
-});
 // HIDE SPLASH SCREEN
 const splashScreen = document.querySelector('.splash')
 const hideSplashScreen = () => {
@@ -125,12 +114,7 @@ const setDetails = (e, setDetailForm) => {
     e.preventDefault();
     let stored_pid = '',
         pid_changed = false;
-    if (localStorage.p_pid != undefined){
-        stored_pid = localStorage.p_pid;
-    } else {
-        setDetailForm.scrollIntoView();
-        toast.error('')
-    };
+    (localStorage.p_pid != undefined) ? stored_pid = localStorage.p_pid : stored_pid = '';
     let pInfo = {
                     p_name: setDetailForm.name.value,
                     p_pid: setDetailForm.peer.value,
@@ -144,8 +128,11 @@ const setDetails = (e, setDetailForm) => {
     if (pid_changed){
         connectToPeerServer();
     };
-    toast.log('Details changed!');
+    toast.log('Details saved 🙂');
+    toRoot();
 };
+
+// ONLOAD
 window.onload = () => {
     try {
         // RETRIEVE INFO OBJ FRM LS && LOCATION HASH
@@ -175,6 +162,7 @@ function setRemoteStream(stream){
 // SEND FEEDBACK
 const sendFeedback = (evt, form) => {
     evt.preventDefault();
+    toRoot();
     let name = form[0].value,
         feedback = form[1].value,
         url = `https://wa.me/916282177960?text=Hi I'm ${name}. I've visited the Pico Meet site.${feedback}`;
@@ -203,16 +191,7 @@ const invite = () => {
     };
     fab();
 };
-// COPEY CODE
-const copy = () => {
-    if (PeerConnection.open){
-        let copyText = document.getElementById("copyId");
-        copyText.select();
-        copyText.setSelectionRange(0, 99999);
-        document.execCommand("copy");
-        toast.log("Copied to clipboard");
-    };
-};
+
 
 // PEER CONNECTING TO SERVER /////////////////////////////////////////////////////////////// PEER CONNECTING TO SERVER //
 
@@ -229,10 +208,7 @@ const connectToPeerServer = () => {
         console.error(err);
         toast.error(err);
         toast.log('Try changing the Preffered Pid value in Setup Details form if the error just shown was about your peer id.');
-        setDetailForm.scrollIntoView();
-        // LISTEN FOR STATE UPDATION OF PEER
-
-
+        openTab('collect_detail');
         // HIDE SPLASH SCREEN
         hideSplashScreen();
     });
@@ -245,15 +221,33 @@ const connectToPeerServer = () => {
 };
 connectToPeerServer();
 const listenForPeerEvents = () => {
+    let peer_state_watcher;
     PeerConnection.on('open', (id) => {
         console.log(id);
         toast.log('connected with id: ' + id);
         // LISTEN FOR STATE UPDATION OF PEER
-
-
+        peer_state_watcher = setInterval(() => {
+            let peer_status_d = document.querySelector('.connected'),
+                peer_id_d = document.querySelector('.with_id');
+            if (PeerConnection.open){
+                peer_status_d.innerText = 'Connected ✔';
+                peer_id_d.innerText = PeerConnection.id;
+                peer_status_d.style.color = 'green';
+                peer_id_d.style.color = 'green';
+            } else {
+                peer_status_d.innerText = 'Disconnected ❌';
+                peer_id_d.innerText = 'No connection? No ID 💔';
+                peer_status_d.style.color = 'red';
+                peer_id_d.style.color = 'red';
+                clearInterval(peer_state_watcher);
+            };
+        }, 1000);
         // HIDE SPLASH SCREEN
         hideSplashScreen();
-        listenForPeerEvents();
+    });
+    PeerConnection.on('error', err => {
+        console.error(err);
+        toast.error(err);
     });
     PeerConnection.on('call', (call) => {
         toast.log('incoming....');
@@ -366,62 +360,4 @@ const endCall = () => {
     switchMod(false);
 };
 
-// SUPABASE CLIENT MNGT ////////////////////////////////////////////////////////////// SUPABASE CLIENT MNGT //
-
-    const { createClient } = supabase,
-            supabase_url = 'https://ndiqmjxhfiasqaczxyoj.supabase.co',
-            supabase_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYyMzkxNDYxNywiZXhwIjoxOTM5NDkwNjE3fQ.HWbmBG_klyQD3wfIBgLMjXGuLWyvmdf6cIoBMxh1UVE';
-    supabase = createClient(supabase_url, supabase_key);
-
-                    // getting all peers in active peer table
-                    const getAllPeers = async () => {
-                        let { data: activepeers, error } = await supabase
-                                                                .from('activepeers')
-                                                                .select('*');
-                        error ? console.error(error) : console.log(activepeers);
-                        displayActivePeers(activepeers);
-                    };
-                    // to delete a peer with given id
-                    const deletPeer = async (peer) => {
-                        const { data, error } = await supabase
-                                                    .from('activepeers')
-                                                    .delete()
-                                                    .eq('pid', peer)
-                        error ? console.error(error) : console.log(data);
-                        // notify
-                    };
-                    // insert peer id to supa base
-                    const pushToDBase = async () => {
-                        const { data, error } = await supabase
-                                                    .from('activepeers')
-                                                    .insert([
-                                                        { 
-                                                            pid: localStorage.p_pid,
-                                                            name: localStorage.p_name,
-                                                            bio: localStorage.p_bio,
-                                                        },
-                                                    ]);
-                        error ? console.error(error) : console.log(data);
-                    };
-
-        // displaying peers
-        const peerDisplayUl = document.getElementById('explore')
-        const displayActivePeers = (peers) => {
-        peers.forEach(peer => {
-            let pid = peer.pid,
-                    name = peer.name,
-                    bio = peer.bio;
-                let li = document.createElement('li');
-                li.setAttribute('id', pid);
-                li.innerHTML = `<div onclick="console.log((this.parentElement).id)">
-                                    <h3>${name}</h3>
-                                    <p>${bio}</p>
-                                </div>`;
-            peerDisplayUl.appendChild(li);
-        });
-        };
-
-
-
-//getAllPeers()
-                        
+// FIREBASE CLIENT MNGT ////////////////////////////////////////////////////////////// FIREBASE CLIENT MNGT //
