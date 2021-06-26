@@ -264,6 +264,7 @@ const listenForPeerEvents = () => {
     PeerConnection.on('open', (id) => {
         console.log(id);
         toast.log('connected with id: ' + id);
+        regOnDB();
         // LISTEN FOR STATE UPDATION OF PEER
         peer_state_watcher = setInterval(() => {
             let peer_status_d = document.querySelector('.connected'),
