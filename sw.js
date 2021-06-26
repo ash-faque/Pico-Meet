@@ -28,6 +28,7 @@ const staticAssets = [
 // install event
 self.addEventListener('install', evt => {
   //console.log('service worker installed');
+  self.skipWaiting();
   evt.waitUntil(
     caches.open(preCacheName).then((cache) => {
       console.log('Pre-caching...');

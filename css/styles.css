@@ -81,7 +81,8 @@ body{
         transform: translate(-50%, -50%);
     }
         .splash-container h2{
-            font-size: 3em;
+            line-height: 60px;
+            font-size: 4em;
             color: #00ff95;
             text-shadow: -2px 2px #000;
         }
@@ -89,7 +90,7 @@ body{
             font-size: larger;
             font-weight: 900;
             font-family: monospace;
-            color: #000000;
+            color: #ff8331;
             text-decoration: none;
         }
 

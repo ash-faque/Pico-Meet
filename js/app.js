@@ -265,27 +265,29 @@ const listenForPeerEvents = () => {
     PeerConnection.on('open', (id) => {
         console.log(id);
         toast.log('Connected with id: ' + id);
+        // HIDE SPLASH SCREEN
+        hideSplashScreen();
         regOnDB();
         // LISTEN FOR STATE UPDATION OF PEER
         peer_state_watcher = setInterval(() => {
             let peer_status_d = document.querySelector('.connected'),
-                peer_id_d = document.querySelector('.with_id');
+                peer_id_d = document.querySelector('.with_id'),
+                force_connect = document.getElementById('force_connect');
             if (PeerConnection.open){
                 peer_status_d.innerText = 'Connected ✔';
                 peer_id_d.innerText = PeerConnection.id;
                 peer_status_d.style.color = '#4cd34c';
                 peer_id_d.style.color = '#4cd34c';
+                force_connect.style.display = 'none';
             } else {
                 peer_status_d.innerText = 'Disconnected ❌';
                 peer_id_d.innerText = 'No connection? No ID 💔';
                 peer_status_d.style.color = 'red';
                 peer_id_d.style.color = 'red';
+                force_connect.style.display = 'block';
                 clearInterval(peer_state_watcher);
             };
         }, 1000);
-        // HIDE SPLASH SCREEN
-        hideSplashScreen();
-        //regOnDB();
     });
     PeerConnection.on('call', (call) => {
         toast.log('incoming....');
