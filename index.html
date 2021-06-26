@@ -16,7 +16,7 @@
     <link rel="manifest" href="manifest.webmanifest">
     <!-- ios support -->
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="/img/icons/icon-96x96.png">
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon-180x180.png">
     <meta name="apple-mobile-web-app-status-bar" content="#FFE1C4">
     <meta name="theme-color" content="#FFE1C4">
 </head>
@@ -53,9 +53,9 @@
             <!-- connection info -->
             <div class="model peer_info">
                 <h2>Your Peer Connection</h2>
-                <p>Connection Status: <span class="connected"></span></p>
-                <p>Connection ID: <span class="with_id"></span></p>
-                <button onclick="if(!PeerConnection.open){connectToPeerServer()}" id="force_connect" style="width: 100%; padding: 10px;">TRY CONNECT TO PEER SERVER</button>
+                <p>Connection Status: <span class="connected">wait...</span></p>
+                <p>Connection ID: <span class="with_id">unknown.</span></p>
+                <button onclick="if(!PeerConnection.open){connectToPeerServer()}" id="force_connect" style="display: none;">TRY CONNECT TO PEER SERVER</button>
             </div>
             <!-- create or join -->
             <div class="model peer_caller" id="entry-modal">
