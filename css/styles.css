@@ -15,37 +15,47 @@ body{
                                         display: block;
                                         top: 0;
                                         width: 100%;
+                                        max-height: 40vh;
+                                        overflow-y: scroll;
+                                        overflow-x: hidden;
+                                        overflow-wrap: break-word;
                                         z-index: 1000;
                                     }
                                     #toast p{
                                         transition: 500ms;
                                         width: 100%;
                                         margin-bottom: 5px;
-                                        padding: 5px;
                                         text-align: center;
                                         font-family: monospace;
                                         font-weight: 700;
-                                        font-size: x-large;
                                         background-color: #000000;
                                     }
                                     #toast .log{
-                                        color: #00ffea;
-                                        border-bottom: 2px solid #00ffea;
+                                        color: #25ff42;
+                                        border-bottom: 2px solid #19b626;
+                                        padding: 10px;
+                                        font-size: larger;
                                     }
                                     #toast .error{
-                                        color: #ff0000;
-                                        border-bottom: 2px solid #ff0000;
+                                        color: #ff2c25;
+                                        border-bottom: 2px solid #c71313;
+                                        font-size: large;
                                     }
                                         #toast .error span:first-child{
                                             font-family: monospace;
                                             display: inline-block;
-                                            width: calc(100% - 45px);
+                                            width: calc(100% - 50px);
+                                            padding: 10px 0 10px 10px;
                                         }
                                         #toast .error span:last-child{
                                             display: inline-block;
-                                            background-color: #661414;
-                                            color: #afafaf;
-                                            width: 40px;
+                                            background-color: #b81d1d;
+                                            color: #d3b1b1;
+                                            width: 50px;
+                                            height: 100%;
+                                            padding: 10px 0;
+                                            border-radius: 10px 0 0 0;
+                                            font-size: larger;
                                             cursor: pointer;
                                         }
                                    
@@ -98,30 +108,36 @@ body{
         float: right;
         width: 60px;
         height: 60px;
-        margin: 0 40px 30px 0;
+        margin: 0 30px 30px 0;
         background-color: #4791ff;
-        border: 3px #000000 solid;
+        border: 1px solid #fff;
         border-radius: 50%;
         cursor: pointer;
         font-size: 1.6em;
     }
     .fab_elms{
-        padding-right: 50px;
+        padding: 0 30px 10px 0;
         display: none;
     }
         .fab_elm{
             background-color: #4791ff;
-            border: 5px rgb(0, 0, 0) solid;
+            border: 1px solid #fff;
             display: block;
             width: 100%;
             cursor: pointer;
             padding: 10px;
             margin: 10px 0;
-            box-shadow: -5px 5px rgb(20, 20, 20);
+            box-shadow: -5px 5px 5px #141414;
             color: #000000;
             font-weight: 900;
             border-radius: 10px 10px 0 10px;
         }
+
+
+
+
+
+
                         /* heading styles */
                         header{
                             height: 100px;
@@ -129,7 +145,7 @@ body{
                             top: 0;
                             left: 0;
                             background: linear-gradient(45deg,  #970606, #334d44);
-                            border-bottom: 4px solid #141414;
+                            border-bottom: 3px solid #585855;
                             color: #e60f00;
                             text-align: center;
                             padding: 20px 0;
@@ -154,7 +170,7 @@ body{
                                         overflow-y: scroll;
                                     }
                                         .wrap{
-                                            min-height: calc(100vh - 200px);
+                                            height: calc(100vh - 200px);
                                             padding: 10px 0;
                                         }
 
@@ -236,14 +252,13 @@ body{
                     #local-video{
                         position: absolute;
                         top: 0;
-                        left: 0;
+                        right: 20px;
                         z-index: 70;
                         display: block;
                         width: 25%;
                         height: 25vh;
                         background-color: #292929;
-                        box-shadow: -5px 5px #000;
-                        transition: 1s;
+                        box-shadow: 5px 5px 5px #000;
                     }
                     
                                                         /* call_controls */
@@ -253,7 +268,7 @@ body{
                                                             z-index: 75;
                                                             bottom: 0;
                                                             right: 0;
-                                                            width: 100%;
+                                                            width: 60%;
                                                             padding: 20px;
                                                             font-weight: 900;
                                                             cursor: pointer;
@@ -263,7 +278,6 @@ body{
                                                             .v_control_wrap{
                                                                 display: none;
                                                                 float: right;
-                                                                width: 60%;
                                                                 margin-bottom: 50px;
                                                             }
                                                                 .v_control_wrap button{
@@ -271,40 +285,75 @@ body{
                                                                     padding: 10px;
                                                                     margin: 10px 0;
                                                                     border: 0;
-                                                                    box-shadow: -5px 5px #000;
+                                                                    box-shadow: 5px 5px 5px #000;
                                                                 }
                                                             .controll_toggler{
                                                                 position: absolute;
                                                                 bottom: 0;
                                                                 right: 20px;
-                                                                width: 35%;
+                                                                width: calc(100% - 40px);
                                                                 min-height: 50px;
                                                                 padding: 10px;
                                                                 border: 0;
-                                                                box-shadow: -5px 5px #000;
+                                                                box-shadow: 5px 5px 5px #000;
                                                                 background-color: #ff2e2e;
-                                                                color: #fff;
+                                                                color: rgb(0, 0, 0);
                                                             }
                             /* foot */
                             footer{
+                                position: relative;
                                 display: block;
                                 width: 100%;
                                 height: 100px;
-                                background-color: rgb(17, 17, 17);
-                                padding: 60px 0 0 20px;
+                                background-color: #111111;
+                                padding: 10px;
+                                padding-right: 80px;
+                                border-top: 3px solid #585855;
+                                overflow: hidden;
                             }
+                                #freez_time{
+                                    position: absolute;
+                                    bottom: 0;
+                                    left: 0;
+                                    display: none;
+                                    width: 100%;
+                                    height: 20px;
+                                    background-color: #2dff9d;
+                                    border: 1px solid #ffffff;
+                                }
+                                    #pass_time{
+                                        display: block;
+                                        height: 18px;
+                                        overflow: hidden;
+                                        text-align: center;
+                                        font-size: small;
+                                        padding: 2px 5px;
+                                        background-color: #fffb00;
+                                        color: #000000;
+                                        animation: 12s drain ease forwards;
+                                    }
+                                    @keyframes drain{
+                                        from{
+                                            width: 100%;
+                                        }
+                                        to{
+                                            width: 0%;
+                                        }
+                                    }
+                                footer p{
+                                    font-family: monospace;
+                                    color: #8ee647;
+                                }
                                     footer a:any-link{
-                                        font-size: larger;
-                                        font-weight: 900;
                                         font-family: monospace;
-                                        color: #33ff00;
+                                        color: #fab92e;
                                         text-decoration: none;
                                     }
 
 /* root models */
 .model{
-    border-radius: 15px 0 15px 15px;
-    padding: 10px 10px 30px 10px;
+    border-radius: 15px;
+    padding: 10px 10px 20px 10px;
     margin: 0 5px 10px 10px;
     box-shadow: -5px 5px 5px #000;
 }
@@ -317,13 +366,13 @@ body{
     }
 
 .peer_info{
-    background-color: #14345e;
-    color: #64a2ff;
+    background-color: #122e53;
+    color: #428bf8;
 }
 
 .peer_caller{
-    background-color: #0b4214;
-    color: #4cd34c;
+    background-color: #0a473a;
+    color: #2bffd1;
 }
     .peer_caller_wrap{
         width: 100%;
@@ -334,50 +383,95 @@ body{
         margin-bottom: 10px;
     }
 
-.peer_explorer{
-    background-color: #441663;
-    color: #ab77ff;
-}
 
 
+                /* custom tabs */
+                .ct{
+                    display: none;
+                    position: absolute;
+                    top: 100px;
+                    left: 0;
+                    bottom: 100px;
+                    right: 0;
+                    overflow-y: scroll;
+                    z-index: 190;
+                    padding: 20px 10px;
+                    background-color: #241030;
+                    color: #c13cff;
+                }
+                    .ct h2{
+                        font-size: x-large;
+                        margin-bottom: 20px;
+                        text-shadow: -2px 2px 5px #000;
+                        text-decoration: underline;
+                    }
+                    .ct label{
+                        display: block;
+                        margin-top: 10px;
+                        color: #cfcfcf;
+                    }
+                    .ct textarea{
+                        display: block;
+                        width: 100%;
+                        padding: 10px;
+                        margin-bottom: 10px;
+                    }
+                    .ct input, .ct button{
+                        width: 100%;
+                        padding: 10px;
+                        margin-bottom: 10px;
+                    }
+                    .ct button{
+                        width: 55%;
+                        float: right;
+                        border: 0;
+                        border-radius: 10px;
+                        margin-top: 10px;
+                        background-color: #003146;
+                        color: #c9c9c9;
+                        box-shadow: -5px 5px 5px #000;
+                        font-weight: 900;
+                        font-family: monospace;
+                        font-size: larger;
+                        cursor: pointer;
+                        text-transform: uppercase;
+                    }
+                                                   
+                                                .peer_explorer_wrap li{
+                                                    background-color: #4d2964;
+                                                    list-style: none;
+                                                    margin-bottom: 15px;
+                                                    color: #ffffff;
+                                                    border: 1px solid #fff;
+                                                }
+                                                    .name{
+                                                        padding: 10px;
+                                                        background-color: #360f50;
+                                                        font-size: larger;
+                                                    }
+                                                    .lpt{
+                                                        font-size: small;
+                                                        float: right;
+                                                        font-family: monospace;
+                                                    }
+                                                    .bio{
+                                                        padding: 10px;
+                                                        font-size: medium;
+                                                    }
+                                                    .join_btn{
+                                                        cursor: pointer;
+                                                        background-color: #006b6b;
+                                                        text-transform: uppercase;
+                                                        text-align: center;
+                                                        padding: 5px;
+                                                    }
+                                                .explore_wait_timer{
+                                                    position: absolute;
+                                                    bottom: 0;
+                                                    background-color: #8a2be2;
+                                                    padding: 10px;
+                                                }
+                                                    .explore_wait_timer span{
+                                                        background-color: #e2d02b;
+                                                    }
 
-
-/* custom tabs */
-.ct{
-    display: none;
-    position: absolute;
-    top: 100px;
-    left: 0;
-    bottom: 100px;
-    right: 0;
-    z-index: 190;
-    padding: 50px 20px;
-    background-color: #1f1d1d;
-    color: #ab25d4;
-}
-    .ct h2{
-        font-size: x-large;
-        margin-bottom: 20px;
-        text-shadow: -2px 2px 5px #000;
-    }
-    .ct p, .ct label{
-        padding: 10px 0;
-    }
-    .ct input, .ct button{
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
-    }
-    .ct button{
-        width: 55%;
-        float: right;
-        border: 0;
-        margin-top: 20px;
-        background-color: #001a25;
-        color: #91e9ff;
-        box-shadow: -5px 5px 5px #000;
-        font-weight: 900;
-        font-family: monospace;
-        font-size: larger;
-        text-transform: uppercase;
-    }

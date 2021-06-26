@@ -7,9 +7,13 @@
     <meta name="description" content="A one-to-one free to use ad-free web app to meet people around the world over p2p technology.">
     <meta name="google-site-verification" content="vO1OkG1HXZbDIOMUHe7mq72wSzhtR3OdWam2PCfna10" />
     <title>Pico Meet</title>
-    <link rel="stylesheet" type="text/css" href="/styles.css">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="shortcut icon" href="ass.ico" type="image/x-icon">
+    <!-- ios support -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/img/icons/icon-96x96.png">
+    <meta name="apple-mobile-web-app-status-bar" content="#FFE1C4">
+    <meta name="theme-color" content="#FFE1C4">
 </head>
 <body>
 
@@ -36,8 +40,9 @@
         <!-- fab btn -->
         <div class="fab">
             <div class="fab_elms">
-                <button class="fab_elm" onclick="openTab('collect_detail')">SETUP YOUR DETAILS</button>
                 <button class="fab_elm" onclick="openTab('feedback_tab')">WRITE A FEEDBACK</button>
+                <button class="fab_elm" onclick="openTab('collect_detail')">SETUP YOUR DETAILS</button>
+                <button class="fab_elm" onclick="openTab('peer_explorer')">EXPLORE PEERS</button>
                 <button class="fab_elm" onclick="toRoot()">HOME SCREEN</button>
                 <button class="fab_elm" onclick="invite()">INVITE SOMEONE</button>
                 <button class="fab_elm" onclick="toast.clearAllErrors(this)" style="display: none;" id="cleaner">CLEAR ALL ERRORS</button>
@@ -57,16 +62,11 @@
             <!-- create or join -->
             <div class="model peer_caller" id="entry-modal">
                 <h2>Call Someone</h2>
-                <form onsubmit="joinPeer(event)" class="peer_caller_wrap">
-                    <label for="room-input">Enter Peer Id</label>
-                    <input id="room-input" class="room-input" placeholder="Enter Peer ID" required autocomplete="off">
+                <form onsubmit="joinPeer(this.room_input.value, event)" class="peer_caller_wrap">
+                    <label for="room_input">Enter Peer Id</label>
+                    <input id="room_input" class="room-input" placeholder="Enter Peer ID" required autocomplete="off">
                     <button type="submit">CALL</button>
                 </form>
-            </div>
-            <!-- peer explorer -->
-            <div class="model peer_explorer">
-                <h2>Explore Peers</h2>
-                <ul class="peer_explorer_wrap" id="explore"></ul>
             </div>
         </div>
 
@@ -76,7 +76,7 @@
                 <h2>Setup Details</h2>
                 <div class="ct_wrap">
                     <form onsubmit="setDetails(event, this)" id="setDetailForm">
-                        <p>All the data you enter below will be available on public database for a reasone.</p>
+                        <p>All the data you enter below will be available on public database.</p>
                         <p>
                             The ID must start and end with an alphanumeric character
                             (lower or upper case character or a digit).
@@ -92,6 +92,13 @@
                     </form>
                 </div> 
             </div>
+            <!-- peer explorer -->
+            <div class="ct peer_explorer" id="peer_explorer">
+                <h2>Explore Peers</h2>
+                <ul class="peer_explorer_wrap" id="explore">
+                    <button onclick="listenToActivePeers(this)">Watch on DataBase</button>
+                </ul>
+            </div>
             <!-- feedback details -->
             <div class="ct" id="feedback_tab">
                 <h2>Send Feedback</h2>
@@ -100,7 +107,7 @@
                         <label for="w_name">Your Name</label>
                         <input type="text" id="w_name" required placeholder="Your nice name goes here"  autocomplete="off">
                         <label for="feedback">Your Feedback</label>
-                        <input type="text" id="feedback" required placeholder="I wolud like to...." autocomplete="off">
+                        <textarea id="feedback" required autocomplete="off" cols="30" rows="10"></textarea>
                         <button type="submit">WhatsApp It</button>
                     </form>
                 </div> 
@@ -108,8 +115,18 @@
 
         <!-- foot -->
         <footer>
-            <a href="http://ash-faque.github.io" target="_blank" rel="noopener noreferrer">BY: ASHFAQUE BLATHUR</a>
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+                <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" />
+            </a>
+            <p>This work is licensed under a 
+                <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+                    Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
+            </p>
         </footer>
+        <!-- freezeer -->
+        <div id="freez_time">
+            <p id="pass_time">JOIN ACTION FREEZED</p>
+        </div>
 
     </div>
 
@@ -134,9 +151,11 @@
                 </div>
 
 </body>
+
 <!-- peerjs & adaptor -->
-<script src="/peer.js"></script>
+<script src="/js/peer.js"></script>
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+
 <!-- firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
@@ -151,10 +170,18 @@
         appId: "1:864476937589:web:708254489c7003f5fa273c"
     };
     firebase.initializeApp(firebaseConfig);
-    activePeers = firebase.firestore('active-peers');
-    console.log(activePeers)
+    DB = firebase.firestore();
 </script>
+
 <!-- local script -->
-<script src="test.js"></script>
+<script src="/js/app.js"></script>
+<!-- sw reg -->
+<script>
+    if('serviceWorker' in navigator){
+        navigator.serviceWorker.register('/sw.js')
+                                .then(reg => console.log('service worker registered'))
+                                .catch(err => console.log('service worker not registered', err));
+    };
+</script>
 
 </html>

@@ -8,7 +8,7 @@ const toast = {
             toastBlck.prepend(p);
             setTimeout(()=>{
                 p.remove();
-            }, 3000)
+            }, 3000);
         },
     error: (msg) => {
             let p = document.createElement('p');
@@ -16,7 +16,7 @@ const toast = {
             p.innerHTML = `<span>${msg}</span><span onclick="this.parentElement.remove()">x</span>`;
             toastBlck.prepend(p);
             let current_errs_count = Array.from(toastBlck.querySelectorAll('.error')).length;
-            if (current_errs_count > 5){
+            if (current_errs_count > 3){
                 document.getElementById('cleaner').style.display = 'block';
             };
         },
@@ -60,6 +60,7 @@ const openTab = (tabId) => {
 const toRoot = () => {
     let custom_tabs = Array.from(document.querySelectorAll('.ct'));
     custom_tabs.forEach(ct => ct.style.display = 'none');
+    fab();
 };
 // L VID TOGGLER
 const toggleVid = () => {
@@ -77,9 +78,19 @@ const fab = () => {
     if (fab_open_state == 'block'){
         document.querySelector('.fab_elms').style.display = 'none';
         document.querySelector('.fab_switcher').innerText = '💣';
+        document.querySelector('.fab_switcher').style.borderTopRightRadius = '50%';
     } else if (fab_open_state == 'none'){
         document.querySelector('.fab_elms').style.display = 'block';
         document.querySelector('.fab_switcher').innerText = '💥';
+        document.querySelector('.fab_switcher').style.borderTopRightRadius = '0';
+        document.addEventListener('click', (e) => {
+            let fab = document.querySelector('.fab');
+            if (e.target != fab && !fab.contains(e.target)){
+                document.querySelector('.fab_elms').style.display = 'none';
+                document.querySelector('.fab_switcher').innerText = '💣';
+                document.querySelector('.fab_switcher').style.borderTopRightRadius = '50%';
+            };
+        });
     };
 };
 // VID CONTROL
@@ -88,8 +99,17 @@ const vidControl = (controllerBtn) => {
     let controls_d_state = getComputedStyle(v_control_wrap).display;
     if (controls_d_state == 'block'){
         v_control_wrap.style.display = 'none';
+        controllerBtn.style.filter = 'grayscale(0)';
     } else if (controls_d_state == 'none'){
         v_control_wrap.style.display = 'block';
+        controllerBtn.style.filter = 'grayscale(1)';
+        document.addEventListener('click', (e) => {
+            let call_controls = document.querySelector('.call_controls');
+            if (e.target != call_controls && !call_controls.contains(e.target)){
+                v_control_wrap.style.display = 'none';
+                controllerBtn.style.filter = 'grayscale(0)';
+            };
+        });
     };
 };
 // FULL SCREEN TOGGLER
@@ -107,19 +127,21 @@ const splashScreen = document.querySelector('.splash')
 const hideSplashScreen = () => {
     splashScreen.style.display = 'none'
 };
+
+
 // SET INFO MNGR //////////////////////////////////////////////////////////////////////////////////// SET INFO MNGR //
 const setDetailForm = document.getElementById('setDetailForm');
-const pInfo = {};
+var pInfo = {};                     // ALSO USING IN DB
 const setDetails = (e, setDetailForm) => {
     e.preventDefault();
     let stored_pid = '',
         pid_changed = false;
     (localStorage.p_pid != undefined) ? stored_pid = localStorage.p_pid : stored_pid = '';
-    let pInfo = {
-                    p_name: setDetailForm.name.value,
-                    p_pid: setDetailForm.peer.value,
-                    p_bio: setDetailForm.bio.value
-                };
+    pInfo = {
+                p_name: setDetailForm.name.value,
+                p_pid: setDetailForm.peer.value,
+                p_bio: setDetailForm.bio.value
+            };
     (stored_pid == setDetailForm.peer.value) ? (pid_changed = false) : (pid_changed = true);
     // UPDATE LS
     localStorage.p_name = pInfo.p_name;
@@ -134,6 +156,13 @@ const setDetails = (e, setDetailForm) => {
 
 // ONLOAD
 window.onload = () => {
+    if (localStorage.p_pid == undefined){
+        openTab('collect_detail');
+    } else {
+        pInfo.p_name = localStorage.p_name;
+        pInfo.p_pid = localStorage.p_pid;
+        pInfo.p_bio = localStorage.p_bio ;
+    };
     try {
         // RETRIEVE INFO OBJ FRM LS && LOCATION HASH
         setDetailForm.name.value = localStorage.p_name || '';
@@ -171,23 +200,21 @@ const sendFeedback = (evt, form) => {
 
 // INVITE BTN
 const invite = () => {
-    toast.log("Invitation process started.");
     if (PeerConnection.open){
         let shareData = {
                 title: 'Invitation to Pico Meet.',
-                text: `${localStorage.p_name ? localStorage.p_name : "I've"} invited you to joing a p2p call.`,
+                text: `${localStorage.p_name ? localStorage.p_name : "I've"} invited you to joing a one-to-one video call. Cum oon ma baay!`,
                 url: `https://pico-meet.netlify.app#${PeerConnection.id}`,
             };
         if (navigator.share){
             navigator.share(shareData)
-                    .then(() => toast.log('Invitation was successful.'))
+                    .then(() => toast.log('Invitated.'))
                     .catch((error) => toast.log('Invitation failed', error));
         } else {
-            toast.log('The native share feature is not implemented');
+            toast.log('The native share feature is not implemented in browser.');
         };
     } else {
-        toast.log('Connecting to peer server is a necessity to invite someone.')
-        connectToPeerServer();
+        toast.log('Connecting to peer server first.');
     };
     fab();
 };
@@ -195,8 +222,9 @@ const invite = () => {
 
 // PEER CONNECTING TO SERVER /////////////////////////////////////////////////////////////// PEER CONNECTING TO SERVER //
 
-var in_call;
+var in_call; 
 var ongoing_call;   // VAR TO USE FOR ENDING CALL
+var JOINABLE = true;    // JOINBLE STATE
 
 var PeerConnection;
 const connectToPeerServer = () => {
@@ -205,12 +233,21 @@ const connectToPeerServer = () => {
     toast.log('Triying to connect with id: ' + storedPidFrmLs);
     PeerConnection = new Peer(storedPidFrmLs);
     PeerConnection.on('error', err => {
-        console.error(err);
+        console.error(err.type);
+        // delet un responsive id from db
+        if (err.type == 'peer-unavailable'){
+            deletePeer(id_tried_just_now);
+        };
         toast.error(err);
-        toast.log('Try changing the Preffered Pid value in Setup Details form if the error just shown was about your peer id.');
-        openTab('collect_detail');
+        toast.log('Try changing the Preffered Pid if it is taken.');
         // HIDE SPLASH SCREEN
         hideSplashScreen();
+        let peer_status_d = document.querySelector('.connected'),
+            peer_id_d = document.querySelector('.with_id');
+        peer_status_d.innerText = 'Error ❌';
+        peer_id_d.innerText = 'No connection? No ID 💔';
+        peer_status_d.style.color = 'red';
+        peer_id_d.style.color = 'red';
     });
     let peer_est_watcher = setInterval(() => {
         if (PeerConnection != undefined){
@@ -219,7 +256,9 @@ const connectToPeerServer = () => {
         };
     }, 1000);
 };
+
 connectToPeerServer();
+
 const listenForPeerEvents = () => {
     let peer_state_watcher;
     PeerConnection.on('open', (id) => {
@@ -232,8 +271,8 @@ const listenForPeerEvents = () => {
             if (PeerConnection.open){
                 peer_status_d.innerText = 'Connected ✔';
                 peer_id_d.innerText = PeerConnection.id;
-                peer_status_d.style.color = 'green';
-                peer_id_d.style.color = 'green';
+                peer_status_d.style.color = '#4cd34c';
+                peer_id_d.style.color = '#4cd34c';
             } else {
                 peer_status_d.innerText = 'Disconnected ❌';
                 peer_id_d.innerText = 'No connection? No ID 💔';
@@ -244,15 +283,11 @@ const listenForPeerEvents = () => {
         }, 1000);
         // HIDE SPLASH SCREEN
         hideSplashScreen();
-    });
-    PeerConnection.on('error', err => {
-        console.error(err);
-        toast.error(err);
+        //regOnDB();
     });
     PeerConnection.on('call', (call) => {
         toast.log('incoming....');
         in_call = call;
-
         let incoming_peers_info = in_call.metadata.split('***');
         // show incoming call popup
         let div = document.createElement('div');
@@ -289,11 +324,12 @@ const answer = (didAnswer, modal) => {
         navigator.mediaDevices.getUserMedia({ audio: true, video: true })
         .then((l_stream) => {
             in_call.answer(l_stream);
-                setLocalStream(l_stream);
-                switchMod(true);
-                ongoing_call = in_call;
+            setLocalStream(l_stream);
+            switchMod(true);
+            ongoing_call = in_call;
             in_call.on('stream', (incoming_stream) => {
                 setRemoteStream(incoming_stream);
+                JOINABLE = false;
             });
             in_call.on('close', () => {
                 toast.log('Call rejected');
@@ -303,7 +339,7 @@ const answer = (didAnswer, modal) => {
             });
         }).catch(err => {
             console.error(err)
-            console.error(err)
+            toast.error(err)
         });
     } else if (!didAnswer){
         in_call.close();
@@ -314,45 +350,63 @@ const answer = (didAnswer, modal) => {
 
     
 // JOINING A PEER /////////////////////////////////////////////////////////////// JOINING A PEER //
-
+var id_tried_just_now;
 var og_call;
-function joinPeer(evt){
-    evt.preventDefault();
+var join_freez_time = (12*1000);   // FREEZ TIME
+const freez_t_d = document.getElementById('freez_time');    // freez action prompt
+
+function joinPeer(id, evt){
+    if (evt){ evt.preventDefault(); };
     let callOptions = {
                         metadata: `${localStorage.p_name}***${localStorage.p_bio}`,
                     };
-    let remotePeersId = document.getElementById("room-input").value;
-    toast.log("Triying: " + remotePeersId);
-    toast.log("Atleast wait a 15 sec.")
-    navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-        .then((l_stream) => {
-            og_call = PeerConnection.call(remotePeersId, l_stream, callOptions);
-            ongoing_call = og_call;
-            setLocalStream(l_stream);
-            var checker = setInterval(() => {
-                if (og_call != undefined){
-                    listenForStream(og_call);
-                    clearInterval(checker);
-                };
-            }, 1000);
-        }).catch(err => {
-            console.error(err)
-            toast.error(err)
-        });
+    if (JOINABLE && PeerConnection.open){
+        toast.log("Triying: " + id);
+        navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+            .then((l_stream) => {
+                og_call = PeerConnection.call(id, l_stream, callOptions);
+                setLocalStream(l_stream);
+                var checker = setInterval(() => {
+                    if (og_call != undefined){
+                        JOINABLE = false;
+                        freez_t_d.style.display = 'block';
+                        setTimeout(() => {
+                            JOINABLE = true;
+                            freez_t_d.style.display = 'none';
+                        }, join_freez_time);
+                        listenForStream(og_call);
+                        id_tried_just_now = id;
+                        clearInterval(checker);
+                    };
+                }, 1000);
+            }).catch(err => {
+                console.error(err)
+                toast.error(err)
+            });
+    } else {
+        toast.log("Not joinable at the moment.");
+    };
+   
 };
+
+// OUTGOING CALL EVT LISTENER
 const listenForStream = () => {
     og_call.on('stream', (incoming_stream) => {
-        toast.log('Connected!')
+        toast.log('Connected!');
+        ongoing_call = og_call;
         setRemoteStream(incoming_stream);
         switchMod(true);
     });
     og_call.on('close', () => {
+        JOINABLE = true;
         toast.log('Call Closed.');
     });
     og_call.on('error', (e) => {
+        JOINABLE = true;
         console.log(e);
     });
 };
+
 // END ONGOING CALL
 const endCall = () => {
     // end the call
@@ -360,4 +414,64 @@ const endCall = () => {
     switchMod(false);
 };
 
-// FIREBASE CLIENT MNGT ////////////////////////////////////////////////////////////// FIREBASE CLIENT MNGT //
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// FIREBASE CLIENT MNGT /////////////////////////////////////////////////////////////////////////// FIREBASE CLIENT MNGT //
+const ACTIVE_PEERS = DB.collection('active-peers');
+
+// REG ON DB
+const regOnDB = () => {
+    if (PeerConnection.open){
+        ACTIVE_PEERS.doc(PeerConnection.id).set({ 
+                                            name: pInfo.p_name || 'Anounymous.',
+                                            bio: pInfo.p_bio || 'Not available.',
+                                            lpt: firebase.firestore.Timestamp.now()
+                                        })
+                                    .then(() => console.log('Entered to db.'))
+                                    .catch(e => console.error(e));
+    };
+};
+
+// LISTEN FOR DOC CHANGES
+const listenToActivePeers = (btn) => {
+    btn.remove();
+    ACTIVE_PEERS.onSnapshot(snapshot => {
+        let changes = snapshot.docChanges();
+        changes.forEach(change => {
+            let dataObj = change.doc.data(),
+                docId = change.doc.id;
+            if (change.type == 'added'){
+                renderActivePeers(dataObj, docId);
+            } else if (change.type == 'removed'){
+                let li = document.getElementById(docId);
+                li.remove();
+            };
+        });
+    });
+};
+
+// DELETER FN
+const deletePeer = (targetId) => {
+    ACTIVE_PEERS.doc(targetId).delete()
+                                .then(() => console.log('Deleted doc.'))
+                                .catch(e => console.error(e));
+};
+
+// INCOMING DATA RENDER FN
+const renderActivePeers = (peersData, docId) => {
+    let p_name = peersData.name,
+        bio = peersData.bio,
+        lpt = peersData.lpt.toDate().getTime(),
+        ct = new Date().getTime(),
+        eta = Math.round((ct - lpt) / 60000);
+        console.log(eta)
+    let li = document.createElement('li');
+    li.setAttribute('id', docId);
+    li.innerHTML = `<p class="name">${p_name}
+                        <span class="lpt">${eta} minutes ago.</span>
+                    </p><p class="bio">${bio}</p>
+                    <p class="join_btn" onclick="joinPeer('${docId}')">Try To Call This Peer.</p>`;
+    let parentUl = document.getElementById('explore');
+    parentUl.appendChild(li);
+};

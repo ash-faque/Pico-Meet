@@ -2,6 +2,7 @@
     "theme_color": "#103b73",
     "background_color": "#6e389f",
     "display": "fullscreen",
+    "orientation": "portrait-primary",
     "scope": "/",
     "start_url": "/",
     "name": "Pico Meet",
@@ -9,22 +10,23 @@
     "description": "A one-to-one free to use ad-free web app to meet people around the world over p2p technology.",
     "icons": [
         {
-            "src": "/icon-192x192.png",
+            "src": "img/icon-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/icon-256x256.png",
+            "src": "img/icon-256x256.png",
             "sizes": "256x256",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any maskable"
         },
         {
-            "src": "/icon-384x384.png",
+            "src": "img/icon-384x384.png",
             "sizes": "384x384",
             "type": "image/png"
         },
         {
-            "src": "/icon-512x512.png",
+            "src": "img/icon-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
         }
