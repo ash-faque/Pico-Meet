@@ -2,11 +2,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Georgia, 'Times New Roman', Times, serif;
 }
 body{
     width: 100%;
     background-color: #707070;
+    font-family: 'Mukta', sans-serif;
 }
 
                                     /* toaster styles */
@@ -69,7 +69,7 @@ body{
     display: block;
     width: 100%;
     padding: 10px;
-    background: linear-gradient(45deg,  #970606, #334d44);
+    background: linear-gradient(45deg,  #5a5a5a, #392e46);
     z-index: 210;
 }
     .splash-container{
@@ -111,12 +111,13 @@ body{
         margin: 0 30px 30px 0;
         background-color: #4791ff;
         border: 1px solid #fff;
+        box-shadow: -5px 5px 5px #141414;
         border-radius: 50%;
         cursor: pointer;
         font-size: 1.6em;
     }
     .fab_elms{
-        padding: 0 30px 10px 0;
+        padding: 0 30px 0 0;
         display: none;
     }
         .fab_elm{
@@ -129,7 +130,7 @@ body{
             margin: 10px 0;
             box-shadow: -5px 5px 5px #141414;
             color: #000000;
-            font-weight: 900;
+            font-weight: 700;
             border-radius: 10px 10px 0 10px;
         }
 
@@ -144,17 +145,15 @@ body{
                             position: sticky;
                             top: 0;
                             left: 0;
-                            background: linear-gradient(45deg,  #970606, #334d44);
+                            background: linear-gradient(45deg,  #5a5a5a, #392e46);
                             border-bottom: 3px solid #585855;
-                            color: #e60f00;
+                            color: #df75ff;
                             text-align: center;
                             padding: 20px 0;
                         }
                             header h1{
                                 margin: 0 auto;
-                                text-shadow: -1px 1px #bd0d00,
-                                            -2px 2px #790800,
-                                            -4px 4px 10px #000;
+                                text-shadow: -4px 4px 10px #000;
                             }
                             header h2{
                                 font-family: monospace;
@@ -170,7 +169,12 @@ body{
                                         overflow-y: scroll;
                                     }
                                         .wrap{
-                                            height: calc(100vh - 200px);
+                                            background-color: #342b36;
+                                            position: absolute;
+                                            top: 100px;
+                                            bottom: 0;
+                                            left: 0;
+                                            right: 0;
                                             padding: 10px 0;
                                         }
 
@@ -299,179 +303,172 @@ body{
                                                                 background-color: #ff2e2e;
                                                                 color: rgb(0, 0, 0);
                                                             }
-                            /* foot */
-                            footer{
-                                position: relative;
-                                display: block;
-                                width: 100%;
-                                height: 100px;
-                                background-color: #111111;
-                                padding: 10px;
-                                padding-right: 80px;
-                                border-top: 3px solid #585855;
-                                overflow: hidden;
-                            }
-                                #freez_time{
-                                    position: absolute;
-                                    bottom: 0;
-                                    left: 0;
-                                    display: none;
-                                    width: 100%;
-                                    height: 20px;
-                                    background-color: #2dff9d;
-                                    border: 1px solid #ffffff;
-                                }
-                                    #pass_time{
-                                        display: block;
-                                        height: 18px;
-                                        overflow: hidden;
-                                        text-align: center;
-                                        font-size: small;
-                                        padding: 2px 5px;
-                                        background-color: #fffb00;
-                                        color: #000000;
-                                        animation: 12s drain ease forwards;
-                                    }
-                                    @keyframes drain{
-                                        from{
-                                            width: 100%;
-                                        }
-                                        to{
-                                            width: 0%;
-                                        }
-                                    }
-                                footer p{
-                                    font-family: monospace;
-                                    color: #8ee647;
-                                }
-                                    footer a:any-link{
-                                        font-family: monospace;
-                                        color: #fab92e;
-                                        text-decoration: none;
-                                    }
+                            
+                                            
+                /* root models */
+                .model{
+                    border-radius: 15px;
+                    padding: 10px 10px 20px 10px;
+                    margin: 0 5px 10px 10px;
+                    box-shadow: -5px 5px 5px #000;
+                }
+                    .model h2{
+                        display: inline-block;
+                        font-family: monospace;
+                        text-transform: uppercase;
+                        padding: 0 0 20px 0;
+                        text-shadow: -2px 2px 5px #000;
+                    }
 
-/* root models */
-.model{
-    border-radius: 15px;
-    padding: 10px 10px 20px 10px;
-    margin: 0 5px 10px 10px;
-    box-shadow: -5px 5px 5px #000;
+                .peer_info{
+                    background-color: #122e53;
+                    color: #428bf8;
+                }
+
+                .peer_caller{
+                    background-color: #0a473a;
+                    color: #2bffd1;
+                }
+                    .peer_caller_wrap{
+                        width: 100%;
+                    }
+                    .peer_caller_wrap input, .peer_caller_wrap button{
+                        width: 100%;
+                        padding: 10px;
+                        margin-bottom: 10px;
+                    }
+
+
+
+/* custom tabs */
+.ct{
+    display: none;
+    position: absolute;
+    top: 100px;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow-y: scroll;
+    z-index: 190;
+    padding: 10px;
+    background-color: #342b36;
+    color: #c13cff;
 }
-    .model h2{
-        display: inline-block;
-        font-family: monospace;
-        text-transform: uppercase;
-        padding: 0 0 20px 0;
+    .ct h2{
+        text-align: center;
+        font-size: x-large;
         text-shadow: -2px 2px 5px #000;
     }
-
-.peer_info{
-    background-color: #122e53;
-    color: #428bf8;
-}
-
-.peer_caller{
-    background-color: #0a473a;
-    color: #2bffd1;
-}
-    .peer_caller_wrap{
-        width: 100%;
+    .ct label{
+        display: block;
+        margin-top: 10px;
+        color: #cfcfcf;
     }
-    .peer_caller_wrap input, .peer_caller_wrap button{
+    .ct textarea{
+        display: block;
         width: 100%;
         padding: 10px;
         margin-bottom: 10px;
     }
-
-
-
-                /* custom tabs */
-                .ct{
-                    display: none;
-                    position: absolute;
-                    top: 100px;
-                    left: 0;
-                    bottom: 100px;
-                    right: 0;
-                    overflow-y: scroll;
-                    z-index: 190;
-                    padding: 20px 10px;
-                    background-color: #241030;
-                    color: #c13cff;
+    .ct input{
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+    .ct button{
+        width: 100%;
+        border: 0;
+        border-radius: 5px;
+        margin: 10px 0;
+        padding: 10px;
+        background-color: #2d0e3b;
+        color: #c9c9c9;
+        font-weight: 200;
+        font-family: monospace;
+        font-size: larger;
+        cursor: pointer;
+        text-transform: uppercase;
+    }   
+                .license{
+                    padding: 0 90px 10px 0;
                 }
-                    .ct h2{
-                        font-size: x-large;
-                        margin-bottom: 20px;
-                        text-shadow: -2px 2px 5px #000;
-                        text-decoration: underline;
-                    }
-                    .ct label{
-                        display: block;
-                        margin-top: 10px;
-                        color: #cfcfcf;
-                    }
-                    .ct textarea{
-                        display: block;
-                        width: 100%;
-                        padding: 10px;
-                        margin-bottom: 10px;
-                    }
-                    .ct input, .ct button{
-                        width: 100%;
-                        padding: 10px;
-                        margin-bottom: 10px;
-                    }
-                    .ct button{
-                        width: 55%;
-                        float: right;
-                        border: 0;
-                        border-radius: 10px;
-                        margin-top: 10px;
-                        background-color: #003146;
-                        color: #c9c9c9;
-                        box-shadow: -5px 5px 5px #000;
-                        font-weight: 900;
+                    .license p{
                         font-family: monospace;
-                        font-size: larger;
-                        cursor: pointer;
-                        text-transform: uppercase;
+                        color: #8ee647;
                     }
-                                                   
-                                                .peer_explorer_wrap li{
-                                                    background-color: #4d2964;
-                                                    list-style: none;
-                                                    margin-bottom: 15px;
-                                                    color: #ffffff;
-                                                    border: 1px solid #fff;
-                                                }
-                                                    .name{
-                                                        padding: 10px;
-                                                        background-color: #360f50;
-                                                        font-size: larger;
-                                                    }
-                                                    .lpt{
-                                                        font-size: small;
-                                                        float: right;
-                                                        font-family: monospace;
-                                                    }
-                                                    .bio{
-                                                        padding: 10px;
-                                                        font-size: medium;
-                                                    }
-                                                    .join_btn{
-                                                        cursor: pointer;
-                                                        background-color: #006b6b;
-                                                        text-transform: uppercase;
-                                                        text-align: center;
-                                                        padding: 5px;
-                                                    }
-                                                .explore_wait_timer{
-                                                    position: absolute;
-                                                    bottom: 0;
-                                                    background-color: #8a2be2;
-                                                    padding: 10px;
-                                                }
-                                                    .explore_wait_timer span{
-                                                        background-color: #e2d02b;
-                                                    }
+                        .license a:any-link{
+                            font-family: monospace;
+                            color: #fab92e;
+                            text-decoration: none;
+                        }
 
+                                .peer_explorer_wrap li{
+                                    background-color: #4d2964;
+                                    list-style: none;
+                                    margin-bottom: 15px;
+                                    color: #ffffff;
+                                    border: 1px solid #fff;
+                                }
+                                    .name{
+                                        padding: 10px;
+                                        background-color: #360f50;
+                                        font-size: larger;
+                                    }
+                                    .lpt{
+                                        font-size: small;
+                                        float: right;
+                                        font-family: monospace;
+                                    }
+                                    .bio{
+                                        padding: 10px;
+                                        font-size: medium;
+                                    }
+                                    .join_btn{
+                                        cursor: pointer;
+                                        background-color: #006b6b;
+                                        text-transform: uppercase;
+                                        text-align: center;
+                                        padding: 5px;
+                                    }
+                                .explore_wait_timer{
+                                    position: absolute;
+                                    bottom: 0;
+                                    background-color: #8a2be2;
+                                    padding: 10px;
+                                }
+                                    .explore_wait_timer span{
+                                        background-color: #e2d02b;
+                                    }
+
+#freez_time{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 200;
+    display: none;
+    width: 100%;
+    height: 20px;
+    background-color: #2dff9d;
+    border: 1px solid #ffffff;
+}
+    #pass_time{
+        display: block;
+        height: 18px;
+        overflow: hidden;
+        text-align: center;
+        font-size: small;
+        padding: 2px 0;
+        background-color: #fffb00;
+        color: #000000;
+        animation: 12s drain ease forwards;
+    }
+    @keyframes drain{
+        from{
+            width: 100%;
+            filter: hue-rotate(0deg);
+        }
+        to{
+            width: 0%;
+            filter: hue-rotate(90deg);
+        }
+    }

@@ -46,7 +46,6 @@ const switchMod = (switchToCams = true) => {
 };
 // CUSTOM TAB OPENERS
 const openTab = (tabId) => {
-    toRoot();
     let tab = document.getElementById(tabId);
     let tab_d_state = getComputedStyle(tab).display;
     if (tab_d_state == 'block'){
@@ -79,16 +78,19 @@ const fab = () => {
         document.querySelector('.fab_elms').style.display = 'none';
         document.querySelector('.fab_switcher').innerText = '💣';
         document.querySelector('.fab_switcher').style.borderTopRightRadius = '50%';
+        document.querySelector('.fab_switcher').style.borderTopLeftRadius = '50%';
     } else if (fab_open_state == 'none'){
         document.querySelector('.fab_elms').style.display = 'block';
         document.querySelector('.fab_switcher').innerText = '💥';
         document.querySelector('.fab_switcher').style.borderTopRightRadius = '0';
+        document.querySelector('.fab_switcher').style.borderTopLeftRadius = '0';
         document.addEventListener('click', (e) => {
             let fab = document.querySelector('.fab');
             if (e.target != fab && !fab.contains(e.target)){
                 document.querySelector('.fab_elms').style.display = 'none';
                 document.querySelector('.fab_switcher').innerText = '💣';
                 document.querySelector('.fab_switcher').style.borderTopRightRadius = '50%';
+                document.querySelector('.fab_switcher').style.borderTopLeftRadius = '50%';
             };
         });
     };
@@ -150,7 +152,7 @@ const setDetails = (e, setDetailForm) => {
     if (pid_changed){
         connectToPeerServer();
     };
-    toast.log('Details saved 🙂');
+    toast.log('Details saved.');
     toRoot();
 };
 
@@ -223,14 +225,14 @@ const invite = () => {
 // PEER CONNECTING TO SERVER /////////////////////////////////////////////////////////////// PEER CONNECTING TO SERVER //
 
 var in_call; 
-var ongoing_call;   // VAR TO USE FOR ENDING CALL
+var ongoing_call;       // FOR ENDING CALL
 var JOINABLE = true;    // JOINBLE STATE
-
 var PeerConnection;
+
 const connectToPeerServer = () => {
     let storedPidFrmLs = '';
     (localStorage.p_pid && (localStorage.p_pid != '')) ? storedPidFrmLs = localStorage.p_pid : '';
-    toast.log('Triying to connect with id: ' + storedPidFrmLs);
+    toast.log('Connecting with id: ' + storedPidFrmLs);
     PeerConnection = new Peer(storedPidFrmLs);
     PeerConnection.on('error', err => {
         console.error(err.type);
@@ -239,7 +241,6 @@ const connectToPeerServer = () => {
             deletePeer(id_tried_just_now);
         };
         toast.error(err);
-        toast.log('Try changing the Preffered Pid if it is taken.');
         // HIDE SPLASH SCREEN
         hideSplashScreen();
         let peer_status_d = document.querySelector('.connected'),
@@ -263,7 +264,7 @@ const listenForPeerEvents = () => {
     let peer_state_watcher;
     PeerConnection.on('open', (id) => {
         console.log(id);
-        toast.log('connected with id: ' + id);
+        toast.log('Connected with id: ' + id);
         regOnDB();
         // LISTEN FOR STATE UPDATION OF PEER
         peer_state_watcher = setInterval(() => {
@@ -371,9 +372,15 @@ function joinPeer(id, evt){
                     if (og_call != undefined){
                         JOINABLE = false;
                         freez_t_d.style.display = 'block';
+                        let entryM = document.getElementById('entry-modal'),
+                            explorerT = document.getElementById('peer_explorer');
+                        entryM.style.filter = 'grayscale(1)';
+                        explorerT.style.filter = 'grayscale(1)';
                         setTimeout(() => {
                             JOINABLE = true;
                             freez_t_d.style.display = 'none';
+                            entryM.style.filter = 'grayscale(0)';
+                            explorerT.style.filter = 'grayscale(0)';
                         }, join_freez_time);
                         listenForStream(og_call);
                         id_tried_just_now = id;
@@ -461,6 +468,9 @@ const deletePeer = (targetId) => {
 
 // INCOMING DATA RENDER FN
 const renderActivePeers = (peersData, docId) => {
+    if (docId == PeerConnection.id){
+        return;
+    };
     let p_name = peersData.name,
         bio = peersData.bio,
         lpt = peersData.lpt.toDate().getTime(),

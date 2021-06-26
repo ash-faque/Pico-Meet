@@ -7,6 +7,11 @@
     <meta name="description" content="A one-to-one free to use ad-free web app to meet people around the world over p2p technology.">
     <meta name="google-site-verification" content="vO1OkG1HXZbDIOMUHe7mq72wSzhtR3OdWam2PCfna10" />
     <title>Pico Meet</title>
+    <!-- g font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta&display=swap" rel="stylesheet">
+    <!-- local styles -->
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
     <link rel="manifest" href="manifest.webmanifest">
     <!-- ios support -->
@@ -58,6 +63,7 @@
                 <h2>Your Peer Connection</h2>
                 <p>Connection Status: <span class="connected"></span></p>
                 <p>Connection ID: <span class="with_id"></span></p>
+                <button onclick="if(!PeerConnection.open){connectToPeerServer()}" style="width: 100%; padding: 5px;">Force Connect</button>
             </div>
             <!-- create or join -->
             <div class="model peer_caller" id="entry-modal">
@@ -65,9 +71,12 @@
                 <form onsubmit="joinPeer(this.room_input.value, event)" class="peer_caller_wrap">
                     <label for="room_input">Enter Peer Id</label>
                     <input id="room_input" class="room-input" placeholder="Enter Peer ID" required autocomplete="off">
-                    <button type="submit">CALL</button>
+                    <button type="submit">TRY CALLING</button>
                 </form>
             </div>
+            <!-- ads -->
+
+
         </div>
 
             <!-- custome tabs / fab tabs -->
@@ -110,22 +119,23 @@
                         <textarea id="feedback" required autocomplete="off" cols="30" rows="10"></textarea>
                         <button type="submit">WhatsApp It</button>
                     </form>
-                </div> 
+                    <!-- livense -->
+                    <div class="license">
+                        <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+                            <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" />
+                        </a>
+                        <p>This work is licensed under a 
+                            <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+                                Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
+                        </p>
+                    </div>
+                </div>
             </div>
 
-        <!-- foot -->
-        <footer>
-            <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
-                <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" />
-            </a>
-            <p>This work is licensed under a 
-                <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
-                    Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
-            </p>
-        </footer>
+        
         <!-- freezeer -->
         <div id="freez_time">
-            <p id="pass_time">JOIN ACTION FREEZED</p>
+            <p id="pass_time"></p>
         </div>
 
     </div>
