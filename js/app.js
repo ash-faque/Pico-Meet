@@ -420,6 +420,7 @@ const endCall = () => {
     // end the call
     ongoing_call.close();
     switchMod(false);
+    JOINABLE = true;
 };
 
 
