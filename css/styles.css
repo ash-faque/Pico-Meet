@@ -465,10 +465,8 @@ body{
     @keyframes drain{
         from{
             width: 100%;
-            filter: hue-rotate(0deg);
         }
         to{
             width: 0%;
-            filter: hue-rotate(90deg);
         }
     }
