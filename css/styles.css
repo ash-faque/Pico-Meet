@@ -7,7 +7,14 @@ body{
     width: 100%;
     font-family: 'Mukta', sans-serif;
 }
-
+button{
+    cursor: pointer;
+}
+button:disabled{
+    background-color: #200000;
+    color: #ffee00;
+    cursor: not-allowed;
+}
                                     /* toaster styles */
                                     #toast{
                                         position: fixed;
@@ -154,6 +161,8 @@ body{
                             header h1{
                                 margin: 0 auto;
                                 text-shadow: -4px 4px 10px #000;
+                                font-size: 3em;
+                                line-height: 40px;
                             }
                             header h2{
                                 font-family: monospace;
@@ -375,20 +384,6 @@ body{
         padding: 10px;
         margin-bottom: 10px;
     }
-    .ct button{
-        width: 100%;
-        border: 0;
-        border-radius: 5px;
-        margin: 10px 0;
-        padding: 10px;
-        background-color: #2d0e3b;
-        color: #c9c9c9;
-        font-weight: 200;
-        font-family: monospace;
-        font-size: larger;
-        cursor: pointer;
-        text-transform: uppercase;
-    }   
                 .license{
                     padding: 0 90px 10px 0;
                 }
@@ -405,7 +400,7 @@ body{
                                 .peer_explorer_wrap li{
                                     background-color: #4d2964;
                                     list-style: none;
-                                    margin-bottom: 15px;
+                                    margin-bottom: 10px;
                                     color: #ffffff;
                                     border: 1px solid #fff;
                                 }
@@ -426,18 +421,15 @@ body{
                                     .join_btn{
                                         cursor: pointer;
                                         background-color: #006b6b;
+                                        color: #c9c9c9;
                                         text-transform: uppercase;
                                         text-align: center;
+                                        font-weight: 200;
+                                        font-family: monospace;
+                                        font-size: larger;
+                                        width: 100%;
+                                        border: 0;
                                         padding: 5px;
-                                    }
-                                .explore_wait_timer{
-                                    position: absolute;
-                                    bottom: 0;
-                                    background-color: #8a2be2;
-                                    padding: 10px;
-                                }
-                                    .explore_wait_timer span{
-                                        background-color: #e2d02b;
                                     }
 
 #freez_time{
@@ -457,7 +449,6 @@ body{
         overflow: hidden;
         text-align: center;
         font-size: small;
-        padding: 2px 0;
         background-color: #fffb00;
         color: #000000;
         animation: 12s drain ease forwards;

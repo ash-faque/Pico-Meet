@@ -356,7 +356,7 @@ const answer = (didAnswer, modal) => {
 // JOINING A PEER /////////////////////////////////////////////////////////////// JOINING A PEER //
 var id_tried_just_now;
 var og_call;
-var join_freez_time = (12*1000);   // FREEZ TIME
+var join_freez_time = (10*1000);   // FREEZ TIME
 const freez_t_d = document.getElementById('freez_time');    // freez action prompt
 
 function joinPeer(id, evt){
@@ -374,15 +374,19 @@ function joinPeer(id, evt){
                     if (og_call != undefined){
                         JOINABLE = false;
                         freez_t_d.style.display = 'block';
-                        let entryM = document.getElementById('entry-modal'),
-                            explorerT = document.getElementById('peer_explorer');
-                        entryM.style.filter = 'grayscale(1)';
-                        explorerT.style.filter = 'grayscale(1)';
+                        let entry_m_btn = document.getElementById('entry_m_btn'),
+                            explore_t_btns = Array.from(document.querySelectorAll('.join_btn'));
+                        entry_m_btn.disabled = true;
+                        explore_t_btns.forEach(btn => {
+                            btn.disabled = true;
+                        })
                         setTimeout(() => {
                             JOINABLE = true;
                             freez_t_d.style.display = 'none';
-                            entryM.style.filter = 'grayscale(0)';
-                            explorerT.style.filter = 'grayscale(0)';
+                            entry_m_btn.disabled = false;
+                            explore_t_btns.forEach(btn => {
+                                btn.disabled = false;
+                            })
                         }, join_freez_time);
                         listenForStream(og_call);
                         id_tried_just_now = id;
@@ -485,7 +489,7 @@ const renderActivePeers = (peersData, docId) => {
     li.innerHTML = `<p class="name">${p_name}
                         <span class="lpt">${eta} minutes ago.</span>
                     </p><p class="bio">${bio}</p>
-                    <p class="join_btn" onclick="joinPeer('${docId}')">Try To Call This Peer.</p>`;
+                    <button class="join_btn" onclick="joinPeer('${docId}')">Try To Call This Peer.</button>`;
     let parentUl = document.getElementById('explore');
     parentUl.appendChild(li);
 };
