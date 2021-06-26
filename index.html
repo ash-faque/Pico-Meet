@@ -25,14 +25,6 @@
     <!-- toast block -->
     <div id="toast"></div>
 
-    <!-- spash screen -->
-    <div class="splash">
-        <div class="splash-container">
-            <h2>Pico Meet</h2>
-            <a href="http://ash-faque.github.io" target="_blank" rel="noopener noreferrer">BY: ASHFAQUE BLATHUR</a>
-        </div>
-    </div>
-
     <!-- setup block -->
     <div class="setup">
 
@@ -63,7 +55,7 @@
                 <h2>Your Peer Connection</h2>
                 <p>Connection Status: <span class="connected"></span></p>
                 <p>Connection ID: <span class="with_id"></span></p>
-                <button onclick="if(!PeerConnection.open){connectToPeerServer()}" id="force_connect" style="display: none; width: 100%; padding: 10px;">TRY CONNECT TO PEER SERVER</button>
+                <button onclick="if(!PeerConnection.open){connectToPeerServer()}" id="force_connect" style="width: 100%; padding: 10px;">TRY CONNECT TO PEER SERVER</button>
             </div>
             <!-- create or join -->
             <div class="model peer_caller" id="entry-modal">
@@ -139,31 +131,31 @@
 
     </div>
 
-                <!-- facetime block -->
-                <div class="facetime">
+        <!-- facetime block -->
+        <div class="facetime">
 
-                    <!-- Remote Video Element-->
-                    <video id="remote-video"></video>
-                    <!-- Local Video Element-->
-                    <video id="local-video"></video>
-                    
-                    <!-- call controls -->
-                    <div class="call_controls">
-                        <div class="v_control_wrap">
-                            <button onclick="toggleVid()" class="vid_toggler">📌 SELF VIDEO</button>
-                            <button onclick="toggleFullScreen()">💢 FULLSCREEN</button>
-                            <button onclick="endCall()">📞 END CALL</button>
-                        </div>
-                        <button class="controll_toggler" onclick="vidControl(this)">⚙ CONTROLS</button>
-                    </div>
-
+            <!-- Remote Video Element-->
+            <video id="remote-video"></video>
+            <!-- Local Video Element-->
+            <video id="local-video"></video>
+            
+            <!-- call controls -->
+            <div class="call_controls">
+                <div class="v_control_wrap">
+                    <button onclick="toggleVid()" class="vid_toggler">📌 SELF VIDEO</button>
+                    <button onclick="toggleFullScreen()">💢 FULLSCREEN</button>
+                    <button onclick="endCall()">📞 END CALL</button>
                 </div>
+                <button class="controll_toggler" onclick="vidControl(this)">⚙ CONTROLS</button>
+            </div>
+
+        </div>
 
 </body>
 
 <!-- peerjs & adaptor -->
 <script src="/js/peer.js"></script>
-<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<!-- <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script> -->
 
 <!-- firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>

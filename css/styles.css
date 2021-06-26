@@ -64,43 +64,6 @@ button:disabled{
                                             font-size: larger;
                                             cursor: pointer;
                                         }
-                                   
-/* splash screen styles */
-.splash{
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background: linear-gradient(45deg,  #5a5a5a, #392e46);
-    z-index: 210;
-}
-    .splash-container{
-        display: block;
-        width: 100%;
-        text-align: center;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-        .splash-container h2{
-            line-height: 60px;
-            font-size: 4em;
-            color: #00ff95;
-            text-shadow: -2px 2px #000;
-        }
-        .splash-container a:any-link{
-            font-size: larger;
-            font-weight: 900;
-            font-family: monospace;
-            color: #ff8331;
-            text-decoration: none;
-        }
-
 
 /* fab */
 .fab{
@@ -383,6 +346,10 @@ button:disabled{
         width: 100%;
         padding: 10px;
         margin-bottom: 10px;
+    }
+    .ct button{
+        width: 100%;
+        padding: 10px;
     }
                 .license{
                     padding: 0 90px 10px 0;

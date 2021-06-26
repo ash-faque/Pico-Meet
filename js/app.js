@@ -124,11 +124,6 @@ const toggleFullScreen = () => {
         };
     };
 };
-// HIDE SPLASH SCREEN
-const splashScreen = document.querySelector('.splash')
-const hideSplashScreen = () => {
-    splashScreen.style.display = 'none'
-};
 
 
 // SET INFO MNGR //////////////////////////////////////////////////////////////////////////////////// SET INFO MNGR //
@@ -241,8 +236,6 @@ const connectToPeerServer = () => {
             deletePeer(id_tried_just_now);
         };
         toast.error(err);
-        // HIDE SPLASH SCREEN
-        hideSplashScreen();
         let peer_status_d = document.querySelector('.connected'),
             peer_id_d = document.querySelector('.with_id');
         peer_status_d.innerText = 'Error ❌';
@@ -265,8 +258,6 @@ const listenForPeerEvents = () => {
     PeerConnection.on('open', (id) => {
         console.log(id);
         toast.log('Connected with id: ' + id);
-        // HIDE SPLASH SCREEN
-        hideSplashScreen();
         regOnDB();
         // LISTEN FOR STATE UPDATION OF PEER
         peer_state_watcher = setInterval(() => {
@@ -443,9 +434,16 @@ const regOnDB = () => {
                                             bio: pInfo.p_bio || 'Not available.',
                                             lpt: firebase.firestore.Timestamp.now()
                                         })
-                                    .then(() => console.log('Entered to db.'))
+                                    .then(() => toast.log('Entered self peer to database.'))
                                     .catch(e => console.error(e));
     };
+};
+
+// DELETER FN
+const deletePeer = (targetId) => {
+    ACTIVE_PEERS.doc(targetId).delete()
+                                .then(() => toast.log('Deleted unresponsive peer.'))
+                                .catch(e => console.error(e));
 };
 
 // LISTEN FOR DOC CHANGES
@@ -464,13 +462,6 @@ const listenToActivePeers = (btn) => {
             };
         });
     });
-};
-
-// DELETER FN
-const deletePeer = (targetId) => {
-    ACTIVE_PEERS.doc(targetId).delete()
-                                .then(() => console.log('Deleted doc.'))
-                                .catch(e => console.error(e));
 };
 
 // INCOMING DATA RENDER FN
