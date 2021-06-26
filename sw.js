@@ -1,13 +1,13 @@
-const staticCacheName = 'site-static-v0';
-const dynamicCacheName = 'site-dynamic-v0';
+const staticCacheName = 'site-static-v0.1';
+const dynamicCacheName = 'site-dynamic-v0.1';
 const assets = [
-/*   '/',
+  '/',
   '/index.html',
   '/js/app.js',
   '/css/styles.css',
   '/js/peer.js',
   'https://webrtc.github.io/adapter/adapter-latest.js',
-  '/404.html' */
+  '/404.html'
 ];
 
 // cache size limit function
@@ -24,12 +24,12 @@ const limitCacheSize = (name, size) => {
 // install event
 self.addEventListener('install', evt => {
   //console.log('service worker installed');
-  evt.waitUntil(
+  /* evt.waitUntil(
     caches.open(staticCacheName).then((cache) => {
       console.log('caching shell assets');
       cache.addAll(assets);
     })
-  );
+  ); */
 });
 
 // activate event
@@ -47,7 +47,8 @@ self.addEventListener('activate', evt => {
 
 // fetch events
 self.addEventListener('fetch', evt => {
-    evt.respondWith(
+  //console.log(evt)
+    /* evt.respondWith(
       caches.match(evt.request).then(cacheRes => {
         return cacheRes || fetch(evt.request).then(fetchRes => {
           return caches.open(dynamicCacheName).then(cache => {
@@ -62,5 +63,5 @@ self.addEventListener('fetch', evt => {
           return caches.match('/404.html');
         } 
       })
-    );
+    ); */
 });
