@@ -35,14 +35,13 @@
         </header>
 
         <!-- fab btn -->
-        <div class="fab">
+        <div class="fab" id="fab">
             <div class="fab_elms">
-                <button class="fab_elm" onclick="openTab('feedback_tab')">WRITE A FEEDBACK</button>
                 <button class="fab_elm" onclick="openTab('collect_detail')">SETUP YOUR DETAILS</button>
                 <button class="fab_elm" onclick="openTab('peer_explorer')">EXPLORE PEERS</button>
                 <button class="fab_elm" onclick="toRoot()">HOME SCREEN</button>
                 <button class="fab_elm" onclick="invite()">INVITE SOMEONE</button>
-                <button class="fab_elm" onclick="toast.clearAllErrors(this)" style="display: none;" id="cleaner">CLEAR ALL ERRORS</button>
+                <button class="fab_elm" onclick="toast.clearAllErrors()">CLEAR ALL ERRORS</button>
                 <button class="fab_elm" onclick="toggleFullScreen()">TOGGLE FULLSCREEN</button>
             </div>
             <button class="fab_switcher" onclick="fab()">💣</button>
@@ -68,62 +67,49 @@
                 </form>
             </div>
             <!-- ads -->
-
-
-        </div>
-
-            <!-- custome tabs / fab tabs -->
-            <!-- details collector -->
-            <div class="ct" id="collect_detail">
-                <h2>Setup Details</h2>
-                <div class="ct_wrap">
-                    <form onsubmit="setDetails(event, this)" id="setDetailForm">
-                        <p>All the data you enter below will be available on public database.</p>
-                        <p>
-                            The ID must start and end with an alphanumeric character
-                            (lower or upper case character or a digit).
-                            In the middle dashes (-) and underscores (_) are allowed.
-                        </p>
-                        <label for="peer">Preferred Peer Id</label>
-                        <input type="text" name="peer" id="peer" pattern="^[a-zA-Z0-9_-]+$" title="Blank space not allowed" required placeholder="Alpha numeric value except spaces."  autocomplete="off">
-                        <label for="name">Name</label>
-                        <input type="text" name="name" id="name" required placeholder="Your nice name goes here" autocomplete="off">
-                        <label for="bio">Bio</label>
-                        <input type="text" name="bio" id="bio" required placeholder="Your priffered languages fits well" autocomplete="off">
-                        <button type="submit">Set Details</button>
-                    </form>
-                </div> 
-            </div>
-            <!-- peer explorer -->
-            <div class="ct peer_explorer" id="peer_explorer">
-                <h2>Explore Peers</h2>
-                <ul class="peer_explorer_wrap" id="explore">
-                    <button onclick="listenToActivePeers(this)">Watch on DataBase</button>
-                </ul>
-            </div>
-            <!-- feedback details -->
-            <div class="ct" id="feedback_tab">
-                <h2>Send Feedback</h2>
-                <div class="ct_wrap">
-                    <form onsubmit="sendFeedback(event, this)">
-                        <label for="w_name">Your Name</label>
-                        <input type="text" id="w_name" required placeholder="Your nice name goes here"  autocomplete="off">
-                        <label for="feedback">Your Feedback</label>
-                        <textarea id="feedback" required autocomplete="off" cols="30" rows="10"></textarea>
-                        <button type="submit">WhatsApp It</button>
-                    </form>
-                    <!-- livense -->
-                    <div class="license">
-                        <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
-                            <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" />
-                        </a>
-                        <p>This work is licensed under a 
-                            <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
-                                Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
-                        </p>
-                    </div>
+            <div class="ads">
+                <div class="ad" onclick="toast.log('😡 Its just a picture.')">
+                    <img src="/ads/ad.jpg" alt="advertisment">
+                    <p>😁 Its just a picture.</p>
                 </div>
             </div>
+        </div>
+
+        <!-- custome tabs / fab tabs -->
+        <!-- details collector -->
+        <div class="ct" id="collect_detail">
+            <h2>Set Details</h2>
+            <div class="ct_wrap">
+                <form onsubmit="setDetails(event, this)" id="setDetailForm">
+                    <p>All the data you enter below will be available on public database.</p>
+                    <p>
+                        The ID must start and end with an alphanumeric character
+                        (lower or upper case character or a digit).
+                        In the middle dashes (-) and underscores (_) are allowed.
+                    </p>
+                    <label for="peer">Preferred Peer Id</label>
+                    <input type="text" name="peer" id="peer" pattern="^[a-zA-Z0-9_-]+$" title="Blank space not allowed" required placeholder="Alpha numeric value except spaces."  autocomplete="off">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" id="name" required placeholder="Your nice name goes here" autocomplete="off">
+                    <label for="bio">Bio</label>
+                    <input type="text" name="bio" id="bio" required placeholder="Your priffered languages fits well" autocomplete="off">
+                    <button type="submit">Set Details</button>
+                </form>
+            </div>
+            <p style="padding: 10px; color: aqua; background-color: black; margin: 20px 0 100px 0; border-radius: 10px;">
+                If you are new here, see: 
+                <a href="/about.html" style="color: yellow; text-transform: uppercase;"> how to use pico meet </a>
+                to take controle of this wierd UI.
+            </p>
+        </div>
+        <!-- peer explorer -->
+        <div class="ct peer_explorer" id="peer_explorer">
+            <h2>Explore Peers</h2>
+            <ul class="peer_explorer_wrap" id="explore">
+                <button onclick="listenToActivePeers(this)">Watch on DataBase</button>
+            </ul>
+        </div>
+
 
         <!-- freezeer -->
         <div id="freez_time">

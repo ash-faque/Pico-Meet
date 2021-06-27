@@ -15,17 +15,12 @@ const toast = {
             p.classList.add('error');
             p.innerHTML = `<span>${msg}</span><span onclick="this.parentElement.remove()">x</span>`;
             toastBlck.prepend(p);
-            let current_errs_count = Array.from(toastBlck.querySelectorAll('.error')).length;
-            if (current_errs_count > 3){
-                document.getElementById('cleaner').style.display = 'block';
-            };
         },
-    clearAllErrors: (cleaner) => {
+    clearAllErrors: () => {
         let errors = Array.from(toastBlck.querySelectorAll('.error'));
         errors.forEach(error => {
             error.remove();
         });
-        cleaner.style.display = 'none';
         fab();
     },
 };
@@ -46,6 +41,7 @@ const switchMod = (switchToCams = true) => {
 };
 // CUSTOM TAB OPENERS
 const openTab = (tabId) => {
+    toRoot();
     let tab = document.getElementById(tabId);
     let tab_d_state = getComputedStyle(tab).display;
     if (tab_d_state == 'block'){
@@ -53,7 +49,6 @@ const openTab = (tabId) => {
     } else if (tab_d_state == 'none'){
         tab.style.display = 'block';
     };
-    fab();
 };
 // BACK ON CUSTOME TABS
 const toRoot = () => {
@@ -127,8 +122,9 @@ const toggleFullScreen = () => {
 
 
 // SET INFO MNGR //////////////////////////////////////////////////////////////////////////////////// SET INFO MNGR //
+var pInfo = {};   // ALSO USING IN DB
+
 const setDetailForm = document.getElementById('setDetailForm');
-var pInfo = {};                     // ALSO USING IN DB
 const setDetails = (e, setDetailForm) => {
     e.preventDefault();
     let stored_pid = '',
@@ -146,27 +142,26 @@ const setDetails = (e, setDetailForm) => {
     localStorage.p_bio = pInfo.p_bio;
     if (pid_changed){
         connectToPeerServer();
+        document.getElementById('fab').style.display = 'block';
     };
     toast.log('Details saved.');
     toRoot();
+    fab();
 };
 
 // ONLOAD
 window.onload = () => {
-    if (localStorage.p_pid == undefined){
-        openTab('collect_detail');
-    } else {
+    if (localStorage.p_pid != undefined){
+        // RETRIEVE AND FILL THE INFOOBJ
         pInfo.p_name = localStorage.p_name;
         pInfo.p_pid = localStorage.p_pid;
         pInfo.p_bio = localStorage.p_bio ;
     };
-    try {
-        // RETRIEVE INFO OBJ FRM LS && LOCATION HASH
-        setDetailForm.name.value = localStorage.p_name || '';
-        setDetailForm.peer.value = localStorage.p_pid || '';
-        setDetailForm.bio.value = localStorage.p_bio || '';
-        document.getElementById('room-input').value = location.hash.slice(1);
-    } catch {(err) => toast.error(err)};
+    // RETRIEVE INFOOBJ FRM LS && LOCATION HASH
+    setDetailForm.name.value = localStorage.p_name || '';
+    setDetailForm.peer.value = localStorage.p_pid || '';
+    setDetailForm.bio.value = localStorage.p_bio || '';
+    document.getElementById('room_input').value = location.hash.slice(1);
 };
 // STREAM ON DOM SETTER FNS /////////////////////////////////////////////////////////////// STREAM ON DOM SETTER FNS //
 
@@ -184,16 +179,6 @@ function setRemoteStream(stream){
 };
 
 /////////////////////////////////////////////////////////////
-
-// SEND FEEDBACK
-const sendFeedback = (evt, form) => {
-    evt.preventDefault();
-    toRoot();
-    let name = form[0].value,
-        feedback = form[1].value,
-        url = `https://wa.me/916282177960?text=Hi I'm ${name}. I've visited the Pico Meet site.${feedback}`;
-    window.open(url);
-};
 
 // INVITE BTN
 const invite = () => {
@@ -226,29 +211,41 @@ var PeerConnection;
 
 const connectToPeerServer = () => {
     let storedPidFrmLs = '';
-    (localStorage.p_pid && (localStorage.p_pid != '')) ? storedPidFrmLs = localStorage.p_pid : '';
-    toast.log('Connecting with id: ' + storedPidFrmLs);
-    PeerConnection = new Peer(storedPidFrmLs);
-    PeerConnection.on('error', err => {
-        console.error(err.type);
-        // delet un responsive id from db
-        if (err.type == 'peer-unavailable'){
-            deletePeer(id_tried_just_now);
-        };
-        toast.error(err);
-        let peer_status_d = document.querySelector('.connected'),
-            peer_id_d = document.querySelector('.with_id');
-        peer_status_d.innerText = 'Error ❌';
-        peer_id_d.innerText = 'No connection? No ID 💔';
-        peer_status_d.style.color = 'red';
-        peer_id_d.style.color = 'red';
-    });
-    let peer_est_watcher = setInterval(() => {
-        if (PeerConnection != undefined){
-            listenForPeerEvents();
-            clearInterval(peer_est_watcher);
-        };
-    }, 1000);
+    if (localStorage.p_pid != undefined){
+        storedPidFrmLs = localStorage.p_pid;
+        toast.log('Connecting with id: ' + storedPidFrmLs);
+        PeerConnection = new Peer(storedPidFrmLs);
+        PeerConnection.on('error', err => {
+            console.error(err.type);
+            // delet un responsive id from db
+            if (err.type == 'peer-unavailable'){
+                deletePeer(id_tried_just_now);
+            };
+            if (err.type == 'unavailable-id'){
+                toast.log('Some one grbbed your preffered ID.')
+                openTab('collect_detail');
+                fab();
+            };
+            toast.error(err);
+            let peer_status_d = document.querySelector('.connected'),
+                peer_id_d = document.querySelector('.with_id');
+            peer_status_d.innerText = 'Error ❌';
+            peer_id_d.innerText = 'No connection? No ID 💔';
+            peer_status_d.style.color = 'red';
+            peer_id_d.style.color = 'red';
+        });
+        let peer_est_watcher = setInterval(() => {
+            if (PeerConnection != undefined){
+                listenForPeerEvents();
+                clearInterval(peer_est_watcher);
+            };
+        }, 1000);
+    } else {
+        toast.error('⚠ Please fill the Set Details form.');
+        openTab('collect_detail');
+        fab();
+        document.getElementById('fab').style.display = 'none';
+    };
 };
 
 connectToPeerServer();

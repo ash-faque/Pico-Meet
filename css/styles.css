@@ -145,10 +145,9 @@ button:disabled{
                                             background-color: #342b36;
                                             position: absolute;
                                             top: 100px;
-                                            bottom: 0;
-                                            left: 0;
-                                            right: 0;
-                                            padding: 10px 0;
+                                            height: calc(100vh - 100px);
+                                            overflow-y: scroll;
+                                            padding: 10px 0 100px 0;
                                         }
 
                                     /* video tags styles */
@@ -281,7 +280,7 @@ button:disabled{
                 /* root models */
                 .model{
                     border-radius: 15px;
-                    padding: 10px 10px 20px 10px;
+                    padding: 10px;
                     margin: 0 5px 10px 10px;
                     box-shadow: -5px 5px 5px #000;
                 }
@@ -310,7 +309,30 @@ button:disabled{
                         padding: 10px;
                         margin-bottom: 10px;
                     }
-
+                /* ads */
+                .ads{
+                    width: 100%;
+                    margin: 10px 0;
+                }
+                    .ad{
+                        position: relative;
+                        width: 100%;
+                    }
+                        .ad img{
+                            width: 100%;
+                        }
+                        .ad p{
+                            display: block;
+                            width: 100%;
+                            font-size: 20px;
+                            text-decoration: none;
+                            text-align: center;
+                            padding: 10px 0;
+                            position: absolute;
+                            bottom: 0;
+                            background-color: #000000c4;
+                            color: #ffee00;
+                        }
 
 
 /* custom tabs */
@@ -352,53 +374,41 @@ button:disabled{
         width: 100%;
         padding: 10px;
     }
-                .license{
-                    padding: 0 90px 10px 0;
-                }
-                    .license p{
-                        font-family: monospace;
-                        color: #8ee647;
-                    }
-                        .license a:any-link{
-                            font-family: monospace;
-                            color: #fab92e;
-                            text-decoration: none;
-                        }
 
-                                .peer_explorer_wrap li{
-                                    background-color: #4d2964;
-                                    list-style: none;
-                                    margin-bottom: 10px;
-                                    color: #ffffff;
-                                    border: 1px solid #fff;
-                                }
-                                    .name{
-                                        padding: 10px;
-                                        background-color: #360f50;
-                                        font-size: larger;
-                                    }
-                                    .lpt{
-                                        font-size: small;
-                                        float: right;
-                                        font-family: monospace;
-                                    }
-                                    .bio{
-                                        padding: 10px;
-                                        font-size: medium;
-                                    }
-                                    .join_btn{
-                                        cursor: pointer;
-                                        background-color: #006b6b;
-                                        color: #c9c9c9;
-                                        text-transform: uppercase;
-                                        text-align: center;
-                                        font-weight: 200;
-                                        font-family: monospace;
-                                        font-size: larger;
-                                        width: 100%;
-                                        border: 0;
-                                        padding: 5px;
-                                    }
+            .peer_explorer_wrap li{
+                background-color: #4d2964;
+                list-style: none;
+                margin-bottom: 10px;
+                color: #ffffff;
+                border: 1px solid #fff;
+            }
+                .name{
+                    padding: 10px;
+                    background-color: #360f50;
+                    font-size: larger;
+                }
+                .lpt{
+                    font-size: small;
+                    float: right;
+                    font-family: monospace;
+                }
+                .bio{
+                    padding: 10px;
+                    font-size: medium;
+                }
+                .join_btn{
+                    cursor: pointer;
+                    background-color: #006b6b;
+                    color: #c9c9c9;
+                    text-transform: uppercase;
+                    text-align: center;
+                    font-weight: 200;
+                    font-family: monospace;
+                    font-size: larger;
+                    width: 100%;
+                    border: 0;
+                    padding: 5px;
+                }
 
 #freez_time{
     position: absolute;

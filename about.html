@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Pico Meet</title>
+    <!-- g font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta&display=swap" rel="stylesheet">
+    <!-- local styles -->
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body{
+            font-family: 'Mukta', sans-serif;
+            background-color: #313131;
+            color: #ffffff;
+        }
+        .intro, .howto, .feedback, .license{
+            padding: 10px;
+        }
+        .license{
+            background-color: #1b1b1b;
+        }
+        .license a:any-link{
+            color: #47ff56;
+        }
+        h1, h2{
+            color: #ffd726;
+        }
+        input, button, textarea{
+            width: 100%;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- intro -->
+    <div class="intro">
+        <h1>Pico Meet: How & About.</h1>
+        <p>Pico Meet is a one to one video chat application backed by p2p technology.
+            There is no relevence on the privecy of users as no one other than the user is actually involved in any kind of transmission of video.
+            When pico meet succesfully connects to a peer server no data other than the IP address of the user is used.
+        </p>
+    </div>
+    <!-- how to use -->
+    <div class="howto">
+        <h2>How To Use: </h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
+
+
+
+    </div>
+    <!-- feedback -->
+    <div class="feedback">
+        <h2>Write a Feedback: </h2>
+        <form onsubmit="sendFeedback(event, this)" style="margin: 0 0 10px 0;">
+            <label for="w_name">Your Name</label>
+            <input type="text" id="w_name" required placeholder="Your nice name goes here"  autocomplete="off">
+            <label for="feedback">Your Feedback</label>
+            <textarea id="feedback" required autocomplete="off" cols="30" rows="10"></textarea>
+            <button type="submit">WhatsApp It</button>
+        </form>
+        <button onclick="location.href = '/'">Take Me Home</button>
+    </div>
+    <!-- license -->
+    <div class="license">
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+            <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" />
+        </a>
+        <p>This work is licensed under a 
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+                Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
+        </p>
+    </div>
+    <!-- local scripts -->
+    <script>
+        // SEND FEEDBACK
+        const sendFeedback = (evt, form) => {
+            evt.preventDefault();
+            toRoot();
+            let name = form[0].value,
+                feedback = form[1].value,
+                url = `https://wa.me/916282177960?text=Hi I'm ${name}. I've visited the Pico Meet site.${feedback}`;
+            window.open(url);
+        };
+    </script>
+</body>
+</html>
