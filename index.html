@@ -53,8 +53,9 @@
             <!-- connection info -->
             <div class="model peer_info">
                 <h2>Your Peer Connection</h2>
-                <p>Connection Status: <span class="connected">wait...</span></p>
-                <p>Connection ID: <span class="with_id">unknown.</span></p>
+                <p>Connection Status: <span class="connected" style="color: yellow;">...wait</span></p>
+                <p>Connection ID: <span class="with_id" style="color: yellow;">unknown</span></p>
+                <span>if not connected try reloading the page</span>
                 <button onclick="if(!PeerConnection.open){connectToPeerServer()}" id="force_connect" style="display: none;">TRY CONNECT TO PEER SERVER</button>
             </div>
             <!-- create or join -->

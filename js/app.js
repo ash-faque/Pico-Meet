@@ -8,7 +8,7 @@ const toast = {
             toastBlck.prepend(p);
             setTimeout(()=>{
                 p.remove();
-            }, 3000);
+            }, 2500);
         },
     error: (msg) => {
             let p = document.createElement('p');
@@ -477,9 +477,9 @@ const renderActivePeers = (peersData, docId) => {
         console.log(eta)
     let li = document.createElement('li');
     li.setAttribute('id', docId);
-    li.innerHTML = `<p class="name">${p_name}
-                        <span class="lpt">${eta} minutes ago.</span>
-                    </p><p class="bio">${bio}</p>
+    li.innerHTML = `<p class="name">${p_name}<span class="lpt">${eta} minutes ago.</span></p>
+                    <p class="pid">${docId}</p>
+                    <p class="bio">${bio}</p>
                     <button class="join_btn" onclick="joinPeer('${docId}')">Try To Call This Peer.</button>`;
     let parentUl = document.getElementById('explore');
     parentUl.appendChild(li);
