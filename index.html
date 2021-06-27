@@ -54,7 +54,8 @@
                 <h2>Your Peer Connection</h2>
                 <p>Connection Status: <span class="connected" style="color: yellow;">...wait</span></p>
                 <p>Connection ID: <span class="with_id" style="color: yellow;">unknown</span></p>
-                <span>if not connected try reloading the page</span>
+                <p>🔁 If not connected try reloading the page</p>
+                <p>🙈 You must exit incognito</p>
                 <button onclick="if(!PeerConnection.open){connectToPeerServer()}" id="force_connect" style="display: none;">TRY CONNECT TO PEER SERVER</button>
             </div>
             <!-- create or join -->
@@ -68,9 +69,9 @@
             </div>
             <!-- ads -->
             <div class="ads">
-                <div class="ad" onclick="toast.log('😡 Its just a picture.')">
+                <div class="ad" onclick="toast.log('Feature not yet implimented.')">
                     <img src="/ads/ad.jpg" alt="advertisment">
-                    <p>😁 Its just a picture.</p>
+                    <p>ADs comes with a description.</p>
                 </div>
             </div>
         </div>
@@ -93,12 +94,12 @@
                     <input type="text" name="name" id="name" required placeholder="Your nice name goes here" autocomplete="off">
                     <label for="bio">Bio</label>
                     <input type="text" name="bio" id="bio" required placeholder="Your priffered languages fits well" autocomplete="off">
-                    <button type="submit">Set Details</button>
+                    <button type="submit" style="padding: 10px;">Set Details</button>
                 </form>
             </div>
-            <p style="padding: 10px; color: aqua; background-color: black; margin: 20px 0 100px 0; border-radius: 10px;">
+            <p style="padding: 10px; color: aqua; background-color: black; margin: 20px 0 100px 0; border-radius: 10px;" onclick="location.href = '/about.html'">
                 If you are new here, see: 
-                <a href="/about.html" style="color: yellow; text-transform: uppercase;"> how to use pico meet </a>
+                <span style="color: yellow; text-transform: uppercase;"> how to use pico meet </span>
                 to take controle of this wierd UI.
             </p>
         </div>
@@ -106,7 +107,7 @@
         <div class="ct peer_explorer" id="peer_explorer">
             <h2>Explore Peers</h2>
             <ul class="peer_explorer_wrap" id="explore">
-                <button onclick="listenToActivePeers(this)">Watch on DataBase</button>
+                <button onclick="listenToActivePeers(this)" style="padding: 10px;">Watch on DataBase</button>
             </ul>
         </div>
 

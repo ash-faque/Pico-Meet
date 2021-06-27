@@ -1,11 +1,10 @@
 // Cache names
-const dynamicCacheName = 'DYNAMIC_V3';
-const preCacheName = 'PRE_V4';
+const dynamicCacheName = 'DYNAMIC_V8';
+const preCacheName = 'PRE_V8';
 // Cache assets
 const preCacheAssets = [
 							'/offline.html',
-							'/js/peer.js',
-							'https://webrtc.github.io/adapter/adapter-latest.js'
+							'/js/peer.js'
 						];
 
 
@@ -65,7 +64,7 @@ self.addEventListener('fetch', evt => {
 			})()
 		);
 	};
-	if (evt.request.url.indexOf('google.firestore.v1.Firestore') == -1){
+	if (evt.request.url.indexOf('firestore.googleapis.com') === -1){
 		caches.match(evt.request).then(cacheRes => {
 			return cacheRes || fetch(evt.request).then(fetchRes => {
 				return caches.open(dynamicCacheName).then(cache => {

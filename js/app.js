@@ -8,7 +8,7 @@ const toast = {
             toastBlck.prepend(p);
             setTimeout(()=>{
                 p.remove();
-            }, 2500);
+            }, 3000);
         },
     error: (msg) => {
             let p = document.createElement('p');
@@ -463,9 +463,6 @@ const listenToActivePeers = (btn) => {
 
 // INCOMING DATA RENDER FN
 const renderActivePeers = (peersData, docId) => {
-    if (docId == PeerConnection.id){
-        return;
-    };
     let p_name = peersData.name,
         bio = peersData.bio,
         lpt = peersData.lpt.toDate().getTime(),
@@ -474,9 +471,9 @@ const renderActivePeers = (peersData, docId) => {
         console.log(eta)
     let li = document.createElement('li');
     li.setAttribute('id', docId);
+    li.classList.add(`${(docId == PeerConnection.id) ? 'self' : ''}`);
     li.innerHTML = `<p class="name">${p_name}<span class="lpt">${eta} minutes ago.</span></p>
-                    <p class="pid">${docId}</p>
-                    <p class="bio">${bio}</p>
+                    <p class="bio">${bio}<span class="pid">${docId}</span></p>
                     <button class="join_btn" onclick="joinPeer('${docId}')">Try To Call This Peer.</button>`;
     let parentUl = document.getElementById('explore');
     parentUl.appendChild(li);

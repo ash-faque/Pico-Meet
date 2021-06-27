@@ -21,6 +21,9 @@
             background-color: #313131;
             color: #ffffff;
         }
+        a:any-link{
+            color: aqua;
+        }
         .intro, .howto, .feedback, .license{
             padding: 10px;
         }
@@ -35,26 +38,54 @@
         }
         input, button, textarea{
             width: 100%;
-            padding: 10px;
+            padding: 8px;
+        }
+        .h_btn{
+            display: block;
+            cursor: pointer;
+            position: fixed;
+            bottom: 150px; 
+            right: 30px; 
+            width: 70px; 
+            height: 70px;
+            font-size: 2em;
+            border-radius: 50%;
+            border: 4px solid #ffd61d;
+            background-color: #313131;
+            box-shadow: 3px 5px 5px #1f1f1f;
         }
     </style>
 </head>
 <body>
     <!-- intro -->
     <div class="intro">
-        <h1>Pico Meet: How & About.</h1>
-        <p>Pico Meet is a one to one video chat application backed by p2p technology.
-            There is no relevence on the privecy of users as no one other than the user is actually involved in any kind of transmission of video.
-            When pico meet succesfully connects to a peer server no data other than the IP address of the user is used.
+        <h1>Pico Meet: About & How</h1>
+        <p>
+            Pico Meet is a one to one video chat application backed by 
+            <a href="http://peerjs.com" target="_blank" rel="noopener noreferrer"> peerjs </a>.
         </p>
     </div>
     <!-- how to use -->
     <div class="howto">
         <h2>How To Use: </h2>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
-
-
-
+        <p>
+            At the first time you visit the app you need to fillup the 'Set Details' form.
+            Just fillup a readable string in the fields given, and press on the button underneath.
+            So, you have succesfully set your details.
+            Now the app will connect to peer server, and you can see your connection status under 'Your Peer Connection' on top of the homepage.
+            After a succesfull connection your entered datas will be available on the public database, for others to explore.
+            By the way, you can always change your details on the earlier 'Set Details' form.
+            To reach there, all you have to do is navigate the page using the 'FAB Button' on bottom right corner.
+            If you need to call someone else, send an invitation by taping on 'INVITE SOMEONE' in the 'FAB Button'.
+            Or else if you know the other ones Peer ID (The 'Connection ID: ' under 'Your Peer Connection'), 
+            type that ID under 'Call Someone' and tap on 'TRY CALLING' (while their 'Connection Status: ' under 'Your Peer Connection' shows 'Connected ✔').
+            If it feels like a lot of work, navigate to 'EXPLORE PEERS' using the FAB Button, to see all the peers available to call.
+            Taping 'Try To Call This Peer' under each one's details will do the same things described above.
+            On every call there is a freeze time of 10 seconds (While you are unable to make another call).
+            If the other end answers your call you will be connected and Happy facetime.
+            While receiving a call from someone, you will need to manually reject it if needed. 
+            Answering will happen automatically after 10 seconds.
+        </p>
     </div>
     <!-- feedback -->
     <div class="feedback">
@@ -62,22 +93,23 @@
         <form onsubmit="sendFeedback(event, this)" style="margin: 0 0 10px 0;">
             <label for="w_name">Your Name</label>
             <input type="text" id="w_name" required placeholder="Your nice name goes here"  autocomplete="off">
-            <label for="feedback">Your Feedback</label>
+            <label for="feedback">Feedback</label>
             <textarea id="feedback" required autocomplete="off" cols="30" rows="10"></textarea>
             <button type="submit">WhatsApp It</button>
         </form>
-        <button onclick="location.href = '/'">Take Me Home</button>
     </div>
     <!-- license -->
     <div class="license">
         <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
             <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" />
         </a>
-        <p>This work is licensed under a 
-            <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
-                Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
+        <p>Pico Meet the web app is created by 
+            <a href="http://ash-faque.github.io" target="_blank" rel="noopener noreferrer"> Ashfaque </a>and is licensed under a
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"> Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
         </p>
     </div>
+    <!-- to home btn -->
+    <button onclick="location.href = '/'" class="h_btn">🏡</button>
     <!-- local scripts -->
     <script>
         // SEND FEEDBACK
