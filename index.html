@@ -54,8 +54,8 @@
                 <h2>Your Peer Connection</h2>
                 <p>Connection Status: <span class="connected" style="color: yellow;">...wait</span></p>
                 <p>Connection ID: <span class="with_id" style="color: yellow;">unknown</span></p>
-                <p>🔁 If not connected try reloading the page</p>
-                <p>🙈 You must exit incognito</p>
+                <p>If not connected try reloading the page</p>
+                <p>You must exit incognito</p>
                 <button onclick="if(!PeerConnection.open){connectToPeerServer()}" id="force_connect" style="display: none;">TRY CONNECT TO PEER SERVER</button>
             </div>
             <!-- create or join -->
@@ -160,6 +160,7 @@
     };
     firebase.initializeApp(firebaseConfig);
     DB = firebase.firestore();
+    const ACTIVE_PEERS = DB.collection('active-peers');
 </script>
 
 <!-- local script -->

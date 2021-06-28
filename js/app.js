@@ -421,7 +421,6 @@ const endCall = () => {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FIREBASE CLIENT MNGT /////////////////////////////////////////////////////////////////////////// FIREBASE CLIENT MNGT //
-const ACTIVE_PEERS = DB.collection('active-peers');
 
 // REG ON DB
 const regOnDB = () => {
@@ -432,7 +431,7 @@ const regOnDB = () => {
                                             lpt: firebase.firestore.Timestamp.now()
                                         })
                                     .then(() => toast.log('Entered self peer to database.'))
-                                    .catch(e => console.error(e));
+                                    .catch(e => toast.error(e));
     };
 };
 
@@ -440,12 +439,12 @@ const regOnDB = () => {
 const deletePeer = (targetId) => {
     ACTIVE_PEERS.doc(targetId).delete()
                                 .then(() => toast.log('Deleted unresponsive peer.'))
-                                .catch(e => console.error(e));
+                                .catch(e => toast.error(e));
 };
 
 // LISTEN FOR DOC CHANGES
 const listenToActivePeers = (btn) => {
-    btn.remove();
+    if (btn){btn.remove();}
     ACTIVE_PEERS.onSnapshot(snapshot => {
         let changes = snapshot.docChanges();
         changes.forEach(change => {
@@ -471,7 +470,7 @@ const renderActivePeers = (peersData, docId) => {
         console.log(eta)
     let li = document.createElement('li');
     li.setAttribute('id', docId);
-    li.classList.add(`${(docId == PeerConnection.id) ? 'self' : ''}`);
+    li.classList.add(`${(PeerConnection.open && (docId == PeerConnection.id)) ? 'self' : 'other'}`);
     li.innerHTML = `<p class="name">${p_name}<span class="lpt">${eta} minutes ago.</span></p>
                     <p class="bio">${bio}<span class="pid">${docId}</span></p>
                     <button class="join_btn" onclick="joinPeer('${docId}')">Try To Call This Peer.</button>`;
